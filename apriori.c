@@ -307,7 +307,8 @@ void apriori_generate_cand_2_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr 
    
     Itemsets tmp; //stores newly generated candidate list
 
-    //joins previous frequent item sets.
+    //joins previous frequent item sets and applies the apriori property
+    //The Join and pruning steps are combined.
     for (k = 0; k < basket_cnt - 1;k++) {
 
         if (f_freq1[items[k]] < SUPPORT_THRESHOLD)
@@ -340,7 +341,55 @@ void apriori_generate_cand_n_itemsets(ItemsetPtr f_freq1, int itemset_cnt,Itemse
     //Joins the prev frequent Items sets, applying apriori property
     join_frequent_n_itemsets(c_cur, f_freq1, itemset_cnt);
 
+    //Pruning step is performed here.
     
+
+    
+}
+
+void r_apriori_generate_cand_n_itemsets(int slen,ItemsetPtr c_cur,int items[],int sub[],C_ItemsetPtr c_itemset_ll,int ilen,int istart,int sstart,ItemsetPtr c_prev) {
+    int i,j,k,h,hval;
+    int * ret_itemset;
+
+
+    if (sstart == slen){//sub now contains an n-item subset; apply apriori to determine if candidate itemset
+        ret_itemset = sub;
+        if (infrequent_subset_found(slen-1,sub, slen, c_prev)) {
+            return;
+        }
+        hval = hashval(sub,slen);
+        insert_candidate_itemset(slen,hval,sub, c_cur);
+    }
+    else if (istart < ilen) {
+        sub[sstart] = items[istart];
+        r_apriori_generate_cand_n_itemsets(slen,c_cur,items,sub,c_itemset_ll,ilen,istart+1,sstart+1,c_prev);
+        r_apriori_generate_cand_n_itemsets(slen,c_cur,items,sub,c_itemset_ll,ilen,istart+1,sstart,c_prev);
+    }
+}
+
+
+int infrequent_subset_found(int subset_len,int items[],int basket_cnt,ItemsetPtr c_prev) {
+    int * sub = calloc(subset_len,sizeof(int));    //we want subsequences of size itemset_cnt
+    return r_infrequent_subset_found(subset_len,items,sub,basket_cnt,c_prev,0,0);
+}
+
+int r_infrequent_subset_found(int slen,int items[],int sub[],int ilen,ItemsetPtr c_prev,int istart,int sstart) {
+    int i,j,k,h,hval;
+
+
+
+
+    if (sstart == slen){//sub now contains an n-item subset; apply apriori to determine if candidate itemset
+        //printf("££$$££$$££$$ %d",is_frequent_subset(c_prev,sub,slen));getchar();
+        if (!is_frequent_subset(c_prev,sub,slen))
+            return 1;
+    }
+    else if (istart < ilen) {
+        sub[sstart] = items[istart];
+        r_infrequent_subset_found(slen,items,sub,ilen,c_prev,istart+1,sstart+1);
+        r_infrequent_subset_found(slen,items,sub,ilen,c_prev,istart+1,sstart);
+    }
+    return 0;
 }
 
 
