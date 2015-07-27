@@ -66,8 +66,8 @@ void scandb(int n, int * c_freq1, int * f_freq1, ItemsetPtr c_freq_cur, ItemsetP
 void generate_candidate_one_itemsets(int *,int[],int);
 void generate_candidates_prev(int itemsetcnt,ItemsetPtr c_prev,ItemsetPtr f_cur);
 void apriori_generate_cand_2_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr c_freq_cur,int items[],C_ItemsetPtr c_itemset_ll,int item_cnt,ItemsetPtr c_prev);
-void apriori_generate_cand_n_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr c_freq_cur,int items[],C_ItemsetPtr c_itemset_ll,int item_cnt,ItemsetPtr c_prev);
-void r_apriori_generate_cand_n_itemsets(int slen,ItemsetPtr c_cur,int items[],int sub[],C_ItemsetPtr c_itemset_ll,int ilen,int istart,int sstart,ItemsetPtr c_prev);
+void apriori_generate_cand_n_itemsets(ItemsetPtr f_freq1, int itemset_cnt,ItemsetPtr c_freq_cur,int items[],C_ItemsetPtr c_itemset_ll,int item_cnt,ItemsetPtr c_prev);
+
 
 /* Saves the frequent itemsets to a file., k = 1,2, ..n */
 void save_frequent_one_itemsets(FILE *f_itemsets,int * c_freq1,int,int);
@@ -88,7 +88,7 @@ void insert_candidate_itemset(int itemset_cnt,int hval,int itemset_array[],Items
 /* clears memory of list */
 void release_memory(ItemsetPtr freq);
 
-/*   */
+/*  hashes itemset elements on array. */
 int hashval(int itemset[],int len);
 
 

@@ -41,5 +41,8 @@ int main(int argc, char** argv) {
         scandb(i,candidate_frequencies1,frequent_frequencies1,candidate_frequencies_cur,frequent_frequencies_cur,
                candidate_frequencies_prev,frequent_frequencies_prev);
     }
+
+     release_memory(frequent_frequencies_cur);
+     free(frequent_frequencies1);
 }
 
