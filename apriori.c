@@ -352,10 +352,6 @@ void apriori_generate_cand_2_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr 
 /**
  *To be modified to support for n _itemsets.
  */
-
-void generate_candidate_n_itemsets(int *freq1, int itemset_cnt, ItemsetPtr c_cur, int items[], C_itemsetPtr c_itemset_ll, int basket_cnt, itemsetPtr prev) {
-
-  
 //generate_candidate_n_itemsets for the line read
 void apriori_generate_cand_n_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr c_cur,int items[],C_ItemsetPtr c_itemset_ll,int basket_cnt,ItemsetPtr c_prev) {
     int * sub = calloc(itemset_cnt,sizeof(int));    //we want subsequences of size itemset_cnt
