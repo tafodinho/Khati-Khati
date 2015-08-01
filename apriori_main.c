@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
         if (i == 1) {
             candidate_frequencies1 = calloc(ONE_ITEMSET_ARRAY_MAX, sizeof(int));   //1-itemset frequencies
             frequent_frequencies1 = calloc(ONE_ITEMSET_ARRAY_MAX, sizeof(int ));   //1-itemset frequencies
-        } else if (i==2) {
+        } else if (i == 2) {
             candidate_frequencies_cur = calloc(OTH_ITEMSET_ARRAY_MAX, sizeof(struct itemsetPtr));
             frequent_frequencies_cur = calloc(OTH_ITEMSET_ARRAY_MAX,  sizeof(struct itemsetPtr));
             for (j=0;j <OTH_ITEMSET_ARRAY_MAX;j++) {
@@ -43,6 +43,8 @@ int main(int argc, char** argv) {
     }
 
      release_memory(frequent_frequencies_cur);
+     release_memory(candidate_frequencies_cur);
+     release_memory(candidate_frequencies_prev);
      free(frequent_frequencies1);
 }
 

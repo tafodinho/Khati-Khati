@@ -2,4 +2,4 @@
 
 
 all:
-	gcc apriori_main.c apriori.c apriori.h -o apriori
+	gcc -g apriori_main.c apriori.c apriori.h -o apriori
