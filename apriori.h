@@ -65,8 +65,8 @@ void scandb(int n, int * c_freq1, int * f_freq1, ItemsetPtr c_freq_cur, ItemsetP
 /* Generates the candidate item sets for k = 1, 2, ..n */
 void generate_candidate_one_itemsets(int *,int[],int);
 void generate_candidates_prev(int itemsetcnt,ItemsetPtr c_prev,ItemsetPtr f_cur);
-void apriori_generate_cand_2_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr c_freq_cur,int items[],C_ItemsetPtr c_itemset_ll,int item_cnt,ItemsetPtr c_prev);
-void apriori_generate_cand_n_itemsets(ItemsetPtr f_freq1, int itemset_cnt,ItemsetPtr c_freq_cur,int items[],C_ItemsetPtr c_itemset_ll,int item_cnt,ItemsetPtr c_prev);
+void apriori_generate_cand_2_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr c_freq_cur,int items[],C_ItemsetPtr c_itemset_ll,int item_cnt,ItemsetPtr c_prev, ItemsetPtr f_cur, FILE *f_itemsets, int *distinct_itemsets_cnt, int *tot_itemsets_cnt);
+void apriori_generate_cand_n_itemsets(ItemsetPtr f_freq1, int itemset_cnt,ItemsetPtr c_freq_cur,int items[],C_ItemsetPtr c_itemset_ll,int item_cnt,ItemsetPtr c_prev, ItemsetPtr f_cur, FILE *f_itemsets, int *distinct_itemsets_cnt, int *tot_itemsets_cnt);
 
 
 /* Saves the frequent itemsets to a file., k = 1,2, ..n */

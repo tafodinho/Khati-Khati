@@ -76,64 +76,38 @@ void scandb(int n, int * c_freq1, int * f_freq1, ItemsetPtr c_cur, ItemsetPtr f_
 
         /* We have now read a line from database and extracted integers into array items */
         if (n == 1) { //process for 1-itemsets
+	    
             generate_candidate_one_itemsets(c_freq1,items,item_no);
 	    get_frequent_one_itemsets(c_freq1,f_freq1,&distinct_itemsets_cnt, &tot_itemsets_cnt);
             save_frequent_one_itemsets(f_itemsets,f_freq1,distinct_itemsets_cnt, tot_itemsets_cnt);
-	    free(c_freq1); /* release memory held by candidate-1 itemsets */
+	    //free(c_freq1); //release memory held by candidate-1 itemsets
         }
 	
-	//Note: Since f_cur and f_freq1 are not deallocated since they're used for the next iterations
-        //      There is no need to use save_frequent_n_itemsets and get_freq_n_itemsets
-
-        if (n==2) { /* process for 2-itemsets*/
-            apriori_generate_cand_2_itemsets(f_freq1, n,c_cur,items,c_itemset_ll,item_no,c_prev);
-	    get_frequent_n_itemsets(n,c_cur,f_cur,&distinct_itemsets_cnt, &tot_itemsets_cnt);
-            save_frequent_n_itemsets(n,f_itemsets,f_cur,distinct_itemsets_cnt,tot_itemsets_cnt);
-            release_memory(c_cur);//release memory held by candidate-2 itemsets
+	
+        if (n == 2) { /* process for 2-itemsets*/
+            apriori_generate_cand_2_itemsets(f_freq1, n,c_cur,items,c_itemset_ll,item_no,c_prev, f_cur, f_itemsets,&distinct_itemsets_cnt, &tot_itemsets_cnt);
+	    release_memory(c_prev);
+            release_memory(c_cur);
+            
         }
         if (n > 2) { /* process for itemsets > 2 */
-            apriori_generate_cand_n_itemsets(f_cur, n,c_cur,items,c_itemset_ll,item_no,c_prev);
+            apriori_generate_cand_n_itemsets(f_cur, n,c_cur,items,c_itemset_ll,item_no,c_prev, f_cur, f_itemsets,&distinct_itemsets_cnt, &tot_itemsets_cnt);
 	    get_frequent_n_itemsets(n,c_cur,f_cur,&distinct_itemsets_cnt, &tot_itemsets_cnt);
             save_frequent_n_itemsets(n,f_itemsets,f_cur,distinct_itemsets_cnt,tot_itemsets_cnt);
-            release_memory(c_prev);
+	    release_memory(c_prev);
             release_memory(c_cur);
+            
         }
     }
 
 }
 
 
-/**
- * Generates the candidate sets for the previous k-1 item set
- */
-void generate_candidates_prev(int itemsetcnt,ItemsetPtr c_prev,ItemsetPtr f_cur) {
-    //Itemsets c_its_tmp,f_its_tmp,f_its_tmp2;
-    int i;
-    Itemsets its,c_tmp,f_tmp;
 
 
-    for (i=0;i<OTH_ITEMSET_ARRAY_MAX;i++) {
-        c_tmp = c_prev[i] . itemset_ptr;
-        f_tmp = f_cur[i] . itemset_ptr;
-        while (f_tmp != NULL) {
-                if (c_tmp == NULL) {
-                    c_tmp = c_prev[i] . itemset_ptr = create_new_itemset_node(itemsetcnt,f_tmp-> itemsets);
-                    c_tmp -> cnt = f_tmp -> cnt;
-                }
-                else {
-                    its = create_new_itemset_node(itemsetcnt,f_tmp-> itemsets);
-                    its -> cnt = f_tmp -> cnt;
-                    c_tmp -> next = its;
-                    c_tmp = c_tmp -> next;
-                }
-            f_tmp = f_tmp-> next;
-        }
-    }
-
-}
 
 /**
- * Joins Li-1 to Li-1 to get current frequent item sets. 
+ * Joins Li-1 to Li-1 to get current candidate item sets. 
  * 
  */
 void join_frequent_n_itemsets(ItemsetPtr f_cur, ItemsetPtr f_prev, int i_cnt) {
@@ -195,6 +169,11 @@ void release_memory(ItemsetPtr freq){
     }
 }
 
+
+/**
+ * Generates the frequent n itemsets by pruning out elements below the support count
+ * Pruning Step.
+ */
 void get_frequent_n_itemsets(int itemsetcnt,ItemsetPtr c_cur,ItemsetPtr f_cur,int *distinct_itemsets_cnt, int *tot_itemsets_cnt){
     int i;
     Itemsets its,c_its_tmp,f_its_tmp,f_its_tmp2;
@@ -208,7 +187,7 @@ void get_frequent_n_itemsets(int itemsetcnt,ItemsetPtr c_cur,ItemsetPtr f_cur,in
             if (c_its_tmp -> cnt >= SUPPORT_THRESHOLD) {
                 f_cur[i].distinct_itemsets++;
                 f_cur[i].itemsets_cnt += c_its_tmp -> cnt;
-                //printf("%s %d %d %d %d\n","&&&&&&&&",i,c_its_tmp -> cnt,c_its_tmp->itemsets[0],c_its_tmp->itemsets[1]);getchar();
+                printf("%s %d %d: %d %d\n","&&&&&&&&",i,c_its_tmp -> cnt,c_its_tmp->itemsets[0],c_its_tmp->itemsets[1]);getchar();
                 its = create_new_itemset_node(itemsetcnt,c_its_tmp-> itemsets);
                 its -> cnt = c_its_tmp -> cnt;
                 //*its = *c_its_tmp;
@@ -266,10 +245,6 @@ void save_frequent_n_itemsets(int itemsetcnt,FILE *f_itemsets,ItemsetPtr f_cur,i
     }fflush(f_itemsets);
 }
 
-/**
- *generate_cand_*_itemsets(): Modifies the joinless apriori implementation by joining 
- *                            Lk-1 with itself and pruning performed.
- */
 
 //generate_candidate_one_itemsets for the line read
 void generate_candidate_one_itemsets(int * c_freq1,int items[],int max_size) {
@@ -293,40 +268,60 @@ void get_frequent_one_itemsets(int * c_freq1,int * f_freq1,int *distinct_itemset
 }
 
 
-
-
 /**
- * Applies a Join to the previous frequent list
- * then prunes out the the values less than the min_Support 
+ * Applies a Join to the previous frequent item sets
  * generate_candidate_2_itemsets for the line read
+ * 
  */
-void apriori_generate_cand_2_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr c_cur,int items[],C_ItemsetPtr c_itemset_ll,int basket_cnt,ItemsetPtr c_prev) {
+void apriori_generate_cand_2_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr c_cur,int items[],C_ItemsetPtr c_itemset_ll,int basket_cnt,ItemsetPtr c_prev, ItemsetPtr f_cur, FILE *f_itemsets, int *distinct_itemsets_cnt, int *tot_itemsets_cnt) {
 
     int i,j,k,h,hval;
-    int itemset[2]; 
+    int itemset[itemset_cnt]; 
+    release_memory(f_cur);//deallocated 
    
     Itemsets tmp; //stores newly generated candidate list
 
-    //joins previous frequent item sets and applies the apriori property
-    //The Join and pruning steps are combined.
+    //joins previous frequent item sets and 
     for (k = 0; k < basket_cnt - 1;k++) {
+	
+   	 for (j = k + 1; j < basket_cnt; j++) {
+            itemset[0] = items[j];
+            itemset[1] = items[k];
 
-        if (f_freq1[items[k]] < SUPPORT_THRESHOLD)
-            continue;
-        else {
-   	    for( j = k + 1; j < basket_cnt; j++) {
-            	 itemset[0] = items[j];
-               	 itemset[1] = items[k];
-
-                 //now compute hash value and store join to candidate list
-                 hval = hashval(itemset,2);
-                 insert_candidate_itemset(itemset_cnt,hval,itemset, c_cur);
-
-            }//end for..
-
-        }//end else
+            //now compute hash value and store join to candidate list
+            hval = hashval(itemset,2);
+            insert_candidate_itemset(itemset_cnt,hval,itemset, c_cur);
+	
+	    //Pruning Step
+	    tmp = create_new_itemset_node(2,itemset);		
+	    if ( is_frequent_subset( c_cur,itemset, itemset_cnt)) {
+		hval = hashval(itemset,2);
+		insert_candidate_itemset(itemset_cnt, hval, itemset, f_cur);
+	    }
+	      //printf("%s %d %d\n","&&&&",itemset[0],itemset[1]);
+        }
 
     }//end for loop
+
+    //Saving the frequent itemsets.
+    fprintf(f_itemsets, "%d %d\n", distinct_itemsets_cnt,tot_itemsets_cnt);
+     for (i = 0;i < OTH_ITEMSET_ARRAY_MAX; i++) {
+        tmp = f_cur[i] . itemset_ptr;
+        while (tmp != NULL) {
+
+            //store itemset
+            for (j = 0; j < itemset_cnt - 1; j++) {
+                fprintf(f_itemsets, "%d ",tmp->itemsets[j]);
+            }
+
+            fprintf(f_itemsets, "%d;",tmp->itemsets[j]);  //last item ends with ;
+
+            //store itemset count
+            fprintf(f_itemsets, "%d\n",tmp->cnt);
+            tmp = tmp-> next;
+        }
+    }
+    
 }
 
 
@@ -334,15 +329,12 @@ void apriori_generate_cand_2_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr 
  *To be modified to support for n _itemsets.
  */
 //generate_candidate_n_itemsets for the line read
-void apriori_generate_cand_n_itemsets(ItemsetPtr f_freq1, int itemset_cnt,ItemsetPtr c_cur,int items[],C_ItemsetPtr c_itemset_ll,int basket_cnt,ItemsetPtr c_prev) {
+void apriori_generate_cand_n_itemsets(ItemsetPtr f_freq1, int itemset_cnt,ItemsetPtr c_cur,int items[],C_ItemsetPtr c_itemset_ll,int basket_cnt,ItemsetPtr c_prev, ItemsetPtr f_cur, FILE *f_itemsets, int *distinct_itemsets_cnt, int *tot_itemsets_cnt) {
     int * sub = calloc(itemset_cnt,sizeof(int));    //we want subsequences of size itemset_cnt
     int hval, k;
 
-    //Joins the prev frequent Items sets, applying apriori property
+    //Joins the prev frequent Items sets,  without applying apriori property
     join_frequent_n_itemsets(c_cur, f_freq1, itemset_cnt);
-
-    //Pruning step is performed here.
-    
 
     
 }
