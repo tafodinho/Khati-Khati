@@ -77,8 +77,8 @@ void scandb(int n, int * c_freq1, int * f_freq1, ItemsetPtr c_cur, ItemsetPtr f_
         /* We have now read a line from database and extracted integers into array items */
         if (n == 1) { //process for 1-itemsets
             generate_candidate_one_itemsets(c_freq1,items,item_no);
-	    get_frequent_one_itemsets(c_freq1,f_freq1,&distinct_itemsets_cnt, &tot_itemsets_cnt);
-            save_frequent_one_itemsets(f_itemsets,f_freq1,distinct_itemsets_cnt, tot_itemsets_cnt);
+	   //  get_frequent_one_itemsets(c_freq1,f_freq1,&distinct_itemsets_cnt, &tot_itemsets_cnt);
+           // save_frequent_one_itemsets(f_itemsets,f_freq1,distinct_itemsets_cnt, tot_itemsets_cnt);
 	    free(c_freq1); /* release memory held by candidate-1 itemsets */
         }
 	
@@ -87,14 +87,14 @@ void scandb(int n, int * c_freq1, int * f_freq1, ItemsetPtr c_cur, ItemsetPtr f_
 
         if (n==2) { /* process for 2-itemsets*/
             apriori_generate_cand_2_itemsets(f_freq1, n,c_cur,items,c_itemset_ll,item_no,c_prev);
-	    get_frequent_n_itemsets(n,c_cur,f_cur,&distinct_itemsets_cnt, &tot_itemsets_cnt);
-            save_frequent_n_itemsets(n,f_itemsets,f_cur,distinct_itemsets_cnt,tot_itemsets_cnt);
+	 //   get_frequent_n_itemsets(n,c_cur,f_cur,&distinct_itemsets_cnt, &tot_itemsets_cnt);
+         //   save_frequent_n_itemsets(n,f_itemsets,f_cur,distinct_itemsets_cnt,tot_itemsets_cnt);
             release_memory(c_cur);//release memory held by candidate-2 itemsets
         }
         if (n > 2) { /* process for itemsets > 2 */
             apriori_generate_cand_n_itemsets(f_cur, n,c_cur,items,c_itemset_ll,item_no,c_prev);
-	    get_frequent_n_itemsets(n,c_cur,f_cur,&distinct_itemsets_cnt, &tot_itemsets_cnt);
-            save_frequent_n_itemsets(n,f_itemsets,f_cur,distinct_itemsets_cnt,tot_itemsets_cnt);
+	//    get_frequent_n_itemsets(n,c_cur,f_cur,&distinct_itemsets_cnt, &tot_itemsets_cnt);
+        //    save_frequent_n_itemsets(n,f_itemsets,f_cur,distinct_itemsets_cnt,tot_itemsets_cnt);
             release_memory(c_prev);
             release_memory(c_cur);
         }
