@@ -42,9 +42,9 @@ int main(int argc, char** argv) {
                candidate_frequencies_prev,frequent_frequencies_prev);
     }
 
-     release_memory(frequent_frequencies_cur);
-     release_memory(candidate_frequencies_cur);
-     release_memory(candidate_frequencies_prev);
-     free(frequent_frequencies1);
+     //release_memory(frequent_frequencies_cur);
+     //release_memory(candidate_frequencies_cur);
+     //release_memory(candidate_frequencies_prev);
+     //free(frequent_frequencies1);
 }
 
