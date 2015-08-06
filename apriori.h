@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 
 #define TRANS_DB "retail.dat.tmp" /* Transactional database */
@@ -61,6 +62,13 @@ ItemsetPtr frequent_frequencies_cur;
 
 /* Reads the Transaction database and stores items on Arrays */
 void scandb(int n, int * c_freq1, int * f_freq1, ItemsetPtr c_freq_cur, ItemsetPtr f_freq_cur, ItemsetPtr c_freq_prev, ItemsetPtr f_freq_prev);
+
+/* Checks for infrequent subsets */
+int infrequent_subset_found(int subset_len,int items[],int basket_cnt,ItemsetPtr c_prev);
+int r_infrequent_subset_found(int slen,int items[],int sub[],int ilen,ItemsetPtr c_prev,int istart,int sstart);
+
+/* checks for frequent subsets*/
+int is_frequent_subset(ItemsetPtr c_prev, int sub[], int slen);
 
 /* Generates the candidate item sets for k = 1, 2, ..n */
 void generate_candidate_one_itemsets(int *,int[],int);

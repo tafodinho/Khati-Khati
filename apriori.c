@@ -76,34 +76,34 @@ void scandb(int n, int * c_freq1, int * f_freq1, ItemsetPtr c_cur, ItemsetPtr f_
 
         /* We have now read a line from database and extracted integers into array items */
         if (n == 1) { //process for 1-itemsets
-	    
             generate_candidate_one_itemsets(c_freq1,items,item_no);
-	    get_frequent_one_itemsets(c_freq1,f_freq1,&distinct_itemsets_cnt, &tot_itemsets_cnt);
-            save_frequent_one_itemsets(f_itemsets,f_freq1,distinct_itemsets_cnt, tot_itemsets_cnt);
-	    //free(c_freq1); //release memory held by candidate-1 itemsets
-        }
-	
-	
-        if (n == 2) { /* process for 2-itemsets*/
+        } else if (n == 2) { /* process for 2-itemsets*/
             apriori_generate_cand_2_itemsets(f_freq1, n,c_cur,items,c_itemset_ll,item_no,c_prev, f_cur, f_itemsets,&distinct_itemsets_cnt, &tot_itemsets_cnt);
-	    release_memory(c_prev);
-            release_memory(c_cur);
-            
-        }
-        if (n > 2) { /* process for itemsets > 2 */
+	    
+        } else if (n > 2) { /* process for itemsets > 2 */
             apriori_generate_cand_n_itemsets(f_cur, n,c_cur,items,c_itemset_ll,item_no,c_prev, f_cur, f_itemsets,&distinct_itemsets_cnt, &tot_itemsets_cnt);
-	    get_frequent_n_itemsets(n,c_cur,f_cur,&distinct_itemsets_cnt, &tot_itemsets_cnt);
-            save_frequent_n_itemsets(n,f_itemsets,f_cur,distinct_itemsets_cnt,tot_itemsets_cnt);
-	    release_memory(c_prev);
-            release_memory(c_cur);
-            
+	        
         }
     }
+    
+    if (n == 1) {
+    	get_frequent_one_itemsets(c_freq1,f_freq1,&distinct_itemsets_cnt, &tot_itemsets_cnt);
+        save_frequent_one_itemsets(f_itemsets,f_freq1,distinct_itemsets_cnt, tot_itemsets_cnt);
+	    free(c_freq1); //release memory held by candidate-1 itemsets
+	    
+	} else if ( n == 2) {
+		 release_memory(c_prev);
+         release_memory(c_cur);
+	
+	} else if ( n == 3) {
+		get_frequent_n_itemsets(n,c_cur,f_cur,&distinct_itemsets_cnt, &tot_itemsets_cnt);
+        save_frequent_n_itemsets(n,f_itemsets,f_cur,distinct_itemsets_cnt,tot_itemsets_cnt);
+	    release_memory(c_prev);
+	    release_memory(c_cur);
+	
+	}
 
 }
-
-
-
 
 
 /**
@@ -140,7 +140,6 @@ void join_frequent_n_itemsets(ItemsetPtr f_cur, ItemsetPtr f_prev, int i_cnt) {
 	            c_tmp->itemsets[j++] = tmp->itemsets[k];
                
             }
-
 
 	   tmp = tmp->next;
 	   tmp2 = tmp2->next;
@@ -291,33 +290,24 @@ void apriori_generate_cand_2_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr 
             //now compute hash value and store join to candidate list
             hval = hashval(itemset,2);
             insert_candidate_itemset(itemset_cnt,hval,itemset, c_cur);
-	
-	    //Pruning Step
-	    tmp = create_new_itemset_node(2,itemset);		
-	    if ( is_frequent_subset( c_cur,itemset, itemset_cnt)) {
-		hval = hashval(itemset,2);
-		insert_candidate_itemset(itemset_cnt, hval, itemset, f_cur);
+            printf("\n %d %d", itemset[0], itemset[1]);
+            
+            //Pruning step
+         	tmp = create_new_itemset_node(2,itemset);		
+	    	if ( is_frequent_subset( c_cur,itemset, itemset_cnt)) {//has frequent subset so add to frequent list.
+				insert_candidate_itemset(itemset_cnt, hval, itemset, f_cur);
 	    }
-	      //printf("%s %d %d\n","&&&&",itemset[0],itemset[1]);
-        }
-
+     }
+     
     }//end for loop
-
+	
     //Saving the frequent itemsets.
     fprintf(f_itemsets, "%d %d\n", distinct_itemsets_cnt,tot_itemsets_cnt);
      for (i = 0;i < OTH_ITEMSET_ARRAY_MAX; i++) {
         tmp = f_cur[i] . itemset_ptr;
         while (tmp != NULL) {
-
-            //store itemset
-            for (j = 0; j < itemset_cnt - 1; j++) {
-                fprintf(f_itemsets, "%d ",tmp->itemsets[j]);
-            }
-
-            fprintf(f_itemsets, "%d;",tmp->itemsets[j]);  //last item ends with ;
-
-            //store itemset count
-            fprintf(f_itemsets, "%d\n",tmp->cnt);
+        
+            fprintf(f_itemsets, " %d %d; %d\n",tmp->itemsets[0], tmp->itemsets[1], tmp->cnt);
             tmp = tmp-> next;
         }
     }
@@ -367,9 +357,6 @@ int infrequent_subset_found(int subset_len,int items[],int basket_cnt,ItemsetPtr
 
 int r_infrequent_subset_found(int slen,int items[],int sub[],int ilen,ItemsetPtr c_prev,int istart,int sstart) {
     int i,j,k,h,hval;
-
-
-
 
     if (sstart == slen){//sub now contains an n-item subset; apply apriori to determine if candidate itemset
         //printf("££$$££$$££$$ %d",is_frequent_subset(c_prev,sub,slen));getchar();
