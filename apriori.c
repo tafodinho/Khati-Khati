@@ -113,15 +113,15 @@ void scandb(int n, int * c_freq1, int * f_freq1, ItemsetPtr c_cur, ItemsetPtr f_
     
          release_memory(c_cur);
          //generates the next candidate sets from the current frequent itemsets.
-         join_frequent_n_itemsets(c_cur, f_cur,n);
+         join_frequent_n_itemsets(c_cur, f_cur,n, &distinct_itemsets_cnt, &tot_itemsets_cnt);
 	
 	} else {
 		get_frequent_n_itemsets(n,c_cur,f_cur,&distinct_itemsets_cnt, &tot_itemsets_cnt);
-        save_frequent_n_itemsets(n,f_itemsets,f_cur,distinct_itemsets_cnt,tot_itemsets_cnt);
+        save_frequent_n_itemsets(n,f_itemsets,f_cur, distinct_itemsets_cnt,tot_itemsets_cnt);
 	    release_memory(c_prev);
 	    release_memory(c_cur);
 	    //generates the next candidate sets from the current frequent itemsets
-		join_frequent_n_itemsets(c_cur, f_cur,n);
+		join_frequent_n_itemsets(c_cur, f_cur,n,&distinct_itemsets_cnt, &tot_itemsets_cnt);
 	}
 
 }
