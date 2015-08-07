@@ -116,7 +116,7 @@ void scandb(int n, int * c_freq1, int * f_freq1, ItemsetPtr c_cur, ItemsetPtr f_
          join_frequent_n_itemsets(c_cur, f_cur,n, &distinct_itemsets_cnt, &tot_itemsets_cnt);
 	
 	} else {
-		get_frequent_n_itemsets(n,c_cur,f_cur,&distinct_itemsets_cnt, &tot_itemsets_cnt);
+		//get_frequent_n_itemsets(n,c_cur,f_cur,&distinct_itemsets_cnt, &tot_itemsets_cnt);
         save_frequent_n_itemsets(n,f_itemsets,f_cur, distinct_itemsets_cnt,tot_itemsets_cnt);
 	    release_memory(c_prev);
 	    release_memory(c_cur);
@@ -352,7 +352,7 @@ void apriori_generate_cand_n_itemsets(ItemsetPtr f_freq1, int itemset_cnt,Itemse
     int hval, k;
 
     //Prunes the current candidate itemsets for frequent itemsets
-    r_apriori_generate_cand_n_itemsets(itemset_cnt,c_cur,items,sub,c_itemset_ll,basket_cnt,0,0, c_prev);
+    r_apriori_generate_cand_n_itemsets(itemset_cnt,f_cur,items,sub,c_itemset_ll,basket_cnt,0,0, c_cur);
 
     
 }
