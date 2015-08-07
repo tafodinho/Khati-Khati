@@ -160,7 +160,7 @@ void join_frequent_n_itemsets(ItemsetPtr c_cur, ItemsetPtr f_prev, int i_cnt, in
 
     //To work on this more..
     int i, j, k;
-    Itemsets tmp, tmp2, c_tmp;
+    Itemsets tmp, tmp2, c_tmp, its, its2;
 
 	
     for (i = 0; i < OTH_ITEMSET_ARRAY_MAX - 1; i++) {
@@ -168,22 +168,20 @@ void join_frequent_n_itemsets(ItemsetPtr c_cur, ItemsetPtr f_prev, int i_cnt, in
     		 c_cur[i].distinct_itemsets = 0;
         	 c_tmp = c_cur[i].itemset_ptr;
         	 tmp = f_prev[i].itemset_ptr;
-			 tmp2 = f_prev[i + 1].itemset_ptr;
+			 tmp2 = f_prev[j].itemset_ptr;
 
         	 while (tmp != NULL) {
-	    
 	    		c_cur[i].distinct_itemsets++; 
-	        	c_tmp = calloc(1, sizeof(struct itemsets));
-                c_tmp->cnt= tmp->cnt + tmp2->cnt;
-                c_cur[i].itemsets_cnt += c_tmp -> cnt;
-	        	c_tmp->next = NULL;
-	        	c_tmp->itemsets = calloc(c_tmp->cnt, sizeof(int));
-	  			
-	  			printf("\n");
-	            c_tmp->itemsets[j++] = tmp->itemsets[k];
-	            printf(" %d ", c_tmp->itemsets[i]);
-	            c_tmp->itemsets[j++] = tmp2->itemsets[k];
-	            printf(" %d", c_tmp->itemsets[i]);
+	    		its = create_new_itemset_node(i_cnt,tmp-> itemsets);
+                its -> cnt = tmp -> cnt;
+                its2 = create_new_itemset_node(i_cnt, tmp2->itemsets);
+                its2 -> cnt = tmp2 -> cnt;
+                
+                c_cur[i].itemsets_cnt += its -> cnt + its2 -> cnt;
+                
+                //creating next candidate item sets
+                c_tmp = c_cur[i] . itemset_ptr = its;
+                c_tmp -> next = its2;
 	            tmp = tmp->next;
             }
                
