@@ -2,3 +2,5 @@
 
 install: make && ./apriori #builds the current repo and run the tests.
 
+notifications:
+  irc: "chat.freenode.net#ublab"
