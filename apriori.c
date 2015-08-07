@@ -113,7 +113,7 @@ void scandb(int n, int * c_freq1, int * f_freq1, ItemsetPtr c_cur, ItemsetPtr f_
     
          release_memory(c_cur);
          //generates the next candidate sets from the current frequent itemsets.
-         join_frequent_n_itemsets(c_cur, f_cur,n) 
+         join_frequent_n_itemsets(c_cur, f_cur,n);
 	
 	} else {
 		get_frequent_n_itemsets(n,c_cur,f_cur,&distinct_itemsets_cnt, &tot_itemsets_cnt);
@@ -121,7 +121,7 @@ void scandb(int n, int * c_freq1, int * f_freq1, ItemsetPtr c_cur, ItemsetPtr f_
 	    release_memory(c_prev);
 	    release_memory(c_cur);
 	    //generates the next candidate sets from the current frequent itemsets
-		join_frequent_n_itemsets(c_cur, f_cur,n)
+		join_frequent_n_itemsets(c_cur, f_cur,n);
 	}
 
 }
@@ -156,7 +156,7 @@ void get_frequent_one_itemsets(int * c_freq1,int * f_freq1,int *distinct_itemset
  * Joins Li-1 to Li-1 to get current candidate item sets. 
  * 
  */
-void join_frequent_n_itemsets(ItemsetPtr c_cur, ItemsetPtr f_prev, int i_cnt, nt *distinct_itemsets_cnt, int *tot_itemsets_cnt) {
+void join_frequent_n_itemsets(ItemsetPtr c_cur, ItemsetPtr f_prev, int i_cnt, int *distinct_itemsets_cnt, int *tot_itemsets_cnt) {
 
     //To work on this more..
     int i, j, k;
@@ -177,25 +177,27 @@ void join_frequent_n_itemsets(ItemsetPtr c_cur, ItemsetPtr f_prev, int i_cnt, nt
 	        	c_tmp->next = NULL;
 	        	c_tmp->itemsets = calloc(c_tmp->cnt, sizeof(int));
 	        	j = 0, k = 0;
-	  
+	  			
+	  			printf("\n");
 	        	//adds first frequent item set.
-	        	for (k = 0; k < tmp->cnt; tmp++)
+	        	for (k = 0; k < tmp->cnt; tmp++) {
 	             	c_tmp->itemsets[j++] = tmp->itemsets[k];
+	             	printf(" %d ", c_tmp->itemsets[j-1]);
+	            }
          
                 //adds second item set.
-	        	for( k = 0; k < tmp2->cnt; k++)
+	        	for( k = 0; k < tmp2->cnt; k++) {
 	            	c_tmp->itemsets[j++] = tmp2->itemsets[k];
+	            	printf(" %d", c_tmp->itemsets[j-1]);
+	            }
                
             }
 
 	   tmp = tmp->next;
 	   tmp2 = tmp2->next;
 
-       }// end while
-              
+       }// end while         
     }
-    
-    
 }
 
 
