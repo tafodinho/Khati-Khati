@@ -90,12 +90,14 @@ void scandb(int n, int * c_freq1, int * f_freq1, ItemsetPtr c_cur, ItemsetPtr f_
     if (n == 1) {
     	get_frequent_one_itemsets(c_freq1,f_freq1,&distinct_itemsets_cnt, &tot_itemsets_cnt);
         save_frequent_one_itemsets(f_itemsets,f_freq1,distinct_itemsets_cnt, tot_itemsets_cnt);
-	    free(c_freq1); //release memory held by candidate-1 itemsets
+	    
 	    
 	    //generate the next candidate sets from current frequent itemsets.
-	    for (i=0;i<ONE_ITEMSET_ARRAY_MAX;i++) {
+	    for (i=0;i<ONE_ITEMSET_ARRAY_MAX - 1;i++) {
+	    	if (f_freq1[i] < SUPPORT_THRESHOLD)
+	    		continue;
 	    	for( j = 0; j < ONE_ITEMSET_ARRAY_MAX;j++) {
-        		if (f_freq1[i] >= SUPPORT_THRESHOLD){
+        		if (f_freq1[j] >= SUPPORT_THRESHOLD){
         			itemset[0] = f_freq1[i];
                     itemset[1] = f_freq1[j];
                     hval = hashval(itemset,2);
@@ -103,6 +105,7 @@ void scandb(int n, int * c_freq1, int * f_freq1, ItemsetPtr c_cur, ItemsetPtr f_
             		
             }
         }
+        free(c_freq1); //release memory held by candidate-1 itemsets
     }
 	    
 	} else if ( n == 2) {
@@ -292,7 +295,6 @@ void apriori_generate_cand_2_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr 
 
     int i,j,k,h,hval;
     int itemset[2]; 
-    release_memory(f_cur);//deallocated 
    
     Itemsets tmp; //stores newly generated candidate list
 
