@@ -192,7 +192,6 @@ void join_frequent_n_itemsets(ItemsetPtr c_cur, ItemsetPtr f_prev, int i_cnt, in
                 c_tmp -> next = its2;
                 
 	            tmp = tmp->next;
-	            
             }
                
     	}
