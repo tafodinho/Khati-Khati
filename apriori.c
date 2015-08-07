@@ -173,19 +173,22 @@ void join_frequent_n_itemsets(ItemsetPtr c_cur, ItemsetPtr f_prev, int i_cnt, in
         	 while (tmp != NULL) {
 	    		c_cur[i].distinct_itemsets++; 
 	    		
-	    		if ( tmp2 == NULL)
-	    			tmp2 = tmp->next;  	
-               
-                its = create_new_itemset_node(i_cnt, tmp -> itemsets);
-                its -> cnt = tmp -> cnt;
-                its2 = create_new_itemset_node(i_cnt, tmp2 -> itemsets);
-                its2 -> cnt = tmp2 -> cnt;
+	    		if ( tmp2 == NULL && tmp->next != NULL)
+	    			tmp2 = tmp->next; 
+	    			 	
+                if( tmp2 != NULL) {
+                	its = create_new_itemset_node(i_cnt, tmp -> itemsets);
+                	its -> cnt = tmp -> cnt;
+                	its2 = create_new_itemset_node(i_cnt, tmp2 -> itemsets);
+                	its2 -> cnt = tmp2 -> cnt;
              
-                c_cur[i].itemsets_cnt += its -> cnt + its2 -> cnt;
+                	c_cur[i].itemsets_cnt += its -> cnt + its2 -> cnt;
                 
-                //creating next candidate item sets
-                c_tmp = c_cur[i] . itemset_ptr = its;
-                c_tmp -> next = its2;
+                	//creating next candidate item sets
+                	c_tmp = c_cur[i] . itemset_ptr = its;
+                	c_tmp -> next = its2;
+                }
+                
 	            tmp = tmp->next;
             }
                
