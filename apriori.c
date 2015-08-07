@@ -173,20 +173,13 @@ void join_frequent_n_itemsets(ItemsetPtr c_cur, ItemsetPtr f_prev, int i_cnt, in
         	 while (tmp != NULL) {
 	    		c_cur[i].distinct_itemsets++; 
 	    		
-	    		if ( tmp2 == NULL && j == 1) {
-	    			its = create_new_itemset_node(i_cnt, tmp -> itemsets);
-                	its -> cnt = tmp -> cnt;
-                	its2 = create_new_itemset_node(i_cnt, tmp -> itemsets);
-                	its2 -> cnt = tmp -> cnt;
-                	
-                } else if ( tmp2 != NULL) {
-                	its = create_new_itemset_node(i_cnt, tmp -> itemsets);
-                	its -> cnt = tmp -> cnt;
-                	its2 = create_new_itemset_node(i_cnt, tmp2 -> itemsets);
-                	its2 -> cnt = tmp2 -> cnt;
-                } else if ( tmp2 == NULL && j > 1) {
-                	return;
-                }
+	    		if ( tmp2 == NULL)
+	    			tmp2 = tmp->next;  	
+               
+                its = create_new_itemset_node(i_cnt, tmp -> itemsets);
+                its -> cnt = tmp -> cnt;
+                its2 = create_new_itemset_node(i_cnt, tmp2 -> itemsets);
+                its2 -> cnt = tmp2 -> cnt;
              
                 c_cur[i].itemsets_cnt += its -> cnt + its2 -> cnt;
                 
@@ -356,7 +349,7 @@ void apriori_generate_cand_n_itemsets(ItemsetPtr f_freq1, int itemset_cnt,Itemse
 
 
     //Prunes the current candidate itemsets for frequent itemsets
-    //r_apriori_generate_cand_n_itemsets(itemset_cnt,f_cur,items,sub,c_itemset_ll,basket_cnt,0,0, c_cur);
+    r_apriori_generate_cand_n_itemsets(itemset_cnt,f_cur,items,sub,c_itemset_ll,basket_cnt,0,0, c_cur);
 
     
 }
