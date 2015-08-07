@@ -327,7 +327,7 @@ void apriori_generate_cand_2_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr 
     }//end for loop
 	
     //Saving the frequent itemsets.
-    fprintf(f_itemsets, "%d %d\n", distinct_itemsets_cnt,tot_itemsets_cnt);
+    fprintf(f_itemsets, "%d %d\n", *distinct_itemsets_cnt,*tot_itemsets_cnt);
      for (i = 0;i < OTH_ITEMSET_ARRAY_MAX; i++) {
         tmp = f_cur[i] . itemset_ptr;
         while (tmp != NULL) {
