@@ -322,7 +322,7 @@ void apriori_generate_cand_2_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr 
 
             	//now compute hash value and store the frequent itemsets
             	insert_candidate_itemset(2, hval, itemset, f_cur);
-             	printf("\n %d %d", itemset[0], itemset[1]);
+             	//printf("\n %d %d", itemset[0], itemset[1]);
 	       }
       }
      
