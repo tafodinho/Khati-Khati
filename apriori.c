@@ -108,12 +108,14 @@ void scandb(int n, int * c_freq1, int * f_freq1, ItemsetPtr c_cur, ItemsetPtr f_
 	} else if ( n == 2) {
 		 release_memory(c_prev);
          release_memory(c_cur);
+         //generates the next candidate sets from the current frequent itemsets.
 	
 	} else if ( n == 3) {
 		get_frequent_n_itemsets(n,c_cur,f_cur,&distinct_itemsets_cnt, &tot_itemsets_cnt);
         save_frequent_n_itemsets(n,f_itemsets,f_cur,distinct_itemsets_cnt,tot_itemsets_cnt);
 	    release_memory(c_prev);
 	    release_memory(c_cur);
+	    //generates the next candidate sets from the current frequent itemsets
 	
 	}
 
@@ -124,7 +126,7 @@ void scandb(int n, int * c_freq1, int * f_freq1, ItemsetPtr c_cur, ItemsetPtr f_
  * Joins Li-1 to Li-1 to get current candidate item sets. 
  * 
  */
-void join_frequent_n_itemsets(ItemsetPtr f_cur, ItemsetPtr f_prev, int i_cnt) {
+void join_frequent_n_itemsets(ItemsetPtr c_cur, ItemsetPtr f_prev, int i_cnt) {
 
     //To work on this more..
     int i, j, k;
@@ -132,9 +134,9 @@ void join_frequent_n_itemsets(ItemsetPtr f_cur, ItemsetPtr f_prev, int i_cnt) {
 
 	
     for (i = 0; i < OTH_ITEMSET_ARRAY_MAX; i++) {
-        c_tmp = f_cur[i].itemset_ptr;
-        tmp = f_cur[i].itemset_ptr;
-	tmp2 = f_cur[i + 1].itemset_ptr;
+        c_tmp = c_cur[i].itemset_ptr;
+        tmp = c_cur[i].itemset_ptr;
+		tmp2 = c_cur[i + 1].itemset_ptr;
 
         while (tmp != NULL) {
 	    
@@ -282,36 +284,35 @@ void get_frequent_one_itemsets(int * c_freq1,int * f_freq1,int *distinct_itemset
 
 
 /**
- * Applies a Join to the previous frequent item sets
- * generate_candidate_2_itemsets for the line read
+ * Prunes the current candidate item sets
+ * to generate the frequent item sets.
  * 
  */
 void apriori_generate_cand_2_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr c_cur,int items[],C_ItemsetPtr c_itemset_ll,int basket_cnt,ItemsetPtr c_prev, ItemsetPtr f_cur, FILE *f_itemsets, int *distinct_itemsets_cnt, int *tot_itemsets_cnt) {
 
     int i,j,k,h,hval;
-    int itemset[itemset_cnt]; 
+    int itemset[2]; 
     release_memory(f_cur);//deallocated 
    
     Itemsets tmp; //stores newly generated candidate list
 
-    //joins previous frequent item sets and 
+    //Pruning step frequent item sets and 
     for (k = 0; k < basket_cnt - 1;k++) {
-	
-   	 for (j = k + 1; j < basket_cnt; j++) {
-            itemset[0] = items[j];
-            itemset[1] = items[k];
+		if (f_freq1[items[j]] < SUPPORT_THRESHOLD)
+                continue;
+                
+   	 	for (j = k + 1; j < basket_cnt; j++) {
+   	 		if (f_freq1[items[k]] < SUPPORT_THRESHOLD)
+                    continue;
+            else {
+             	itemset[0] = items[j];
+             	itemset[1] = items[k];
 
-            //now compute hash value and store join to candidate list
-            hval = hashval(itemset,2);
-            insert_candidate_itemset(itemset_cnt,hval,itemset, c_cur);
-            printf("\n %d %d", itemset[0], itemset[1]);
-            
-            //Pruning step
-         	tmp = create_new_itemset_node(2,itemset);		
-	    	if ( is_frequent_subset( c_cur,itemset, itemset_cnt)) {//has frequent subset so add to frequent list.
-				insert_candidate_itemset(2, hval, itemset, f_cur);
-	    }
-     }
+            	//now compute hash value and store the frequent itemsets
+            	insert_candidate_itemset(2, hval, itemset, f_cur);
+             	printf("\n %d %d", itemset[0], itemset[1]);
+	       }
+      }
      
     }//end for loop
 	
