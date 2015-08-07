@@ -16,6 +16,7 @@ void scandb(int n, int * c_freq1, int * f_freq1, ItemsetPtr c_cur, ItemsetPtr f_
     char basket[BASKET_MAX_CHARS];
     char item[ITEM_MAX];
     int items[BASKET_MAX_ITEMS];
+    int itemset[2], hval;
     int i,j,k,item_no;
     char *p;
     char str[15];
@@ -90,6 +91,19 @@ void scandb(int n, int * c_freq1, int * f_freq1, ItemsetPtr c_cur, ItemsetPtr f_
     	get_frequent_one_itemsets(c_freq1,f_freq1,&distinct_itemsets_cnt, &tot_itemsets_cnt);
         save_frequent_one_itemsets(f_itemsets,f_freq1,distinct_itemsets_cnt, tot_itemsets_cnt);
 	    free(c_freq1); //release memory held by candidate-1 itemsets
+	    
+	    //generate the next candidate sets from current frequent itemsets.
+	    for (i=0;i<ONE_ITEMSET_ARRAY_MAX;i++) {
+	    	for( j = 0; j < ONE_ITEMSET_ARRAY_MAX;j++) {
+        		if (f_freq1[i] >= SUPPORT_THRESHOLD){
+        			itemset[0] = f_freq1[i];
+                    itemset[1] = f_freq1[j];
+                    hval = hashval(itemset,2);
+            		insert_candidate_itemset(2,hval,itemset, c_cur);
+            		
+            }
+        }
+    }
 	    
 	} else if ( n == 2) {
 		 release_memory(c_prev);
@@ -295,7 +309,7 @@ void apriori_generate_cand_2_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr 
             //Pruning step
          	tmp = create_new_itemset_node(2,itemset);		
 	    	if ( is_frequent_subset( c_cur,itemset, itemset_cnt)) {//has frequent subset so add to frequent list.
-				insert_candidate_itemset(itemset_cnt, hval, itemset, f_cur);
+				insert_candidate_itemset(2, hval, itemset, f_cur);
 	    }
      }
      
@@ -311,6 +325,7 @@ void apriori_generate_cand_2_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr 
             tmp = tmp-> next;
         }
     }
+    fflush(f_itemsets);
     
 }
 
