@@ -89,26 +89,28 @@ void scandb(int n, int * c_freq1, int * f_freq1, ItemsetPtr c_cur, ItemsetPtr f_
     
     if (n == 1) {
     	get_frequent_one_itemsets(c_freq1,f_freq1,&distinct_itemsets_cnt, &tot_itemsets_cnt);
-        save_frequent_one_itemsets(f_itemsets,f_freq1,distinct_itemsets_cnt, tot_itemsets_cnt);
-	    
+        
 	    
 	    //generate the next candidate sets from current frequent itemsets.
-	    for (i=0;i<ONE_ITEMSET_ARRAY_MAX - 1;i++) {
-	    	if (f_freq1[i] < SUPPORT_THRESHOLD)
-	    		continue;
-	    	for( j = 0; j < ONE_ITEMSET_ARRAY_MAX;j++) {
-        		if (f_freq1[j] >= SUPPORT_THRESHOLD){
-        			itemset[0] = f_freq1[i];
-                    itemset[1] = f_freq1[j];
-                    hval = hashval(itemset,2);
-            		insert_candidate_itemset(2,hval,itemset, c_cur);
-            		
+	    for (i=0;i<ONE_ITEMSET_ARRAY_MAX - 1;i++) {	
+	    	if (f_freq1[i] >= SUPPORT_THRESHOLD) {
+	    		for( j = 0; j < ONE_ITEMSET_ARRAY_MAX;j++) {
+	    			if( f_freq1[j] >= SUPPORT_THRESHOLD) {
+        				itemset[0] = f_freq1[i];
+                    	itemset[1] = f_freq1[j];
+                    	hval = hashval(itemset,2);
+            			insert_candidate_itemset(2,hval,itemset, c_cur);
+            		}
+            	}	
             }
         }
-        free(c_freq1); //release memory held by candidate-1 itemsets
-    }
-	    
-	} else if ( n == 2) {
+        save_frequent_one_itemsets(f_itemsets,f_freq1,distinct_itemsets_cnt, tot_itemsets_cnt);
+	    free(c_freq1); //release memory held by candidate-1 itemsets
+	    //now release memory held by frequent-1 itemsets
+        free(f_freq1);
+        
+    } else if ( n == 2) {
+    
 		 release_memory(c_prev);
          release_memory(c_cur);
          //generates the next candidate sets from the current frequent itemsets.
@@ -123,6 +125,31 @@ void scandb(int n, int * c_freq1, int * f_freq1, ItemsetPtr c_cur, ItemsetPtr f_
 	}
 
 }
+
+
+//generate_candidate_one_itemsets for the line read
+void generate_candidate_one_itemsets(int * c_freq1,int items[],int max_size) {
+    int i;
+    for (i=0;i<max_size;i++) {
+        c_freq1[items[i]]++;  //update frequencies of candidate 1-itemsets
+    }
+}
+
+void get_frequent_one_itemsets(int * c_freq1,int * f_freq1,int *distinct_itemsets_cnt, int *tot_itemsets_cnt) {
+    int i;
+    *distinct_itemsets_cnt = 0;
+    *tot_itemsets_cnt = 0;
+    
+    for (i=0;i<ONE_ITEMSET_ARRAY_MAX;i++) {
+        if (c_freq1[i] >= SUPPORT_THRESHOLD) {
+            f_freq1[i]=c_freq1[i];
+            *distinct_itemsets_cnt +=1;
+            *tot_itemsets_cnt += c_freq1[i];
+        }
+    }
+}
+
+
 
 
 /**
@@ -261,28 +288,6 @@ void save_frequent_n_itemsets(int itemsetcnt,FILE *f_itemsets,ItemsetPtr f_cur,i
             f_its_tmp = f_its_tmp-> next;
         }
     }fflush(f_itemsets);
-}
-
-
-//generate_candidate_one_itemsets for the line read
-void generate_candidate_one_itemsets(int * c_freq1,int items[],int max_size) {
-    int i;
-    for (i=0;i<max_size;i++) {
-        c_freq1[items[i]]++;  //update frequencies of candidate 1-itemsets
-    }
-}
-
-void get_frequent_one_itemsets(int * c_freq1,int * f_freq1,int *distinct_itemsets_cnt, int *tot_itemsets_cnt) {
-    int i;
-    *distinct_itemsets_cnt = 0;
-    *tot_itemsets_cnt = 0;
-    for (i=0;i<ONE_ITEMSET_ARRAY_MAX;i++) {
-        if (c_freq1[i] >= SUPPORT_THRESHOLD) {
-            f_freq1[i]=c_freq1[i];
-            *distinct_itemsets_cnt +=1;
-            *tot_itemsets_cnt += c_freq1[i];
-        }
-    }
 }
 
 
