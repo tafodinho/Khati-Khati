@@ -111,17 +111,17 @@ void scandb(int n, int * c_freq1, int * f_freq1, ItemsetPtr c_cur, ItemsetPtr f_
         
     } else if ( n == 2) {
     
-		 release_memory(c_prev);
          release_memory(c_cur);
          //generates the next candidate sets from the current frequent itemsets.
+         join_frequent_n_itemsets(c_cur, f_cur,n) 
 	
-	} else if ( n == 3) {
+	} else {
 		get_frequent_n_itemsets(n,c_cur,f_cur,&distinct_itemsets_cnt, &tot_itemsets_cnt);
         save_frequent_n_itemsets(n,f_itemsets,f_cur,distinct_itemsets_cnt,tot_itemsets_cnt);
 	    release_memory(c_prev);
 	    release_memory(c_cur);
 	    //generates the next candidate sets from the current frequent itemsets
-	
+		join_frequent_n_itemsets(c_cur, f_cur,n)
 	}
 
 }
@@ -156,7 +156,7 @@ void get_frequent_one_itemsets(int * c_freq1,int * f_freq1,int *distinct_itemset
  * Joins Li-1 to Li-1 to get current candidate item sets. 
  * 
  */
-void join_frequent_n_itemsets(ItemsetPtr c_cur, ItemsetPtr f_prev, int i_cnt) {
+void join_frequent_n_itemsets(ItemsetPtr c_cur, ItemsetPtr f_prev, int i_cnt, nt *distinct_itemsets_cnt, int *tot_itemsets_cnt) {
 
     //To work on this more..
     int i, j, k;
@@ -164,26 +164,27 @@ void join_frequent_n_itemsets(ItemsetPtr c_cur, ItemsetPtr f_prev, int i_cnt) {
 
 	
     for (i = 0; i < OTH_ITEMSET_ARRAY_MAX; i++) {
+    	c_cur[i].distinct_itemsets = 0;
         c_tmp = c_cur[i].itemset_ptr;
-        tmp = c_cur[i].itemset_ptr;
-		tmp2 = c_cur[i + 1].itemset_ptr;
+        tmp = f_prev[i].itemset_ptr;
+		tmp2 = f_prev[i + 1].itemset_ptr;
 
-        while (tmp != NULL) {
+        while (tmp != NULL & tmp2 != NULL) {
 	    
-	    if( tmp != tmp2) {	
-	        c_tmp = calloc(1, sizeof(struct itemsets));
+	    	if( tmp != tmp2) {	
+	        	c_tmp = calloc(1, sizeof(struct itemsets));
                 c_tmp->cnt= tmp->cnt + tmp2->cnt;
-	        c_tmp->next = NULL;
-	        c_tmp->itemsets = calloc(c_tmp->cnt, sizeof(int));
-	        j = 0, k = 0;
+	        	c_tmp->next = NULL;
+	        	c_tmp->itemsets = calloc(c_tmp->cnt, sizeof(int));
+	        	j = 0, k = 0;
 	  
-	        //adds first frequent item set.
-	        for (k = 0; k < tmp->cnt; tmp++)
-	             c_tmp->itemsets[j++] = tmp->itemsets[k];
+	        	//adds first frequent item set.
+	        	for (k = 0; k < tmp->cnt; tmp++)
+	             	c_tmp->itemsets[j++] = tmp->itemsets[k];
          
                 //adds second item set.
-	        for( k = 0; k < tmp2->cnt; k++)
-	            c_tmp->itemsets[j++] = tmp->itemsets[k];
+	        	for( k = 0; k < tmp2->cnt; k++)
+	            	c_tmp->itemsets[j++] = tmp2->itemsets[k];
                
             }
 
@@ -193,6 +194,8 @@ void join_frequent_n_itemsets(ItemsetPtr c_cur, ItemsetPtr f_prev, int i_cnt) {
        }// end while
               
     }
+    
+    
 }
 
 
@@ -339,15 +342,15 @@ void apriori_generate_cand_2_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr 
 
 
 /**
- *To be modified to support for n _itemsets.
+ *This prunes the candidate set to get the frequent n itemsets.
  */
 //generate_candidate_n_itemsets for the line read
 void apriori_generate_cand_n_itemsets(ItemsetPtr f_freq1, int itemset_cnt,ItemsetPtr c_cur,int items[],C_ItemsetPtr c_itemset_ll,int basket_cnt,ItemsetPtr c_prev, ItemsetPtr f_cur, FILE *f_itemsets, int *distinct_itemsets_cnt, int *tot_itemsets_cnt) {
     int * sub = calloc(itemset_cnt,sizeof(int));    //we want subsequences of size itemset_cnt
     int hval, k;
 
-    //Joins the prev frequent Items sets,  without applying apriori property
-    join_frequent_n_itemsets(c_cur, f_freq1, itemset_cnt);
+    //Prunes the current candidate itemsets for frequent itemsets
+    r_apriori_generate_cand_n_itemsets(itemset_cnt,c_cur,items,sub,c_itemset_ll,basket_cnt,0,0, c_prev);
 
     
 }
