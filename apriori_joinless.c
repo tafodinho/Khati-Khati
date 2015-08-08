@@ -301,6 +301,12 @@ void apriori_generate_cand_n_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr 
     r_apriori_generate_cand_n_itemsets(itemset_cnt,c_cur,items,sub,c_itemset_ll,basket_cnt,0,0, c_prev);
 }
 
+int infrequent_subset_found(int subset_len,int items[],int basket_cnt,ItemsetPtr c_prev) {
+    int * sub = calloc(subset_len,sizeof(int));    //we want subsequences of size itemset_cnt
+    return r_infrequent_subset_found(subset_len,items,sub,basket_cnt,c_prev,0,0);
+}
+
+
 
 void r_apriori_generate_cand_n_itemsets(int slen,ItemsetPtr c_cur,int items[],int sub[],C_ItemsetPtr c_itemset_ll,int ilen,int istart,int sstart,ItemsetPtr c_prev) {
     int i,j,k,h,hval;
@@ -322,11 +328,30 @@ void r_apriori_generate_cand_n_itemsets(int slen,ItemsetPtr c_cur,int items[],in
     }
 }
 
+int is_frequent_subset(ItemsetPtr c_prev, int sub[], int slen) {
+    int i,j,found,hval;
+    Itemsets tmp;
 
-int infrequent_subset_found(int subset_len,int items[],int basket_cnt,ItemsetPtr c_prev) {
-    int * sub = calloc(subset_len,sizeof(int));    //we want subsequences of size itemset_cnt
-    return r_infrequent_subset_found(subset_len,items,sub,basket_cnt,c_prev,0,0);
+    //apply apriori to all n-1 subsequences of sub
+
+    hval = hashval(sub,slen);
+    tmp = c_prev[hval].itemset_ptr;
+    found = 0;
+    while (tmp != NULL) {
+        for (i=0; i<slen; i++) {
+            if (tmp->itemsets[i] != sub[i]) {
+                break;
+            }
+            //we have found a frequent subset
+            found = 1;
+        }
+        if (found)
+            return 1;
+        tmp = tmp -> next;
+    }
+    return 0;
 }
+
 
 int r_infrequent_subset_found(int slen,int items[],int sub[],int ilen,ItemsetPtr c_prev,int istart,int sstart) {
     int i,j,k,h,hval;
@@ -356,29 +381,6 @@ int hashval(int itemset[],int len) {
 }
 
 
-int is_frequent_subset(ItemsetPtr c_prev, int sub[], int slen) {
-    int i,j,found,hval;
-    Itemsets tmp;
-
-    //apply apriori to all n-1 subsequences of sub
-
-    hval = hashval(sub,slen);
-    tmp = c_prev[hval].itemset_ptr;
-    found = 0;
-    while (tmp != NULL) {
-        for (i=0; i<slen; i++) {
-            if (tmp->itemsets[i] != sub[i]) {
-                break;
-            }
-            //we have found a frequent subset
-            found = 1;
-        }
-        if (found)
-            return 1;
-        tmp = tmp -> next;
-    }
-    return 0;
-}
 
 
 

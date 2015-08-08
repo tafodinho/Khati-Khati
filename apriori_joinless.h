@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 
 #define TRANS_DB "retail.dat.tmp"
@@ -64,6 +65,7 @@ void apriori_generate_cand_2_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr 
 //void r_apriori_generate_cand_2_itemsets(int * f_freq1, int slen,ItemsetPtr c_cur,int items[],int sub[],C_ItemsetPtr c_itemset_ll,int ilen,int istart,int sstart);
 void apriori_generate_cand_n_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr c_freq_cur,int items[],C_ItemsetPtr c_itemset_ll,int item_cnt,ItemsetPtr c_prev);
 void r_apriori_generate_cand_n_itemsets(int slen,ItemsetPtr c_cur,int items[],int sub[],C_ItemsetPtr c_itemset_ll,int ilen,int istart,int sstart,ItemsetPtr c_prev);
+int r_infrequent_subset_found(int slen,int items[],int sub[],int ilen,ItemsetPtr c_prev,int istart,int sstart);
 void get_frequent_n_itemsets(int, ItemsetPtr c_cur,ItemsetPtr f_cur, int *, int *);
 void save_frequent_n_itemsets(int, FILE *f_itemsets,ItemsetPtr f_cur,int,int);
 void release_memory(ItemsetPtr freq);
