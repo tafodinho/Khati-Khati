@@ -1,5 +1,6 @@
 /*
  * File:   apriori_main.c
+ * Author: Bawe Emmanuel
  *
  */
 #include "apriori.h"

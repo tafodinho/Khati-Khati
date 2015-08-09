@@ -1,6 +1,7 @@
 /**
- *Filename: apriori.c
- *Purpose: Defines the functions for the classical apriori algorithm as used
+ * Filename: apriori.c
+ * Purpose: Defines the functions for the classical apriori algorithm as used
+ * Author: Bawe Emmanuel
  */
 #include "apriori.h"
 

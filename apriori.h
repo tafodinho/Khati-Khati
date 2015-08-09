@@ -1,6 +1,7 @@
 /*
  * File: apriori.h
  * Purpose: Defines the functions to be used in the apriori algorithm.
+ * Author: Bawe Emmanuel
  *
  */
 
