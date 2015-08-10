@@ -309,11 +309,11 @@ void apriori_generate_cand_2_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr 
 
     //Pruning step frequent item sets and 
     for (k = 0; k < basket_cnt - 1;k++) {
-		if (f_freq1[items[j]] < SUPPORT_THRESHOLD)
+		if (f_freq1[items[k]] < SUPPORT_THRESHOLD)
                 continue;
                 
    	 	for (j = k + 1; j < basket_cnt; j++) {
-   	 		if (f_freq1[items[k]] < SUPPORT_THRESHOLD)
+   	 		if (f_freq1[items[j]] < SUPPORT_THRESHOLD)
                     continue;
             else {
              	itemset[0] = items[j];
