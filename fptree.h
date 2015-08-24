@@ -318,4 +318,34 @@ fpgcolcntPtr count_fpgsingles();
  * @return a FPgrowth header table.
  */
 fpgheaderPtr create_local_htable(fpgcolcntPtr count[], int size);
+
+/**
+ * CREATE NEW LOCAL HEADER TABLE (UNORDERED)
+ * local_htable_unordered(): Creating a new local header table, but unordered. 
+ * @param count the support for the 1 itemsets. 
+ * @return a FPgrowth header table.
+ */
+fpgheaderPtr local_htable_unordered(fpgcolcntPtr count[], int size);
+
+/**
+ * ORDER LOCAL HEADER TABLE
+ * local_htable_ordered(): Orders local header table (currently unused).  
+ * @param localHeaderTable the FPgrowth header table to be ordered.
+ * @param count the support for the 1 item sets.
+ */
+void local_htable_ordered(fpgheaderPtr table[], int hsize, fpgcolcntPtr count[], int size);
+
+/** -------------------------------------------------------------------
+ *                                                                     
+ *                         GENERATE NEW FP-TREE                        
+ *                                                                   
+ * -------------------------------------------------------------------- 
+ * GENERATE LOCAL FP-tree
+ * gen_local_fptree(): Generates a local FP tree 
+ * @param table reference to start of header table containing links to an FP-tree produced during the FP-tree generation process.
+ * @rerurn reference to the start of the generated FP-tree.
+ */
+fptreenodePtr gen_local_fptree(fpgheaderPtr table[], int hsize);
+
+
 #endif
