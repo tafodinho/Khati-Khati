@@ -24,12 +24,13 @@
 #define ITEMSET_MAX_SIZE 10
 #define SUPPORT_THRESHOLD 5
 
-
+typedef struct fptree_node      *fptreenodePtr;
 typedef struct fpgsubtree_node  *fpgsubtreePtr;
 typedef struct fptree_node      *fptreePtr;
 typedef struct fpgheader        *fpgheaderPtr;
 typedef struct fpgsupsets       *fpgsupsetsPtr;
 typedef struct fpgcolcnt        *fpgcolcntPtr;
+typedef struct fptree           *fptreePtr;
 
 /**
  * fptree_node: FP tree node. This the basic DS for the fp growth algorithm
@@ -41,8 +42,8 @@ struct fptree_node {
 	int support;             /* support count associated with the itemset represented by node */
 	int num_nodes;           /* number of nodes on the total support tree */
 	fptreePtr child;         /* Reference to child(if any) for this node */
-	fpgsubtreePtr fpsubtree; /* store counts and a reference to a child branch. */
-	fpgheaderPtr fpgheader;  /*  used to link nodes on the fptree, enables cross linking */
+	fpgsubtreePtr node; /* store counts and a reference to a child branch. */
+	;  /*  used to link nodes on the fptree, enables cross linking */
 };
 
 /**
@@ -130,5 +131,27 @@ struct fpgcolcnt {
  */
 fpgcolcntPtr create_fpgcolcnt(int col, int sup);
 
+/**
+ * fptree: Structure is built to store fp tree nodes.
+ */
+struct fptree {
+	
+    
+    /** Start reference for FP-tree. */
+    fptreenodePtr root;
+    /** Start reference for header table. */
+    fpgheaderPtr header_table; 
+    /** Start reference for supportedSets linked list (temporary storage only).*/
+    fpgsupsetsPtr start_tmp_sets;
+    
+    // Other fields 
+    
+    /** Temporary storage for an index into an array of FP-tree nodes.
+     *  Used when reassigning child reference arrays. */
+    int tmp_index;
+    
+    /** Number of nodes created. */
+    int num_nodes;
+};
 
 #endif
