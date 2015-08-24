@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include <ctype.h>
 
 #define TRANS_DB "retail.dat.tmp" /* Transactional database */
@@ -24,18 +25,52 @@
 #define SUPPORT_THRESHOLD 5
 
 
+typedef struct fpgsubtree_node *fpgsubtreePtr;
+typedef struct fptree_node * fptreePtr;
 /**
- * Ttree_node: Total support tree node. This the basic DS for the Total support tree
+ * fptree_node: FP tree node. This the basic DS for the fp growth algorithm
  *             used in the FP tree Arrays of this structure are used to store nodes
- *             at the same level in any sub-branch of the Ttree(total support tree). 
+ *             at the same level in any sub-branch of the fptree 
  * Note:       Increment num_nodes each time a node is created.(get num_nodes)
  */
-typedef struct Ttree_node * totsuptreePtr;
-struct Ttree_node {
-	int support = 0;      /* support count associated with the itemset represented by node */
-	int num_nodes = 0;    /* number of nodes on the total support tree */
-	totsuptreePtr child;  /* Reference to child(if any) for this node */
+struct fptree_node {
+	int support;             /* support count associated with the itemset represented by node */
+	int num_nodes;           /* number of nodes on the total support tree */
+	fptreePtr child;         /* Reference to child(if any) for this node */
+	fpgsubtreePtr fpsubtree; /* store counts and a reference to a child branch. */
 };
+
+/**
+ * create_fptree_node(): creates an fptree node with support arg 
+ *
+ * @param sup, support count
+ * @return new node
+ */
+fptreePtr create_fptree_node(int sup);
+	
+	
+/**
+ * fpgsubtree_node: This is a set enumeration tree which stores itemsets 
+ *                    together with support values.
+ *                    it is the FP growth Item prefix subtree node.
+ */
+struct fpgsubtree_node {
+	int item_name;       /* attribute identifier */
+	int item_count;      /* item support count */
+	fpgsubtreePtr parent;/* backward link to the parent node on fptree */
+	fpgsubtreePtr next;  /* forward link to next node starting with an elt in the header table */
+};
+
+/**
+ * create_fpsubtree_node(): Three argument constructor
+ * 
+ * @param name, the itemset identifier. 
+ * @param support,  the support value for the itemset.
+ * @param prev, the backward link to the parent node. 
+ * @return new node
+ */
+fpgsubtreePtr create_fpsubtree_node(int name, int support, fpgsubtreePtr prev);  
+    
 
 
 
