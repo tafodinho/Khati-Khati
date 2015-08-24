@@ -25,10 +25,11 @@
 #define SUPPORT_THRESHOLD 5
 
 
-typedef struct fpgsubtree_node *fpgsubtreePtr;
-typedef struct fptree_node * fptreePtr;
-typedef struct fpgheader *fpgheaderPtr;
-typedef struct fpgsupsets *fpgsupsetsPtr;
+typedef struct fpgsubtree_node  *fpgsubtreePtr;
+typedef struct fptree_node      *fptreePtr;
+typedef struct fpgheader        *fpgheaderPtr;
+typedef struct fpgsupsets       *fpgsupsetsPtr;
+typedef struct fpgcolcnt        *fpgcolcntPtr;
 
 /**
  * fptree_node: FP tree node. This the basic DS for the fp growth algorithm
@@ -113,6 +114,21 @@ struct fpgsupsets {
  */
 fpgsupsetsPtr create_fpgsubsets( int itemsets[], int size, int sup, fpgsubsetsPtr next);
 
+/**
+ * fpgcolcnt: stores the counts
+ */
+struct fpgcolcnt {
+	int col_num; /* column/attribute ID number */
+	int support; /* associated support count */
+};
+
+/**
+ * create_fpgcolcnt():
+ *
+ * @param col, the column/attribute ID number
+ * @param sup, the associated support value
+ */
+fpgcolcntPtr create_fpgcolcnt(int col, int sup);
 
 
 #endif

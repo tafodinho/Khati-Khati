@@ -42,4 +42,12 @@ fpgsupsetsPtr create_fpgsubsets( int itemsets[], int size, int sup, fpgsubsetsPt
 	return new_node;
 }
 
+fpgcolcntPtr create_fpgcolcnt(int col, int sup) {
+	fpgcolcntPtr new_node = (struct fpgcolcnt)malloc(sizeof(struct fpgcolcnt));
+	new_node->col_num = col;
+	new_node->support = sup;
+	
+	return new_node;
+}
+
 
