@@ -24,8 +24,18 @@
 #define SUPPORT_THRESHOLD 5
 
 
-
-
+/**
+ * Ttree_node: Total support tree node. This the basic DS for the Total support tree
+ *             used in the FP tree Arrays of this structure are used to store nodes
+ *             at the same level in any sub-branch of the Ttree(total support tree). 
+ * Note:       Increment num_nodes each time a node is created.(get num_nodes)
+ */
+typedef struct Ttree_node * totsuptreePtr;
+struct Ttree_node {
+	int support = 0;      /* support count associated with the itemset represented by node */
+	int num_nodes = 0;    /* number of nodes on the total support tree */
+	totsuptreePtr child;  /* Reference to child(if any) for this node */
+};
 
 
 
