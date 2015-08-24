@@ -152,6 +152,60 @@ fpgsupsetsPtr create_fpgsubsets( int itemsets[], int size, int sup, fpgsubsetsPt
  */
 fpgcolcntPtr create_fpgcolcnt(int col, int sup);
 
+/** ------ METHODS ------ */
+
+/** CREATE FP-TREE */   
+/** Top level method to commence the construction of the FP-Tree. */
+void create_fptree();
+   
+/** 
+ * add_to_fptree(): Searches through current list of child refs looking for given item set.
+ *                  If reference for current itemset found increments support count and 
+ *                  proceed down branch, otherwise adds to current level. 
+ * @param ref the current location in the FP-tree (rootNode at start).
+ * @param place the current index in the given itemset.
+ * @param itemset the given itemset.
+ * @param sup the associated support value for the given itemset.
+ * @param header the link to the appropriate place in the header table.
+ */
+void add_to_fptree(fptreenodePtr ref, int place, int itemset[], int size, int sup, fpgheaderPtr header);
+   
+/**
+ * add_to_fptree1():  Searches through existing branch and if itemset found updates the 
+ *                    support count and returns true, otherwise return false. 
+ * @param ref the current FP-tree node reference.
+ * @param place the current index in the given itemset.
+ * @param itemset the given itemset.
+ * @param sup the associated support value for the given itemset.
+ * @param header the link to the appropriate place in the header table. 
+ * @return true if given itemset exists in FP-tree, and false otherwise. 
+ */ 
+bool add_to_fptree1(fptreenodePtr ref, int place, int itemset[], int size, int sup, fpgheaderPtr header)
+    
+/** 
+ * add_to_fptree2(): Adds new node to FP-tree. (Adds first attribute in itemSet and then rest of sequence). 
+ *
+ * @param ref the current FP-tree node reference.
+ * @param place the current index in the given itemset.
+ * @param itemset the given itemset.
+ * @param sup the associated support value for the given itemset.
+ * @param header the link to the appropriate place in the header table.
+ */
+void add_to_fptree2(fptreenodePtr ref, int place, int itemset[], int size, int sup, fpgheaderPtr header)
+    
+/**
+ * add_rem_itemsets(): Continues adding attributes in current itemset to FP-tree.
+ *
+ * @param ref the current FP-tree node reference.
+ * @param back the backwards link to the previous node.
+ * @param place the current index in the given itemset.
+ * @param itemset the given itemset.
+ * @param sup the associated support value for the given itemset.
+ * @param header the link to the appropriate place in the header table.
+ */
+void add_rem_itemsets(fptreenodePtr ref, fpgsubtreePtr back, tnt place, int itemset[], int size, int sup, 
+					fpgheaderPtr header);
+
 
 
 #endif
