@@ -27,6 +27,8 @@
 
 typedef struct fpgsubtree_node *fpgsubtreePtr;
 typedef struct fptree_node * fptreePtr;
+struct fpgheader *fpgheaderPtr;
+
 /**
  * fptree_node: FP tree node. This the basic DS for the fp growth algorithm
  *             used in the FP tree Arrays of this structure are used to store nodes
@@ -38,6 +40,7 @@ struct fptree_node {
 	int num_nodes;           /* number of nodes on the total support tree */
 	fptreePtr child;         /* Reference to child(if any) for this node */
 	fpgsubtreePtr fpsubtree; /* store counts and a reference to a child branch. */
+	fpgheaderPtr fpgheader;  /*  used to link nodes on the fptree, enables cross linking */
 };
 
 /**
@@ -47,7 +50,7 @@ struct fptree_node {
  * @return new node
  */
 fptreePtr create_fptree_node(int sup);
-	
+
 	
 /**
  * fpgsubtree_node: This is a set enumeration tree which stores itemsets 
@@ -69,8 +72,25 @@ struct fpgsubtree_node {
  * @param prev, the backward link to the parent node. 
  * @return new node
  */
-fpgsubtreePtr create_fpsubtree_node(int name, int support, fpgsubtreePtr prev);  
-    
+fpgsubtreePtr create_fpsubtree_node(int name, int support, fpgsubtreePtr prev);
+
+/**
+ * fpgheader: A header table, array of structures used to link into fp tree.
+ *            All FPtree nodes with the same identifier are linked together
+ *            starting from a node in a header table.(Cross linking occurs here)
+ */
+struct fpgheader {
+	int item_name; /* 1 itemset attribute identifier */
+	fpgsubtreePtr next; /* forward link to the next node */
+}
+
+/**
+ * create_fpgheader(): creates an FP growth Header table node.
+ *
+ * @param col_num, gives the attribute name.
+ * @return new fp header table node
+ */
+fpgheaderPtr create_fpgheader(int col_num);
 
 
 
