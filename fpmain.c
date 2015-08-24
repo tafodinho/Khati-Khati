@@ -26,15 +26,15 @@ int main(int argc, char** argv) {
 
 
     /** Build initial FP-tree */
-	createFPtree();
+	create_fptree(fptree);
 	out_fptree_storage(fptree.root);			
 	out_fptree(fptree.root);
 
 	/** Mine FP-tree */
 	start_mining();
 	out_fptree_storage(fptree.root);
-	outputNumFreqSets();
+	out_num_freq_itemsets(fptree);
 	/* outputTtree() Frequent sets arec stored in this structure */
 
-
+	return 0;
 }
