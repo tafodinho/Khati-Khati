@@ -152,7 +152,7 @@ fpgsupsetsPtr create_fpgsubsets( int itemsets[], int size, int sup, fpgsubsetsPt
  */
 fpgcolcntPtr create_fpgcolcnt(int col, int sup);
 
-/** ------ METHODS ------ */
+/** ------ FUNCTIONS ------ */
 
 /** CREATE FP-TREE */   
 /** Top level method to commence the construction of the FP-Tree. */
@@ -206,6 +206,53 @@ void add_to_fptree2(fptreenodePtr ref, int place, int itemset[], int size, int s
 void add_rem_itemsets(fptreenodePtr ref, fpgsubtreePtr back, tnt place, int itemset[], int size, int sup, 
 					fpgheaderPtr header);
 
+/**  -----------------------------------------------------------------
+    *                                                           
+    *                       FP-TREE MINING                      
+    *                                                           
+    * ---------------------------------------------------------------
+    
+    ** Methodology:
+
+    1) Step through header table from end to start (least common single 
+    attribute to most common single attribute). For each item.
+    a) Count support by following node links and add to linked list of 
+       supported sets.
+    b) Determine the "ancestor trails" connected to the nodes linked to the
+       current item in the header table.
+    c) Treat the list of ancestor itemsets as a new set of input data and 
+       create a new header table based on the accumulated supported counts of 
+       the single items in the ancestor itemsets 
+    d) Prune the ancestor itemsets so as to remove unsupported items.
+    e) Repeat (1) with local header table and list of pruned ancestor itemsets 
+       as input 
+*/
+/** START MINING FUNCTIONS */
+
+/**
+ * start_mining():  Commences process of mining the FP tree. Commence with the bottom 
+ *                  of the header table and work upwards. Working upwards from the bottom of 
+ *                  the header table if there is a link to an FP tree node :
+ *                  Count the support.
+ *                  Build up itemSet sofar.
+ *                  Add to supported sets.
+ *                  Build a new FP tree: (i) create a new local root, (ii) create a 
+ *                  new local header table and (iii) populate with ancestors.
+ *                  If new local FP tree is not empty repeat mining operation.
+ *                  Otherwise end. 
+ * @param  table the reference to the current location in the header table (commencing with the last item).
+ * @param itemset_sofar the label fot the current item sets as generated to date (null at start). */	
+void start_mining(FPgrowthHeaderTable[] table, int itemset_sofar[], int size);
+
+/**
+ * start_mining2():  Commence process of mining FP tree with respect to a single element in the header table.
+ *
+ * @param nodeLin the first link from the header table pointing to an FP-tree node.
+ * @param item the label associated with the element of interest in the header table.
+ * @param itemset_sofar the item set represented by the current FP-tree.
+ * @param size
+ */
+void start_mining2(FPgrowthItemPrefixSubtreeNode nodeLink, int item, int itemset_sofar[], int size);
 
 
 #endif
