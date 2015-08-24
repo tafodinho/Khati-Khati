@@ -27,7 +27,8 @@
 
 typedef struct fpgsubtree_node *fpgsubtreePtr;
 typedef struct fptree_node * fptreePtr;
-struct fpgheader *fpgheaderPtr;
+typedef struct fpgheader *fpgheaderPtr;
+typedef struct fpgsupsets *fpgsupsetsPtr;
 
 /**
  * fptree_node: FP tree node. This the basic DS for the fp growth algorithm
@@ -92,7 +93,25 @@ struct fpgheader {
  */
 fpgheaderPtr create_fpgheader(int col_num);
 
+/**
+ * fpgsupsets : Stores ancestor itemsets, nodes in an FP tree that preceed the nodes 
+ *              identified by following trails from a particular item on the header table.
+ */
+struct fpgsupsets {
+	int *item_set;      /* item set label */
+	int support;        /* support value for a given itemset */
+	fpgsupsetsPtr next; /* references to next node on linked list. */
+};
 
+/**
+ * create_fpgsubsets(): Creates new fp growth subsets
+ * 
+ * @param itemsets
+ * @param support
+ * @param next_node
+ * @return new fp growth support sets.
+ */
+fpgsupsetsPtr create_fpgsubsets( int itemsets[], int size, int sup, fpgsubsetsPtr next);
 
 
 
