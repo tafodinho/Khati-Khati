@@ -347,5 +347,56 @@ void local_htable_ordered(fpgheaderPtr table[], int hsize, fpgcolcntPtr count[],
  */
 fptreenodePtr gen_local_fptree(fpgheaderPtr table[], int hsize);
 
+/**  ----------------------------------------------------------
+ *                                                            
+ *                     FP-TREE UTILITIES                      
+ *                                                          
+ * ----------------------------------------------------------
+ * 	
+ * REALLOC 1 FP-TREE 
+ * realloc_fptree():  Resizes the given array of FP-tree nodes so that its length is 
+ *                    increased by one element and new element inserted.
+ * @param oldArray the given array of FP-tree nodes.
+ * @param newNode the given node to be added to the FP-tree
+ * @return The revised array of FP-tree nodes.
+ */
+fptreenodePtr realloc_fptree(fptreenodePtr oldArray[], int size, fptreenodePtr newNode);
 
+/**
+ * OUTPUT HEADER TABLE 
+ * out_fpsubtree():  Commences process of outputting the prefix sub tree to the screen, starting at header table. 
+ */
+void out_fpsubtree(fpgheaderPtr header_table);
+
+/**
+ * out_fpsubtree2(): Outputs the given prefix sub tree. 
+ * @param ref the reference to the given branch. 
+ * @return a counter representing the current "node number" (used in output). 
+ */	
+int out_fpsubtree2(fpgsubtreePtr ref);
+
+/**
+ * OUTPUT FP TREE 
+ * out_fptree(): prints FP-tree to screen.
+ *
+ * @param ref the reference to the given FP-tree level.
+ * @param nodeID the root string for the node ID.
+ */
+void out_fptree(fptreenodePtr ref, int *nodeID);
+
+/**
+ * CALCULATE STORAGE 
+ * calc_storage():  Determines storage requirements for FP-tree.
+ * @param ref the reference to the current portion of the P-tree under consideration.
+ * @param storage the storage requirements so far. 
+ * @return the storage in BYTES required for the given FP=tree node.
+ */
+int calc_storage(fptreenodePtr ref, int storage);
+
+/**
+ * OUTPUT FP TREE STORAGE 
+ * out_fptree_storage(): Determines and prints FP-tree storage, number of updates and number of nodes.
+ */
+ void out_fptree_storage(fptreenodePtr root);
+     
 #endif
