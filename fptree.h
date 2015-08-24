@@ -488,5 +488,11 @@ void recast_data_prune_unsupported(fptreePtr fptree);
  */
 void out_num_freq_itemsets(fptreePtr fptree);
 
+/**
+ * SET NUMBER ONE ITEM SETS
+ * set_num_oneitemsets(); Sets the number of one item sets field (<size> to the number of supported one item sets.
+ */
+void set_num_oneitemsets();
+
  
 #endif
