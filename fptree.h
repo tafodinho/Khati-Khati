@@ -1,4 +1,4 @@
-/*
+/**
  * File: apriori.h
  * Purpose: Defines the functions and structures to be used in the FP Growth algorithm.
  * Author: Bawe Emmanuel
@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <time.h>
 #include <ctype.h>
 
 #define TRANS_DB "retail.dat.tmp" /* Transactional database */
@@ -108,6 +109,9 @@ struct fptree {
     int num_nodes;
 };
 
+/** ------ FUNCTIONS ------ */
+
+
 /**
  * create_fptree_node(): creates an fptree node with support arg 
  *
@@ -152,11 +156,9 @@ fpgsupsetsPtr create_fpgsubsets( int itemsets[], int size, int sup, fpgsubsetsPt
  */
 fpgcolcntPtr create_fpgcolcnt(int col, int sup);
 
-/** ------ FUNCTIONS ------ */
-
 /** CREATE FP-TREE */   
 /** Top level method to commence the construction of the FP-Tree. */
-void create_fptree();
+void create_fptree(fptreePtr fptree);
    
 /** 
  * add_to_fptree(): Searches through current list of child refs looking for given item set.
@@ -398,5 +400,93 @@ int calc_storage(fptreenodePtr ref, int storage);
  * out_fptree_storage(): Determines and prints FP-tree storage, number of updates and number of nodes.
  */
  void out_fptree_storage(fptreenodePtr root);
-     
+ 
+ 
+/** -------------------------------------------------------------------
+ *                                                                     
+ *                         INPUT FILE PROCESSING                        
+ *                                                                   
+ * -------------------------------------------------------------------- 
+ * INPUT FILE PROCESSING FUNCTIONS
+ */
+ 
+/**
+ * INPUT DATA SET
+ * input_dataset(): Processes input data file(TRANS_DB)
+ * @param fptreePtr stores results to fptree
+ */
+void input_dataset(fptreePtr fptree); 
+
+/**
+ * REORDER DATA SET ACCORDING TO ATTRIBUTE FREQUENCY       
+ * REORDER INPUT DATA
+ * order_input_data(): Reorders input data according to frequency of
+ *                     single attributes.
+ *  Example, given the data set:
+    <PRE>
+    1 2 5
+    1 2 3
+    2 4 5
+    1 2 5
+    2 3 5
+    </PRE>
+    This would produce a count Array (ignore index 0):
+    <PRE>
+    +---+---+---+---+---+---+
+    |   | 1 | 2 | 3 | 4 | 5 |
+    +---+---+---+---+---+---+
+    |   | 3 | 5 | 2 | 1 | 4 |
+    +---+---+---+---+---+---+
+    </PRE>
+    Which sorts to:
+    <PRE>
+    +---+---+---+---+---+---+
+    |   | 2 | 5 | 1 | 3 | 4 |
+    +---+---+---+---+---+---+
+    |   | 5 | 4 | 3 | 2 | 1 |
+    +---+---+---+---+---+---+
+    </PRE>
+    Giving rise to the conversion Array of the form (no index 0):
+    <PRE>
+    +---+---+---+---+---+---+
+    |   | 3 | 1 | 4 | 5 | 2 |
+    +---+---+---+---+---+---+
+    |   | 3 | 5 | 2 | 1 | 4 |
+    +---+---+---+---+---+---+
+    </PRE>
+    Note that the second row here are the counts which no longer play a role
+    in the conversion exercise. Thus to the new column number for column 1 is 
+    column 3 (i.e. the first vale at index 1). The reconversion array of the 
+    form:
+    <PRE>
+    +---+---+---+---+---+---+
+    |   | 2 | 5 | 1 | 3 | 4 |
+    +---+---+---+---+---+---+		
+    </PRE>
+ */
+void order_input_data(fptreePtr fptree);
+
+/**
+ * RECAST INPUT DATA AND REMOVE UNSUPPORTED SINGLE ATTRIBUTES.
+ * recast_data_prune_unsupported(): Recasts the contents of the data array so that each record is
+                                    ordered according to column counts array and excludes non-supported
+                                    elements. <P> Proceed as follows:
+
+ * 1) For each record in the data array. Create an empty new itemset array.
+ * 2) Place into this array any column numbers in record that are
+       supported at the index contained in the conversion array.
+ * 3) Assign new itemset back into to data array. 
+*/
+
+void recast_data_prune_unsupported(fptreePtr fptree);
+
+/** ------------------------------ 
+ * OUTPUT NUMBER FREQUENT SETS 
+ * ------------------------------
+ * out_num_freq_itemsets(): prints frequent itemsets from nodes in the fptree
+ * @param fptree
+ */
+void out_num_freq_itemsets(fptreePtr fptree);
+
+ 
 #endif
