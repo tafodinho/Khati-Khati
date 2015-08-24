@@ -242,7 +242,7 @@ void add_rem_itemsets(fptreenodePtr ref, fpgsubtreePtr back, tnt place, int item
  *                  Otherwise end. 
  * @param  table the reference to the current location in the header table (commencing with the last item).
  * @param itemset_sofar the label fot the current item sets as generated to date (null at start). */	
-void start_mining(FPgrowthHeaderTable[] table, int itemset_sofar[], int size);
+void start_mining(fpgheaderPtr table, int itemset_sofar[], int size);
 
 /**
  * start_mining2():  Commence process of mining FP tree with respect to a single element in the header table.
@@ -252,7 +252,70 @@ void start_mining(FPgrowthHeaderTable[] table, int itemset_sofar[], int size);
  * @param itemset_sofar the item set represented by the current FP-tree.
  * @param size
  */
-void start_mining2(FPgrowthItemPrefixSubtreeNode nodeLink, int item, int itemset_sofar[], int size);
+void start_mining2(fpgsubtreePtr node, int item, int itemset_sofar[], int size);
 
 
+/** ---------------------------------------------------------------------                                                                       
+ *
+ *                     PROCESS CURRENT HEADER TABLE                       
+ * ----------------------------------------------------------------------   
+ *  
+ * GENERATE SUPPORT FOR HEADER TABLE SINGLE ITEM: 
+ *
+ * gensup_headtable(): Counts support for single attributes in header table by following node links. 
+ * @param nodeLink the start link from the header table. 
+ * @return the support valye for the item set indicated by the header table. 
+ */
+int gensup_headtable(fpgsubtreePtr node);
+
+/**
+ *  GENERATE ANCESTOR CODES 
+ *  generate_ancestor(): Generates ancestor itemsets are made up of the parent nodes of a given 
+ *                       node. This method collects such itemsets and stores them in a linked list 
+ *                       pointed at by start_tmp_sets. 
+ *  @param ref the reference to the current node in the prefix tree containing itemsets together with support values.
+ */
+void generate_ancestor(fpgsubtreePtr ref);
+
+/**
+ * GET ANCESTOR CODE
+ * get_ancestor():  Generate the ancestor itemset from a given node. 
+ * @param ref the reference to the current node in the prefix tree containing itemsets together with support values.
+ */
+int *get_ancestor(fpgsubtreePtr ref);
+
+/**
+ * PRUNE ANCESTOR CODES
+ * prune_ancestor(): Removes elements in ancestor itemSets (pointed at by next) which are not supported by referring to count 
+ *                   array (which contains all the current supported 1 itemsets). 
+ * @param count      the array of fpgcolcnts structures 
+ *                   describing the single item sets (in terms of labels and associated 
+ *                   support), contained in a linked list of fpgsupsets
+ *                   which in turn describe the ancestor nodes in an FP-tree that preceed the 
+ *                   nodes identified by following a trail of links from a particular item in 
+ *                   the header table.
+ */
+void prune_ancestors(fpgcolcntPtr count[], int size);
+
+/** --------------------------------------------------------------------- 
+ *                                                                        
+ *      CREATE NEW HEADER TABLE FROM SINGLE ITEMS IN ANCESTOR CODES       
+ *                                                                        
+ * ----------------------------------------------------------------------   
+ * COUNT SINGLES
+ * count_fpgsingles(): Counts frequent 1 item sets in ancestor itemSets linked list and place into an array. 
+ * @return array of @fpgcolcntPtr structures describing the  single item sets (in terms of labels and 
+ *         associated support), contained in a linked list of @fpgsupsetsPtr which in turn describe the 
+ *         ancestor nodes in an FP-tree that preceed the nodes identified by following 
+ *         a trail of links from a particular item in the header table. 
+ */
+fpgcolcntPtr count_fpgsingles();
+
+/**
+ * CREATE LOCAL HEADER TABLE
+ * create_local_htable(): Creates a local header table comprising those item that are supported in the count array. 
+ * @param count the support for the 1 item sets. 
+ * @return a FPgrowth header table.
+ */
+fpgheaderPtr create_local_htable(fpgcolcntPtr count[], int size);
 #endif
