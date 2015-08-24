@@ -47,15 +47,6 @@ struct fptree_node {
 };
 
 /**
- * create_fptree_node(): creates an fptree node with support arg 
- *
- * @param sup, support count
- * @return new node
- */
-fptreePtr create_fptree_node(int sup);
-
-	
-/**
  * fpgsubtree_node: This is a set enumeration tree which stores itemsets 
  *                    together with support values.
  *                    it is the FP growth Item prefix subtree node.
@@ -68,16 +59,6 @@ struct fpgsubtree_node {
 };
 
 /**
- * create_fpsubtree_node(): Three argument constructor
- * 
- * @param name, the itemset identifier. 
- * @param support,  the support value for the itemset.
- * @param prev, the backward link to the parent node. 
- * @return new node
- */
-fpgsubtreePtr create_fpsubtree_node(int name, int support, fpgsubtreePtr prev);
-
-/**
  * fpgheader: A header table, array of structures used to link into fp tree.
  *            All FPtree nodes with the same identifier are linked together
  *            starting from a node in a header table.(Cross linking occurs here)
@@ -86,14 +67,6 @@ struct fpgheader {
 	int item_name; /* 1 itemset attribute identifier */
 	fpgsubtreePtr next; /* forward link to the next node */
 }
-
-/**
- * create_fpgheader(): creates an FP growth Header table node.
- *
- * @param col_num, gives the attribute name.
- * @return new fp header table node
- */
-fpgheaderPtr create_fpgheader(int col_num);
 
 /**
  * fpgsupsets : Stores ancestor itemsets, nodes in an FP tree that preceed the nodes 
@@ -106,16 +79,6 @@ struct fpgsupsets {
 };
 
 /**
- * create_fpgsubsets(): Creates new fp growth subsets
- * 
- * @param itemsets
- * @param support
- * @param next_node
- * @return new fp growth support sets.
- */
-fpgsupsetsPtr create_fpgsubsets( int itemsets[], int size, int sup, fpgsubsetsPtr next);
-
-/**
  * fpgcolcnt: stores the counts
  */
 struct fpgcolcnt {
@@ -124,19 +87,10 @@ struct fpgcolcnt {
 };
 
 /**
- * create_fpgcolcnt():
- *
- * @param col, the column/attribute ID number
- * @param sup, the associated support value
- */
-fpgcolcntPtr create_fpgcolcnt(int col, int sup);
-
-/**
  * fptree: Structure is built to store fp tree nodes.
  */
 struct fptree {
 	
-    
     /** Start reference for FP-tree. */
     fptreenodePtr root;
     /** Start reference for header table. */
@@ -153,5 +107,51 @@ struct fptree {
     /** Number of nodes created. */
     int num_nodes;
 };
+
+/**
+ * create_fptree_node(): creates an fptree node with support arg 
+ *
+ * @param sup, support count
+ * @return new node
+ */
+fptreePtr create_fptree_node(int sup);
+
+/**
+ * create_fpsubtree_node(): Three argument constructor
+ * 
+ * @param name, the itemset identifier. 
+ * @param support,  the support value for the itemset.
+ * @param prev, the backward link to the parent node. 
+ * @return new node
+ */
+fpgsubtreePtr create_fpsubtree_node(int name, int support, fpgsubtreePtr prev);
+
+/**
+ * create_fpgheader(): creates an FP growth Header table node.
+ *
+ * @param col_num, gives the attribute name.
+ * @return new fp header table node
+ */
+fpgheaderPtr create_fpgheader(int col_num);
+
+/**
+ * create_fpgsubsets(): Creates new fp growth subsets
+ * 
+ * @param itemsets
+ * @param support
+ * @param next_node
+ * @return new fp growth support sets.
+ */
+fpgsupsetsPtr create_fpgsubsets( int itemsets[], int size, int sup, fpgsubsetsPtr next);
+
+/**
+ * create_fpgcolcnt():
+ *
+ * @param col, the column/attribute ID number
+ * @param sup, the associated support value
+ */
+fpgcolcntPtr create_fpgcolcnt(int col, int sup);
+
+
 
 #endif
