@@ -173,7 +173,7 @@ void start_mining2(fptreePtr fptree, fpgsubtreePtr node, int item, int itemset_s
 		count = count_fpgsingles(); /* Count singles in linked list */
 		lheader = create_local_htable(count); /* Create and pop local header table */
 		if (lheader != NULL) {
-			prune_ancestors(count); /* Prune ancestor itemsets */
+			prune_ancestors(fptree, count); /* Prune ancestor itemsets */
 			lroot = gen_local_fptree(lheader)/* Create new local root for local FP tree */
 			start_mining(lroot, lheader, code_sofar, size + 1); /* Mine new FP tree */
 		}
@@ -219,6 +219,19 @@ int * get_ancestor(fpgsubtreePtr ref) {
 	}
 	size = i;
 	return itemset;
+}
+
+void prune_ancestors(fptreePtr fptree, fpgcolcntPtr count[]) {
+	fpgsubtreePtr ref = fptree.start_tmp_sets;
+	
+	while (ref != NULL) {
+		for ( i = 0; i < sizeof(count)/sizeof(fpgcolcntPtr); i++) {
+			if (count[ref.item_set[i]].support < SUPPORT_THRESHOLD)
+				ref.item_set = rem_elt(ref.item_set, i);/** Note: To be implemented */
+		}
+		
+		ref = ref->next;
+	}	
 }
 
 

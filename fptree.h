@@ -327,7 +327,7 @@ int * get_ancestor(fpgsubtreePtr ref);
  *                   nodes identified by following a trail of links from a particular item in 
  *                   the header table.
  */
-void prune_ancestors(fpgcolcntPtr count[]);
+void prune_ancestors(fptreePtr fptree, fpgcolcntPtr count[]);
 
 /** --------------------------------------------------------------------- 
  *                                                                        
