@@ -378,7 +378,7 @@ void local_htable_ordered(fpgheaderPtr table[], int hsize, fpgcolcntPtr count[],
  * @param table reference to start of header table containing links to an FP-tree produced during the FP-tree generation process.
  * @rerurn reference to the start of the generated FP-tree.
  */
-fptreenodePtr gen_local_fptree(fpgheaderPtr table);
+fptreenodePtr gen_local_fptree(fptreePtr fptree, fpgheaderPtr table);
 
 /**  ----------------------------------------------------------
  *                                                            
