@@ -62,7 +62,17 @@ void create_fptree(fptreePtr fptree, int size){
 	/* create header tables as population progresses */
 	for( i = 0; i < size; i++) {
 		if (data[i] != NULL)
-			add_to_fptree1(fptree->root, 0,data[i], 1, fptree->header_table);
+			add_to_fptree(fptree->root, 0,data[i], size, 1, fptree->header_table);
 	}
 }
-	
+
+void add_to_fptree(fptreenodePtr ref, int place, int itemset[], int size, int sup, fpgheaderPtr header){
+	if (place < size) {
+		if( !add_to_fptree1(ref, place, itemset, size, sup, header))
+			add_to_fptree2(ref,place,itemset,size,sup,header);
+	}
+}
+
+
+
+
