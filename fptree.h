@@ -51,6 +51,7 @@ int reconv[ OTH_ITEMSET_ARRAY_MAX];
 int num_freq_sets; /** Number of frequent itemsets */
 
 int size; /** size of itemset array */
+int colcnt; /** size of colcnt structure array */
     
 long num_updates;/** The number of updates required to generate the FP tree. */
   
@@ -341,7 +342,7 @@ void prune_ancestors(fptreePtr fptree, fpgcolcntPtr count[]);
  *         ancestor nodes in an FP-tree that preceed the nodes identified by following 
  *         a trail of links from a particular item in the header table. 
  */
-fpgcolcntPtr count_fpgsingles();
+fpgcolcntPtr count_fpgsingles(fptreePtr fptree);
 
 /**
  * CREATE LOCAL HEADER TABLE

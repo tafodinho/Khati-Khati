@@ -245,4 +245,26 @@ int rem_elt(int old_itemset[], int n) {
 	return 0;	
 }
 
+fpgcolcntPtr count_fpgsingles(fptreePtr fptree) {
+	int index, place = 0;
+	
+	fpgsupsetsPtr supsets = fptree.start_tmp_sets;
+	fpgcolcntPtr count[] =
+	count[0] = create_fpgcolcnt(0,0) 
+	/* Init array */
+	for( index = 1; index < colcnt ; index++)
+		count[index] = create_fpcolcnt(0,0);
+	while (supsets != NULL) {
+		for( index = 0; index < colcnt; index++) {
+			place = supsets.item_set[index];
+			count[place].support += supsets.support;
+			num_updates++;
+		}
+		supsets = supsets->next;
+	}
+	colcnt = i;
+	return count;
+}
+
+
 
