@@ -181,6 +181,15 @@ void start_mining2(fptreePtr fptree, fpgsubtreePtr node, int item, int itemset_s
 	}
 }
 
+int gensup_headtable(fpgsubtreePtr node) {
+	int count = 0;
+	while (node != NULL) {
+		count += node.item_count;
+		num_updates++;
+		node = node->next;
+	}
+	return 0;
+}
 
 
 
