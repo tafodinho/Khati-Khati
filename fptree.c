@@ -321,4 +321,18 @@ void local_htable_ordered(fpgheaderPtr table[], int hsize, fpgcolcntPtr count[],
 	} while (order == false);				
 }
 
+fptreenodePtr gen_local_fptree(fptreePtr fptree, fpgheaderPtr table) {
+	fpgsupsetsPtr ref = fptree.start_tmp_sets;
+	fptreenodePtr lroot = create_fptree_node(0);
+	
+	while ( ref != NULL) {
+		if (ref.item_set != NULL)
+			add_to_fptree(lroot, 0, ref.item_set, ref.support, table);
+			
+		ref = ref->next;
+	}
+	
+	return lroot;
+}
 
+ 
