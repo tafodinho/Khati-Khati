@@ -208,6 +208,18 @@ void generate_ancestor(fpgsupsetsPtr start_tmp_sets, fpgsubtreePtr ref) {
 
 }
 
+int * get_ancestor(fpgsubtreePtr ref) {
+	int itemset[ OTH_ITEMSET_ARRAY_MAX];
+	int i = 0;
+	if (ref == NULL)
+		return NULL;
+	while (ref != NULL) {
+		itemset[i++] = ref.item_name;
+		ref = ref->parent;
+	}
+	size = i;
+	return itemset;
+}
 
 
 

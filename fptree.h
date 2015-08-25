@@ -49,6 +49,8 @@ int conv[][OTH_ITEMSET_ARRAY_MAX];
 int reconv[ OTH_ITEMSET_ARRAY_MAX];
 
 int num_freq_sets; /** Number of frequent itemsets */
+
+int size; /** size of itemset array */
     
 long num_updates;/** The number of updates required to generate the FP tree. */
   
