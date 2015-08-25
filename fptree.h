@@ -182,7 +182,7 @@ fpgcolcntPtr create_fpgcolcnt(int col, int sup);
 
 /** CREATE FP-TREE */   
 /** Top level method to commence the construction of the FP-Tree. */
-void create_fptree(fptreePtr fptree);
+void create_fptree(fptreePtr fptree, int data_array_size);
    
 /** 
  * add_to_fptree(): Searches through current list of child refs looking for given item set.

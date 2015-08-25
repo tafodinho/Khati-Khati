@@ -26,6 +26,7 @@ fpgsubtreePtr create_fpsubtree_node(int name, int support, fpgsubtreePtr prev) {
 fpgheaderPtr create_fpgheader(int col_num) {
 	fpgheaderPtr new_node = (struct fpgheader)malloc(sizeof(struct fpgheader));
 	new_node->item_name = col_num;
+	new_node = new->next;
 
 	return new_node;
 }
@@ -50,5 +51,18 @@ fpgcolcntPtr create_fpgcolcnt(int col, int sup) {
 	return new_node;
 }
 
-
+/**
+ Note: Get size of data array. 
+ */
+void create_fptree(fptreePtr fptree, int size){
+	int i = 0;
+	fptree = (struct fptree)malloc(sizeof(struct fptree));
+	fptree->header_table = create_fpgheader(0);
+	
+	/* create header tables as population progresses */
+	for( i = 0; i < size; i++) {
+		if (data[i] != NULL)
+			add_to_fptree1(fptree->root, 0,data[i], 1, fptree->header_table);
+	}
+}
 	
