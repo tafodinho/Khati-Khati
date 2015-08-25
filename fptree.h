@@ -48,6 +48,10 @@ int conv[][OTH_ITEMSET_ARRAY_MAX];
  */
 int reconv[ OTH_ITEMSET_ARRAY_MAX];
 
+int num_freq_sets; /** Number of frequent itemsets */
+    
+long num_updates;/** The number of updates required to generate the FP tree. */
+  
 
 typedef struct fptree_node      *fptreenodePtr;
 typedef struct fpgsubtree_node  *fpgsubtreePtr;
@@ -66,7 +70,7 @@ typedef struct fptree           *fptreePtr;
 struct fptree_node {
 	int support;             /* support count associated with the itemset represented by node */
 	int num_nodes;           /* number of nodes on the total support tree */
-	fptreePtr child;         /* Reference to child(if any) for this node */
+	fptreenodePtr child;         /* Reference to child(if any) for this node */
 	fpgsubtreePtr node; /* store counts and a reference to a child branch. */
 	;  /*  used to link nodes on the fptree, enables cross linking */
 };

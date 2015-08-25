@@ -57,6 +57,7 @@ fpgcolcntPtr create_fpgcolcnt(int col, int sup) {
 void create_fptree(fptreePtr fptree, int size){
 	int i = 0;
 	fptree = (struct fptree)malloc(sizeof(struct fptree));
+	fptree->root = create_fptree_node(1);
 	fptree->header_table = create_fpgheader(0);
 	
 	/* create header tables as population progresses */
@@ -68,11 +69,29 @@ void create_fptree(fptreePtr fptree, int size){
 
 void add_to_fptree(fptreenodePtr ref, int place, int itemset[], int size, int sup, fpgheaderPtr header){
 	if (place < size) {
-		if( !add_to_fptree1(ref, place, itemset, size, sup, header))
+		if (!add_to_fptree1(ref, place, itemset, size, sup, header))
 			add_to_fptree2(ref,place,itemset,size,sup,header);
 	}
 }
 
+bool add_to_fptree1(fptreenodePtr ref, int place, int itemset[], int size, int sup, fpgheaderPtr header) {
 
+	while (ref.child != NULL) {
+		if( itemset[place] == ref->child->node.item_name) {
+			ref->child->node.item_count += sup;
+			num_updates++;
+			add_to_fptree(ref.child, place + 1, itemset, size, sup, header);
+			
+			return true;
+		} 
+		
+		if (itemset[place] < ref->child->node.item_name) {
+			return false;
+		}
+		ref = ref->child;
+	}
+	
+	return false;
+}
 
 
