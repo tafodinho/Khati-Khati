@@ -206,7 +206,7 @@ void add_to_fptree(fptreenodePtr ref, int place, int itemset[], int size, int su
  * @param header the link to the appropriate place in the header table. 
  * @return true if given itemset exists in FP-tree, and false otherwise. 
  */ 
-bool add_to_fptree1(fptreenodePtr ref, int place, int itemset[], int size, int sup, fpgheaderPtr header)
+bool add_to_fptree1(fptreenodePtr ref, int place, int itemset[], int size, int sup, fpgheaderPtr header);
     
 /** 
  * add_to_fptree2(): Adds new node to FP-tree. (Adds first attribute in itemSet and then rest of sequence). 
@@ -217,7 +217,7 @@ bool add_to_fptree1(fptreenodePtr ref, int place, int itemset[], int size, int s
  * @param sup the associated support value for the given itemset.
  * @param header the link to the appropriate place in the header table.
  */
-void add_to_fptree2(fptreenodePtr ref, int place, int itemset[], int size, int sup, fpgheaderPtr header)
+void add_to_fptree2(fptreenodePtr ref, int place, int itemset[], int size, int sup, fpgheaderPtr header);
     
 /**
  * add_rem_itemsets(): Continues adding attributes in current itemset to FP-tree.
