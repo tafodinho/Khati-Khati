@@ -60,7 +60,7 @@ struct fpgsubtree_node {
 };
 
 /**
- * fpgheader: A header table, array of structures used to link into fp tree.
+ * fpgheader: A header table, list of structures used to link into fp tree.
  *            All FPtree nodes with the same identifier are linked together
  *            starting from a node in a header table.(Cross linking occurs here)
  */
@@ -74,7 +74,7 @@ struct fpgheader {
  *              identified by following trails from a particular item on the header table.
  */
 struct fpgsupsets {
-	int *item_set;      /* item set label */
+	int item_set[OTH_ITEMSET_ARRAY_MAX];      /* item set label */
 	int support;        /* support value for a given itemset */
 	fpgsupsetsPtr next; /* references to next node on linked list. */
 };
@@ -99,7 +99,6 @@ struct fptree {
     /** Start reference for supportedSets linked list (temporary storage only).*/
     fpgsupsetsPtr start_tmp_sets;
     
-    // Other fields 
     
     /** Temporary storage for an index into an array of FP-tree nodes.
      *  Used when reassigning child reference arrays. */
@@ -288,7 +287,7 @@ int *get_ancestor(fpgsubtreePtr ref);
 
 /**
  * PRUNE ANCESTOR CODES
- * prune_ancestor(): Removes elements in ancestor itemSets (pointed at by next) which are not supported by referring to count 
+ * prune_ancestor(): Removes elements in ancestor itemsets (pointed at by next) which are not supported by referring to count 
  *                   array (which contains all the current supported 1 itemsets). 
  * @param count      the array of fpgcolcnts structures 
  *                   describing the single item sets (in terms of labels and associated 
@@ -305,7 +304,7 @@ void prune_ancestors(fpgcolcntPtr count[], int size);
  *                                                                        
  * ----------------------------------------------------------------------   
  * COUNT SINGLES
- * count_fpgsingles(): Counts frequent 1 item sets in ancestor itemSets linked list and place into an array. 
+ * count_fpgsingles(): Counts frequent 1 item sets in ancestor itemsets linked list and place into an array. 
  * @return array of @fpgcolcntPtr structures describing the  single item sets (in terms of labels and 
  *         associated support), contained in a linked list of @fpgsupsetsPtr which in turn describe the 
  *         ancestor nodes in an FP-tree that preceed the nodes identified by following 
@@ -347,7 +346,7 @@ void local_htable_ordered(fpgheaderPtr table[], int hsize, fpgcolcntPtr count[],
  * @param table reference to start of header table containing links to an FP-tree produced during the FP-tree generation process.
  * @rerurn reference to the start of the generated FP-tree.
  */
-fptreenodePtr gen_local_fptree(fpgheaderPtr table[], int hsize);
+fptreenodePtr gen_local_fptree(fpgheaderPtr table);
 
 /**  ----------------------------------------------------------
  *                                                            
