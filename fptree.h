@@ -24,6 +24,30 @@
 #define OTH_ITEMSET_ARRAY_MAX 524287
 #define ITEMSET_MAX_SIZE 10
 #define SUPPORT_THRESHOLD 5
+#define MIN_CONFIDENCE 0
+#define MAX_CONFIDENCE 100
+	
+
+/** 
+ *   2-D aray to hold input data from data file. Note that within the data
+ *   array records are numbered from zero, thus record one has index 0 etc. 
+ */
+int data[][ OTH_ITEMSET_ARRAY_MAX];
+
+/**
+ *  2-D array used to renumber columns for input data in terms of
+ *  frequency of single attributes (reordering will enhance performance
+ *  for some ARM algorithms). 
+ */
+int conv[][OTH_ITEMSET_ARRAY_MAX];	
+  
+/**
+ *  1-D array used to reconvert input data column numbers to their
+ *  original numbering where the input data has been ordered to enhance
+ *  computational efficiency. 
+ */
+int reconv[ OTH_ITEMSET_ARRAY_MAX];
+
 
 typedef struct fptree_node      *fptreenodePtr;
 typedef struct fpgsubtree_node  *fpgsubtreePtr;
@@ -106,6 +130,7 @@ struct fptree {
     
     /** Number of nodes created. */
     int num_nodes;
+    
 };
 
 /** ------ FUNCTIONS ------ */
