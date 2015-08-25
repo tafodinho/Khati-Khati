@@ -191,5 +191,24 @@ int gensup_headtable(fpgsubtreePtr node) {
 	return 0;
 }
 
+void generate_ancestor(fpgsupsetsPtr start_tmp_sets, fpgsubtreePtr ref) {
+	int sup;
+	int *ancestor_code;
+	
+	while (ref != NULL) {
+		sup = ref.item_count;
+		ancestor_code = get_ancestor(ref.parent);
+		
+		/* Add to linked list with current support */
+		if (ancestor_code != NULL)
+			start_tmp_sets = create_fpgsubsets(ancestor_code, sizeof(ancestor_code)/sizeof(int), sup, start_tmp_sets);
+			
+		ref = ref->next;
+	}
+
+}
+
+
+
 
 
