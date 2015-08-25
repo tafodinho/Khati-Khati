@@ -233,7 +233,7 @@ void add_to_fptree2(fptreenodePtr ref, int place, int itemset[], int size, int s
  * @param sup the associated support value for the given itemset.
  * @param header the link to the appropriate place in the header table.
  */
-void add_rem_itemsets(fptreenodePtr ref, fpgsubtreePtr back, tnt place, int itemset[], int size, int sup, 
+void add_rem_itemsets(fptreenodePtr ref, fpgsubtreePtr back, int place, int itemset[], int size, int sup, 
 					fpgheaderPtr header);
 
 /**  -----------------------------------------------------------------
