@@ -124,7 +124,7 @@ struct fptree {
     fptreenodePtr root;
     /** Start reference for header table. */
     fpgheaderPtr header_table; 
-    /** Start reference for supportedSets linked list (temporary storage only).*/
+    /** Start reference for supported sets linked list (temporary storage only).*/
     fpgsupsetsPtr start_tmp_sets;
     
     
@@ -272,7 +272,7 @@ void add_rem_itemsets(fptreenodePtr ref, fpgsubtreePtr back, int place, int item
  *                  Otherwise end. 
  * @param  table the reference to the current location in the header table (commencing with the last item).
  * @param itemset_sofar the label fot the current item sets as generated to date (null at start). */	
-void start_mining(fpgheaderPtr table, int itemset_sofar[], int size);
+void start_mining(fptreePtr fptree, fpgheaderPtr table, int itemset_sofar[], int size);
 
 /**
  * start_mining2():  Commence process of mining FP tree with respect to a single element in the header table.
@@ -282,7 +282,7 @@ void start_mining(fpgheaderPtr table, int itemset_sofar[], int size);
  * @param itemset_sofar the item set represented by the current FP-tree.
  * @param size
  */
-void start_mining2(fpgsubtreePtr node, int item, int itemset_sofar[], int size);
+void start_mining2(fptreePtr fptree, fpgsubtreePtr node, int item, int itemset_sofar[], int size);
 
 
 /** ---------------------------------------------------------------------                                                                       
@@ -305,14 +305,14 @@ int gensup_headtable(fpgsubtreePtr node);
  *                       pointed at by start_tmp_sets. 
  *  @param ref the reference to the current node in the prefix tree containing itemsets together with support values.
  */
-void generate_ancestor(fpgsubtreePtr ref);
+void generate_ancestor(fpgsupsetsPtr start_tmp_sets, fpgsubtreePtr ref);
 
 /**
  * GET ANCESTOR CODE
  * get_ancestor():  Generate the ancestor itemset from a given node. 
  * @param ref the reference to the current node in the prefix tree containing itemsets together with support values.
  */
-int *get_ancestor(fpgsubtreePtr ref);
+int * get_ancestor(fpgsubtreePtr ref);
 
 /**
  * PRUNE ANCESTOR CODES
@@ -325,7 +325,7 @@ int *get_ancestor(fpgsubtreePtr ref);
  *                   nodes identified by following a trail of links from a particular item in 
  *                   the header table.
  */
-void prune_ancestors(fpgcolcntPtr count[], int size);
+void prune_ancestors(fpgcolcntPtr count[]);
 
 /** --------------------------------------------------------------------- 
  *                                                                        
@@ -347,7 +347,7 @@ fpgcolcntPtr count_fpgsingles();
  * @param count the support for the 1 item sets. 
  * @return a FPgrowth header table.
  */
-fpgheaderPtr create_local_htable(fpgcolcntPtr count[], int size);
+fpgheaderPtr create_local_htable(fpgcolcntPtr count[]);
 
 /**
  * CREATE NEW LOCAL HEADER TABLE (UNORDERED)

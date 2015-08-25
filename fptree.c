@@ -140,4 +140,47 @@ void add_ref_to_fpghtable(int col_num, fpgsubtreePtr new_node, fpgheaderPtr head
 	}
 }
 
+void start_mining(fptreePtr fptree, fpgheaderPtr table, int itemset_sofar[], int size) {
+	
+	/* Loop through header table item by item */
+	while (table != NULL) {
+		/* check for null link */
+		if (table.next != NULL) {
+			start_mining2(fptree, table.next, table.item_name, itemset_sofar, size);
+		}
+	}
+
+}
+
+void start_mining2(fptreePtr fptree, fpgsubtreePtr node, int item, int itemset_sofar[], int size) {
+	fpgcolcntPtr count;
+	fpgheaderPtr lheader;
+	fptreenodePtr lroot;
+	int support, i;
+	int code_sofar[size + 1];
+	/** Count support for current item in header table and store in a tree */
+	support = gensup_headtable(node);
+	code_sofar[0] = item;/** Resizes given array so that its length is increased by one element, new element added to front */
+	for (i = 0;i < size; i++)
+		code_sofar[i+1] = itemset_sofar[i];
+	add_to_tree(code_sofar, size + 1, support);/** NOTE: To be implemented. */
+	
+	/** Collect ancestor itemsets and store in linked list */
+	generate_ancestor(fptree.start_tmp_sets, node);
+		
+	/** Process ancestor itemsets. */
+	if (fptree.start_tmp_sets != NULL) {
+		count = count_fpgsingles(); /* Count singles in linked list */
+		lheader = create_local_htable(count); /* Create and pop local header table */
+		if (lheader != NULL) {
+			prune_ancestors(count); /* Prune ancestor itemsets */
+			lroot = gen_local_fptree(lheader)/* Create new local root for local FP tree */
+			start_mining(lroot, lheader, code_sofar, size + 1); /* Mine new FP tree */
+		}
+		
+	}
+}
+
+
+
 
