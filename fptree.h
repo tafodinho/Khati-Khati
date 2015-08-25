@@ -72,7 +72,7 @@ struct fptree_node {
 	int num_nodes;           /* number of nodes on the total support tree */
 	fptreenodePtr child;         /* Reference to child(if any) for this node */
 	fpgsubtreePtr node; /* store counts and a reference to a child branch. */
-	;  /*  used to link nodes on the fptree, enables cross linking */
+	fpgheaderPtr fpgheader;  /*  used to link nodes on the fptree, enables cross linking */
 };
 
 /**

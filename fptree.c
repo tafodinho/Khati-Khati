@@ -101,7 +101,7 @@ void add_to_fptree2(fptreenodePtr ref, int place, int itemset[], int size, int s
 	fpnode.node = subtree;
 	
 	/** Note: Still to implement this function */
-	add_ref_to_fpghtable(itemset[place], subtree, fpnode); /* Adds link to header table */
+	add_ref_to_fpghtable(itemset[place], subtree, header); /* Adds link to header table */
 	ref.child = fpnode; /* Add into FP tree */
 	add_rem_itemsets(fpnode, subtree, place + 1, itemset, size, sup, header); /* Proceed down branch with rest of itemsets */
 }
@@ -113,11 +113,31 @@ void add_rem_itemsets(fptreenodePtr ref, fpgsubtreePtr back, int place, int item
 		fpgsubtreePtr subtree = create_fpsubtree_node(itemset[place],sup, ref.node); /* Create new prefix subtree node */
 		fptreenodePtr fpnode =  create_fptree_node(sup); /* create new fptree node incorporating subtree node */
 		fpnode.node = subtree;
-		add_ref_to_fpghtable(itemset[place], subtree, fpnode); /* Adds link to header table */
+		add_ref_to_fpghtable(itemset[place], subtree, header); /* Adds link to header table */
 		ref.child = fpnode; /* Add into FP tree */
 		add_rem_itemsets(fpnode, subtree, place + 1, itemset, size, sup, header); /** Proceed down branch with rest of itemsets */
 
+} 
+
+/** 
+ *  add_ref_to_fpghtable(): Adds reference to new FP-tree node to header table moving old reference 
+ *					   		so that it becomes a link from the new FP-tree node.
+ *  @param col_num the given attribute.
+ *  @param new_node the newly created FP-tree node.
+ *  @param header the reference to the header table(array). 
+ */
+void add_ref_to_fpghtable(int col_num, fpgsubtreePtr new_node, fpgheaderPtr header) {
+	fpgsubtreePtr tmp;
+	
+	while (header != NULL) {
+		if (col_num == header.item_name) {
+			tmp = header.next;
+			header.next = new_node;
+			new_node.next = tmp;
+			break;
+		}
+		header = header->next;
+	}
 }
-  
 
 
