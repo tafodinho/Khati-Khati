@@ -358,7 +358,7 @@ fpgheaderPtr create_local_htable(fpgcolcntPtr count[]);
  * @param count the support for the 1 itemsets. 
  * @return a FPgrowth header table.
  */
-fpgheaderPtr local_htable_unordered(fpgcolcntPtr count[], int size);
+fpgheaderPtr local_htable_unordered(fpgcolcntPtr count[]);
 
 /**
  * ORDER LOCAL HEADER TABLE

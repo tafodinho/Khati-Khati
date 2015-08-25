@@ -275,4 +275,28 @@ fpgheaderPtr create_local_htable(fpgcolcntPtr count[]) {
 	return lhtable;
 }
 
+fpgheaderPtr local_htable_unordered(fpgcolcntPtr count[]) {
+	int counter = 1, i, place;
+	/* Loops through array, counting frequent one item sets */
+	for (i = 1; i < colcnt; i++) {
+		if (count[i].support >= SUPPORT_THRESHOLD)
+			counter++;
+	}
+	/* Builds new Header Table array containing frequent items */
+	if (counter == 1)
+		return NULL;
 		
+	/* Populates header table */	
+	fpgheaderPtr lhtable[colcnt];
+	place = 1;
+	for (i = 1;i < colcnt; i++) {
+	    if (count[i].support >= SUPPORT_THRESHOLD) {
+	        lhtable[place] = create_fpgheader(count[i].col_num);    
+	        place++;
+	    }
+	 }    
+	
+	return lhtable;
+}
+
+
