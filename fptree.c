@@ -227,13 +227,22 @@ void prune_ancestors(fptreePtr fptree, fpgcolcntPtr count[]) {
 	while (ref != NULL) {
 		for ( i = 0; i < sizeof(count)/sizeof(fpgcolcntPtr); i++) {
 			if (count[ref.item_set[i]].support < SUPPORT_THRESHOLD)
-				ref.item_set = rem_elt(ref.item_set, i);/** Note: To be implemented */
+				rem_elt(ref.item_set, i);/** Removes in frequent itemset */
 		}
 		
 		ref = ref->next;
 	}	
 }
 
-
+int rem_elt(int old_itemset[], int n) {
+	if ( sizeof(old_itemset)/sizeof(int) <= n)
+		return old_itemset;	
+	else { 
+		for ( i = n; i < [sizeof(old_itemset)/sizeof(int); i++)
+			old_itemset[i] = old_itemset[i + 1]
+	}
+	
+	return 0;	
+}
 
 
