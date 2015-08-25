@@ -299,4 +299,26 @@ fpgheaderPtr local_htable_unordered(fpgcolcntPtr count[]) {
 	return lhtable;
 }
 
+void local_htable_ordered(fpgheaderPtr table[], int hsize, fpgcolcntPtr count[], int size) {
+	bool order;
+	fpgheaderPtr tmp;
+	int i, place1, place2;
+	
+	do {
+		i = 1;
+		order = true;
+		while ( i < hsize -1) {
+			place1 = table[i].item_name;
+			place2 = table[i + 1].item_name;
+			if (count[place1].support > count[place2].support) { /* swap */
+				order = false;
+				tmp = table[i];
+				table[i] = table[i + 1];
+				table[i + 1] = temp;
+			}
+			i++;
+		}
+	} while (order == false);				
+}
+
 
