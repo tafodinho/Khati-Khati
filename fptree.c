@@ -267,4 +267,12 @@ fpgcolcntPtr count_fpgsingles(fptreePtr fptree) {
 }
 
 
+fpgheaderPtr create_local_htable(fpgcolcntPtr count[]) {
+	int index;
+	fpgheaderPtr lhtable;
+	lhtable = local_htable_unordered(count, colcnt);
+	
+	return lhtable;
+}
 
+		
