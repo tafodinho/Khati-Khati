@@ -396,4 +396,15 @@ void out_fptree(fptreePtr ref) {
 
 }
 
+int calc_storage(fptreenodePtr ref, int storage) {
+	if (ref == NULL)
+		return storage;
+		
+	while(ref != NULL) {
+		storage += 20;
+		ref = ref->child;
+	}
+	return storage;
+}
+
 
