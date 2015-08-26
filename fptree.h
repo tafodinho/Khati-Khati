@@ -12,7 +12,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include <time.h>
 #include <ctype.h>
 
 #define TRANS_DB "retail.dat.tmp" /* Transactional database */
@@ -32,14 +31,14 @@
  *   2-D aray to hold input data from data file. Note that within the data
  *   array records are numbered from zero, thus record one has index 0 etc. 
  */
-int data[][ OTH_ITEMSET_ARRAY_MAX];
+int data[BASKET_MAX_CHARS][OTH_ITEMSET_ARRAY_MAX];
 
 /**
  *  2-D array used to renumber columns for input data in terms of
  *  frequency of single attributes (reordering will enhance performance
  *  for some ARM algorithms). 
  */
-int conv[][OTH_ITEMSET_ARRAY_MAX];	
+int conv[BASKET_MAX_CHARS][OTH_ITEMSET_ARRAY_MAX];	
   
 /**
  *  1-D array used to reconvert input data column numbers to their
@@ -52,6 +51,8 @@ int num_freq_sets; /** Number of frequent itemsets */
 
 int size; /** size of itemset array */
 int colcnt; /** size of colcnt structure array */
+
+int num_oflines; /** Size of data set array */
     
 long num_updates;/** The number of updates required to generate the FP tree. */
   
@@ -444,9 +445,9 @@ int calc_storage(fptreenodePtr ref, int storage);
 /**
  * INPUT DATA SET
  * input_dataset(): Processes input data file(TRANS_DB)
- * @param fptreePtr stores results to fptree
+ * Stores input data into a data[][] array.
  */
-void input_dataset(fptreePtr fptree); 
+void input_dataset(); 
 
 /**
  * REORDER DATA SET ACCORDING TO ATTRIBUTE FREQUENCY       
