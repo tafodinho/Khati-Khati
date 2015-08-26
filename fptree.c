@@ -54,16 +54,16 @@ fpgcolcntPtr create_fpgcolcnt(int col, int sup) {
 /**
  Note: Get size of data array. 
  */
-void create_fptree(fptreePtr fptree, int size){
+void create_fptree(fptreePtr fptree){
 	int i = 0;
 	fptree = (struct fptree)malloc(sizeof(struct fptree));
 	fptree->root = create_fptree_node(1);
 	fptree->header_table = create_fpgheader(0);
 	
 	/* create header tables as population progresses */
-	for( i = 0; i < size; i++) {
+	for( i = 0; i < num_oflines; i++) {
 		if (data[i] != NULL)
-			add_to_fptree(fptree->root, 0,data[i], size, 1, fptree->header_table);
+			add_to_fptree(fptree->root, 0,data[i], BASKET_MAX_CHARS, 1, fptree->header_table);
 	}
 }
 
@@ -467,5 +467,30 @@ void input_dataset() {
     num_oflines = num_lines;
 	
 }
+
+void order_input_data() {
+	int i, j, k;
+	
+	for (i = 0; i < num_oflines; i++) {
+		for ( j = 0; j < BASKET_MAX_CHARS; j++) {
+			if ( data[i][j] != conv[0][data[i][j]]) {
+				conv[0][data[i][j]] = data[i][j];
+				conv[1][data[i][j] = 1;
+			} else {
+				conv[1][data[i][j]] += 1;
+			}
+		}
+	}
+	
+	order_count_array();
+}
+
+
+// Bubble sort count array on support value (second index)	
+	orderCountArray(countArray);
+       
+        // Define conversion and reconversion arrays      
+	defConvertArrays(countArray);
+
 
 

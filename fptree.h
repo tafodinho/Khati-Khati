@@ -21,6 +21,7 @@
 #define ITEM_MAX 10
 #define ONE_ITEMSET_ARRAY_MAX 16500
 #define OTH_ITEMSET_ARRAY_MAX 524287
+#define MAX_LINES 7000
 #define ITEMSET_MAX_SIZE 10
 #define SUPPORT_THRESHOLD 5
 #define MIN_CONFIDENCE 0
@@ -31,21 +32,20 @@
  *   2-D aray to hold input data from data file. Note that within the data
  *   array records are numbered from zero, thus record one has index 0 etc. 
  */
-int data[BASKET_MAX_CHARS][OTH_ITEMSET_ARRAY_MAX];
+int data[MAX_LINES][BASKET_MAX_CHARS];
 
 /**
- *  2-D array used to renumber columns for input data in terms of
- *  frequency of single attributes (reordering will enhance performance
- *  for some ARM algorithms). 
+ *  2-D array used to remember columns for input data in terms of
+ *  frequency of single attributes (reordering will enhance performance.)
  */
-int conv[BASKET_MAX_CHARS][OTH_ITEMSET_ARRAY_MAX];	
+int conv[2][MAX_LINES];	
   
 /**
  *  1-D array used to reconvert input data column numbers to their
  *  original numbering where the input data has been ordered to enhance
  *  computational efficiency. 
  */
-int reconv[ OTH_ITEMSET_ARRAY_MAX];
+int reconv[OTH_ITEMSET_ARRAY_MAX];
 
 int num_freq_sets; /** Number of frequent itemsets */
 
