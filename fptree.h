@@ -393,7 +393,7 @@ fptreenodePtr gen_local_fptree(fptreePtr fptree, fpgheaderPtr table);
  * @param newNode the given node to be added to the FP-tree
  * @return The revised array of FP-tree nodes.
  */
-fptreenodePtr realloc_fptree(fptreenodePtr oldArray[], int size, fptreenodePtr newNode);
+fptreenodePtr realloc_fptree(fptreenodePtr oldArray, fptreenodePtr newNode);
 
 /**
  * OUTPUT HEADER TABLE 

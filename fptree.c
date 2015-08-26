@@ -325,7 +325,7 @@ fptreenodePtr gen_local_fptree(fptreePtr fptree, fpgheaderPtr table) {
 	fpgsupsetsPtr ref = fptree.start_tmp_sets;
 	fptreenodePtr lroot = create_fptree_node(0);
 	
-	while ( ref != NULL) {
+	while (ref != NULL) {
 		if (ref.item_set != NULL)
 			add_to_fptree(lroot, 0, ref.item_set, ref.support, table);
 			
@@ -335,4 +335,31 @@ fptreenodePtr gen_local_fptree(fptreePtr fptree, fpgheaderPtr table) {
 	return lroot;
 }
 
- 
+fptreenodePtr realloc_fptree(fptreenodePtr old, fptreenodePtr new_node) {
+	fptreenodePtr tmp;
+	
+	if (old == NULL) {
+		old = create_fptree_node(new_node.support);
+		old.num_nodes += new_node.num_nodes;
+		old.node = new_node.node;
+		old.fpgheader = new_node.fpgheader;
+		old = old->child;
+		return old;
+	}
+	
+	while(old != NULL) {
+		if ( new_node.node.item_name < old.node.item_name) {
+			tmp = old;
+			new_node.child = tmp;
+			old = new_node;
+			return old;
+		}
+		
+		old = old->child;
+	}
+	old = new_node;
+	
+	return old;
+}
+
+	
