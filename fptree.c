@@ -407,4 +407,13 @@ int calc_storage(fptreenodePtr ref, int storage) {
 	return storage;
 }
 
+void out_fptree_storage(fptreenodePtr root) {
+	int storage = 8;
+	storage = calc_storage(root.child, storage);
+	
+	printf("\n FP Tree storage = %d bytes", storage);
+	printf("\n FP tree update = %d", num_updates);
+	printf("\n\n");
+}
+
 
