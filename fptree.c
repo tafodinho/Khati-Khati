@@ -416,4 +416,56 @@ void out_fptree_storage(fptreenodePtr root) {
 	printf("\n\n");
 }
 
+void input_dataset() {
+
+	FILE *trans;
+    char item[ITEM_MAX];
+    char basket[BASKET_MAX_ITEMS];
+    int i,j,item_no, num_lines = 0;
+    char *p;
+
+    trans = fopen(TRANS_DB,"r");
+    if( trans == NULL) {
+		fprintf(stderr,"\n Error Opening Transaction Database file: %s", TRANS_DB);
+		exit(EXIT_SUCCESS);
+    }
+
+
+    /* read one line at a time from the file */
+    while (fgets(basket, BASKET_MAX_CHARS, trans) != NULL) {
+        
+        for (i=0;i<BASKET_MAX_ITEMS;i++)
+            data[num_lines][i] = -1;
+
+        item_no = 0;
+
+        /*read line items into items array*/
+        p = basket;
+
+        /* stops at the end of string character */
+        while (*p != '\0') {
+            if (*p == '\0')
+                break;
+            while (isspace(*p)){ /* skip spaces */
+                ++p;
+                continue;
+            }
+            if (*p == '\0')
+                break;
+            j=0;
+            while (!isspace(*p)){
+                item[j++] = *p;
+                ++p;
+            }
+            item[j] = '\0';//stores null at end of string.
+
+            data[num_lines][item_no] = atoi(item);
+            item_no++;
+        }
+        num_lines++;
+    }
+    num_oflines = num_lines;
+	
+}
+
 
