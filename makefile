@@ -2,4 +2,4 @@
 
 
 all:
-	gcc -g -o apriori apriori_main.c apriori.c
+	gcc -g -o fptree fpmain.c fptree.c
