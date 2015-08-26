@@ -485,12 +485,23 @@ void order_input_data() {
 	order_count_array();
 }
 
+/** Sorts array in descending order */
+void order_count_array() {
+	int attr, qty,i, j;
+	for (i = 0; i < MAX_LINES -1;i++)
+		j = i + 1;
+		while ( conv[j][1] > conv[i][1] && j < MAX_LINES) {
+			/** Swap both values */
+			int tmp[2];
+			tmp[0] = conv[i][0];
+			tmp[1] = conv[i][1];
+			conv[i][0] = conv[j][0];
+			conv[i][1] = conv[j][1];
+			conv[j][0] = tmp[0];
+			conv[j][1] = tmp[1];
+			j++;
+		}
+}
 
-// Bubble sort count array on support value (second index)	
-	orderCountArray(countArray);
-       
-        // Define conversion and reconversion arrays      
-	defConvertArrays(countArray);
-
-
-
+// Define conversion and reconversion arrays      
+defConvertArrays(countArray);
