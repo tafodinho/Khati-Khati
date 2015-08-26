@@ -384,3 +384,16 @@ int out_fpsubtree2(fpgsubtreePtr ref) {
 	return counter;
 }
 
+void out_fptree(fptreePtr ref) {
+	fptreenodePtr tmp = ref.root;
+	if (ref == NULL)
+		return;
+		
+	while(tmp != NULL) {
+		outfpsubtree2(tmp.node);
+		tmp = tmp->child;
+	}
+
+}
+
+

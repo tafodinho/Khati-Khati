@@ -415,7 +415,7 @@ int out_fpsubtree2(fpgsubtreePtr ref);
  * @param ref the reference to the given FP-tree level.
  * @param nodeID the root string for the node ID.
  */
-void out_fptree(fptreenodePtr ref, int *nodeID);
+void out_fptree(fptreePtr ref);
 
 /**
  * CALCULATE STORAGE 
