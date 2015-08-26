@@ -503,5 +503,29 @@ void order_count_array() {
 		}
 }
 
-// Define conversion and reconversion arrays      
-defConvertArrays(countArray);
+/* GET NUM OF SUPPORTED ONE ITEM SETS */
+int gen_freq_one_itemsets() {
+	int i, j, counter;
+	char freq_file[20];
+	FILE *fp;
+	strcpy(freq_file,"../freq_j_");
+    sprintf(str, "%d", 1);
+    strcat(freq_file, str);
+    strcat(freq_file, "_itemsets");
+    
+	fp = fopen(freq_file,"w");
+    if (f_itemsets == NULL) {
+		fprintf(stderr,"\n Error opening file: %s", freq_file);
+		exit(EXIT_SUCCESS);
+    }
+    
+	for (i = 0; i < NUM_LINES;i++) {
+		if ( conv[i][1] < SUPPORT_THRESHOLD)
+			return counter;
+		else 
+			fprintf(fp, "\n %d; %d", conv[i][0], conv[i][1]);
+			
+		counter++;
+	}
+	return counter;
+}

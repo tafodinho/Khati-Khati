@@ -462,7 +462,7 @@ void input_dataset();
     1 2 5
     2 3 5
     </PRE>
-    This would produce a count Array (ignore index 0):
+    This would produce a count Array:
     <PRE>
     +---+---+---+---+---+---+
     |   | 1 | 2 | 3 | 4 | 5 |
@@ -478,7 +478,7 @@ void input_dataset();
     |   | 5 | 4 | 3 | 2 | 1 |
     +---+---+---+---+---+---+
     </PRE>
-    Giving rise to the conversion Array of the form (no index 0):
+    Giving rise to the conversion Array of the form:
     <PRE>
     +---+---+---+---+---+---+
     |   | 3 | 1 | 4 | 5 | 2 |
@@ -524,7 +524,7 @@ void out_num_freq_itemsets(fptreePtr fptree);
  * SET NUMBER ONE ITEM SETS
  * set_num_oneitemsets(); Sets the number of one item sets field (<size> to the number of supported one item sets.
  */
-void set_num_oneitemsets();
+int gen_freq_one_itemsets();
 
  
 #endif

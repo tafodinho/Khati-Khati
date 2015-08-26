@@ -18,10 +18,9 @@ int main(int argc, char** argv) {
 	input_dataset();
 	
 	/** Reorder and prune input data according to frequency of single attr */	
-	order_input_data(fptree);
+	order_input_data();
 	recast_data_prune_unsupported(fptree); 
-	gen_freq_one_itemsets(fptree);
-	//out_data_array();
+	gen_freq_one_itemsets();/** Prints freq-1 itemsets */
 
 
     /** Build initial FP-tree */
