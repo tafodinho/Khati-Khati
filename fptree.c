@@ -472,12 +472,12 @@ void order_input_data() {
 	int i, j, k;
 	
 	for (i = 0; i < num_oflines; i++) {
-		for ( j = 0; j < BASKET_MAX_CHARS; j++) {
-			if ( data[i][j] != conv[0][data[i][j]]) {
-				conv[0][data[i][j]] = data[i][j];
-				conv[1][data[i][j] = 1;
+		for (j = 0; j < BASKET_MAX_CHARS; j++) {
+			if (data[i][j] != conv[data[i][j]][0]) {
+				conv[data[i][j]][0] = data[i][j];
+				conv[data[i][j]][1] = 1;
 			} else {
-				conv[1][data[i][j]] += 1;
+				conv[data[i][j]][1] += 1;
 			}
 		}
 	}
@@ -527,5 +527,32 @@ int gen_freq_one_itemsets() {
 			
 		counter++;
 	}
+	num_oflines = counter;
 	return counter;
 }
+
+void recast_data_prune_unsupported(fptreePtr fptree) {
+	int itemset[BASKET_MAX_CHARS][2];
+	int attr, i, j, k = 0;
+	
+	for (i = 0; i < num_oflines; i++) {
+		k = 0;
+		if (data[i] != NULL) {
+			for (j = 0; j < BASKET_MAX_CHARS; j++) {
+				attr = data[i][j];
+				
+				/** check support */
+				if (conv[attr][1] >= SUPPORT_THRESHOLD) {
+					itemset[k][0] = conv[attr][0];
+					itemset[k++][1] = conv[attr][1]
+				}
+				data[i][j] = -1;/* reset array. */
+			}
+			
+			for (j = 0; j < k; j++)
+				data[i][j] = item[j][0];
+		}
+	}
+}
+
+
