@@ -362,4 +362,14 @@ fptreenodePtr realloc_fptree(fptreenodePtr old, fptreenodePtr new_node) {
 	return old;
 }
 
+void out_fpsubtree(fpgheaderPtr htable) {
 	
+	printf("\nPrefix Subtree from Header Table");
+	printf("\n HEADER = %d ,", htable.item_name);
+	while (htable->next != NULL) {
+		printf("\nSub tree: %d, %d, ", htable.next.item_count, htable.next.item_name);
+		htable->next = htable.next.next;
+	}
+}
+
+

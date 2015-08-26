@@ -397,7 +397,7 @@ fptreenodePtr realloc_fptree(fptreenodePtr oldArray, fptreenodePtr newNode);
 
 /**
  * OUTPUT HEADER TABLE 
- * out_fpsubtree():  Commences process of outputting the prefix sub tree to the screen, starting at header table. 
+ * out_fpsubtree():  Prints the prefix sub tree to the screen, starting at header table. 
  */
 void out_fpsubtree(fpgheaderPtr header_table);
 
