@@ -372,4 +372,15 @@ void out_fpsubtree(fpgheaderPtr htable) {
 	}
 }
 
+int out_fpsubtree2(fpgsubtreePtr ref) {
+	int counter = 1;
+	while (ref != NULL) {
+		printf("\n Counter: %d, item_name: %d , item_count: %d",counter,
+			ref.item_name, ref.item_count);
+		counter++;
+		ref = ref->next;
+	}
+	
+	return counter;
+}
 
