@@ -13,10 +13,9 @@ int main(int argc, char** argv) {
 
 	/** Create instance of class FPTree */
 	fptreePtr fptree;
-	create_fptree(fptree);
 	
 	/** Read data to be mined from file */
-	input_dataset(fptree);
+	input_dataset();
 	
 	/** Reorder and prune input data according to frequency of single attr */	
 	order_input_data(fptree);

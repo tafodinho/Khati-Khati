@@ -190,7 +190,7 @@ fpgcolcntPtr create_fpgcolcnt(int col, int sup);
 
 /** CREATE FP-TREE */   
 /** Top level method to commence the construction of the FP-Tree. */
-void create_fptree(fptreePtr fptree, int data_array_size);
+void create_fptree(fptreePtr fptree);
    
 /** 
  * add_to_fptree(): Searches through current list of child refs looking for given item set.
@@ -496,7 +496,7 @@ void input_dataset();
     +---+---+---+---+---+---+		
     </PRE>
  */
-void order_input_data(fptreePtr fptree);
+void order_input_data();
 
 /**
  * RECAST INPUT DATA AND REMOVE UNSUPPORTED SINGLE ATTRIBUTES.
