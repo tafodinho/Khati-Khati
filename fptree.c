@@ -219,9 +219,9 @@ int * get_ancestor(fpgsubtreePtr ref) {
 
 void prune_ancestors(fptreePtr fptree, fpgcolcntPtr count[]) {
 	fpgsubtreePtr ref = fptree->start_tmp_sets;
-	
+	int i;
 	while (ref != NULL) {
-		for ( i = 0; i < sizeof(count)/sizeof(fpgcolcntPtr); i++) {
+		for ( i = 0; i < colcnt; i++) {
 			if (count[ref->item_set[i]]->support < SUPPORT_THRESHOLD)
 				rem_elt(ref->item_set, i);/** Removes in frequent itemset */
 		}
