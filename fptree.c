@@ -166,7 +166,7 @@ void start_mining2(fptreePtr fptree, fpgsubtreePtr node, int item, int itemset_s
 		
 	/** Process ancestor itemsets. */
 	if (fptree->start_tmp_sets != NULL) {
-		count = count_fpgsingles(fptree); /* Count singles in linked list */
+		count_fpgsingles(fptree); /* Count singles in linked list */
 		lheader = create_local_htable(count); /* Create and pop local header table */
 		if (lheader != NULL) {
 			prune_ancestors(fptree, count); /* Prune ancestor itemsets */
@@ -245,7 +245,6 @@ fpgcolcntPtr count_fpgsingles(fptreePtr fptree) {
 	int index, place = 0;
 	
 	fpgsupsetsPtr supsets = fptree->start_tmp_sets;
-	fpgcolcntPtr count[] =
 	count[0] = create_fpgcolcnt(0,0) 
 	/* Init array */
 	for( index = 1; index < colcnt ; index++)

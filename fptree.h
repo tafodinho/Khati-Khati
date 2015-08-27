@@ -47,6 +47,8 @@ int conv[MAX_LINES][2];
  */
 int reconv[OTH_ITEMSET_ARRAY_MAX];
 
+fpgcolcntPtr count[OTH_ITEMSET_ARRAY_MAX]
+
 int num_freq_sets; /** Number of frequent itemsets */
 
 int size; /** size of itemset array */
