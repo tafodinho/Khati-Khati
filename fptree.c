@@ -463,23 +463,6 @@ void input_dataset() {
 	
 }
 
-void order_input_data() {
-	int i, j, k;
-	
-	for (i = 0; i < num_oflines; i++) {
-		for (j = 0; j < BASKET_MAX_CHARS; j++) {
-			if (data[i][j] != conv[data[i][j]][0]) {
-				conv[data[i][j]][0] = data[i][j];
-				conv[data[i][j]][1] = 1;
-			} else {
-				conv[data[i][j]][1] += 1;
-			}
-		}
-	}
-	
-	order_count_array();
-}
-
 /** Sorts array in descending order */
 void order_count_array() {
 	int attr, qty,i, j;
@@ -496,6 +479,23 @@ void order_count_array() {
 			conv[j][1] = tmp[1];
 			j++;
 		}
+}
+
+void order_input_data() {
+	int i, j, k;
+	
+	for (i = 0; i < num_oflines; i++) {
+		for (j = 0; j < BASKET_MAX_CHARS; j++) {
+			if (data[i][j] != conv[data[i][j]][0]) {
+				conv[data[i][j]][0] = data[i][j];
+				conv[data[i][j]][1] = 1;
+			} else {
+				conv[data[i][j]][1] += 1;
+			}
+		}
+	}
+	
+	order_count_array();
 }
 
 /* GET NUM OF SUPPORTED ONE ITEM SETS */
