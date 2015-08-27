@@ -97,6 +97,7 @@ struct fpgsubtree_node {
  */
 struct fpgheader {
 	int item_name; /* 1 itemset attribute identifier */
+	fpgsubtreePtr node;
 	fpgheaderPtr next; /* forward link to the next node */
 };
 

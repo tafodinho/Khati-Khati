@@ -101,13 +101,10 @@ bool add_to_fptree1(fptreenodePtr ref, int place, int itemset[], int size, int s
  *  @param header the reference to the header table(array). 
  */
 void add_ref_to_fpghtable(int col_num, fpgsubtreePtr new_node, fpgheaderPtr header) {
-	fpgsubtreePtr tmp;
 	
 	while (header != NULL) {
 		if (col_num == header->item_name) {
-			tmp = header->next;
-			header->next = new_node;
-			new_node->next = tmp;
+			header->node = new_node;
 			break;
 		}
 		header = header->next;
