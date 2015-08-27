@@ -361,9 +361,9 @@ void out_fpsubtree(fpgheaderPtr htable) {
 	
 	printf("\nPrefix Subtree from Header Table");
 	printf("\n HEADER = %d ,", htable->item_name);
-	while (htable->next != NULL) {
-		printf("\nSub tree: %d, %d, ", htable->next->item_count, htable->next->item_name);
-		htable->next = htable->next->next;
+	while (htable->node != NULL) {
+		printf("\nSub tree: %d, %d, ", htable->node->item_count, htable->node->item_name);
+		htable->node = htable->node->next;
 	}
 }
 
@@ -514,7 +514,7 @@ int gen_freq_one_itemsets() {
 		exit(EXIT_SUCCESS);
     }
     
-	for (i = 0; i < NUM_LINES;i++) {
+	for (i = 0; i < num_oflines;i++) {
 		if ( conv[i][1] < SUPPORT_THRESHOLD)
 			return counter;
 		else 
