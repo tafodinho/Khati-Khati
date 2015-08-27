@@ -142,8 +142,8 @@ void start_mining(fptreePtr fptree) {
 	/* Loop through header table item by item */
 	while (fptree->header_table != NULL) {
 		/* check for null link */
-		if (header->table->next != NULL) {
-			start_mining2(fptree, fptree->header_table->next, fptree->header_table->item_name, itemset,2);
+		if (header_table->node != NULL) {
+			start_mining2(fptree, fptree->header_table->node, fptree->header_table->item_name, itemset,2);
 		}
 	}
 }
