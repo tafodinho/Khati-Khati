@@ -327,7 +327,7 @@ fptreenodePtr gen_local_fptree(fptreePtr fptree, fpgheaderPtr table) {
 		ltree->start_tmp_sets = ltree->start_tmp_sets->next;
 	}
 	
-	return lroot;
+	return ltree->root;
 }
 
 fptreenodePtr realloc_fptree(fptreenodePtr old, fptreenodePtr new_node) {
@@ -407,7 +407,7 @@ void out_fptree_storage(fptreenodePtr root) {
 	storage = calc_storage(root->child, storage);
 	
 	printf("\n FP Tree storage = %d bytes", storage);
-	printf("\n FP tree update = %d", num_updates);
+	printf("\n FP tree update = %ld", num_updates);
 	printf("\n\n");
 }
 
