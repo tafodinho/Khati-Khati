@@ -59,7 +59,6 @@ long num_updates;/** The number of updates required to generate the FP tree. */
 
 typedef struct fptree_node      *fptreenodePtr;
 typedef struct fpgsubtree_node  *fpgsubtreePtr;
-typedef struct fptree_node      *fptreePtr;
 typedef struct fpgheader        *fpgheaderPtr;
 typedef struct fpgsupsets       *fpgsupsetsPtr;
 typedef struct fpgcolcnt        *fpgcolcntPtr;
