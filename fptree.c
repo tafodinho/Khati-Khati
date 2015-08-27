@@ -31,10 +31,9 @@ fpgheaderPtr create_fpgheader(int col_num) {
 	return new_node;
 }
 
-fpgsupsetsPtr create_fpgsubsets( int itemsets[], int size, int sup, fpgsubtreePtr next) {
+fpgsupsetsPtr create_fpgsupsets( int itemsets[], int size, int sup, fpgsupsetsPtr next) {
 	int i = 0;
 	fpgsupsetsPtr new_node = (struct fpsupsets)malloc(sizeof(struct fpgsupsets));
-	new_node->item_set = (int)malloc(sizeof(int) * size);
 	for( i = 0; i < size; i++)
 		new_node->item_set[i] = itemsets[i];
 	new_node->support = sup;
@@ -200,7 +199,7 @@ void generate_ancestor(fpgsupsetsPtr start_tmp_sets, fpgsubtreePtr ref) {
 		
 		/* Add to linked list with current support */
 		if (ancestor_code != NULL)
-			start_tmp_sets = create_fpgsubsets(ancestor_code, sizeof(ancestor_code)/sizeof(int), sup, start_tmp_sets);
+			start_tmp_sets = create_fpgsupsets(ancestor_code, sizeof(ancestor_code)/sizeof(int), sup, start_tmp_sets);
 			
 		ref = ref->next;
 	}

@@ -170,14 +170,14 @@ fpgsubtreePtr create_fpsubtree_node(int name, int support, fpgsubtreePtr prev);
 fpgheaderPtr create_fpgheader(int col_num);
 
 /**
- * create_fpgsubsets(): Creates new fp growth subsets
+ * create_fpgsupsets(): Creates new fp growth subsets
  * 
  * @param itemsets
  * @param support
  * @param next_node
  * @return new fp growth support sets.
  */
-fpgsupsetsPtr create_fpgsubsets( int itemsets[], int size, int sup, fpgsubtreePtr next);
+fpgsupsetsPtr create_fpgsupsets( int itemsets[], int size, int sup, fpgsubtreePtr next);
 
 /**
  * create_fpgcolcnt():
