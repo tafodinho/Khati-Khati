@@ -47,8 +47,6 @@ int conv[MAX_LINES][2];
  */
 int itemset[OTH_ITEMSET_ARRAY_MAX];
 
-fpgcolcntPtr count[OTH_ITEMSET_ARRAY_MAX];
-
 int num_freq_sets; /** Number of frequent itemsets */
 
 int size; /** size of itemset array */
@@ -66,6 +64,7 @@ typedef struct fpgsupsets       *fpgsupsetsPtr;
 typedef struct fpgcolcnt        *fpgcolcntPtr;
 typedef struct fptree           *fptreePtr;
 
+fpgcolcntPtr count[OTH_ITEMSET_ARRAY_MAX];
 /**
  * fptree_node: FP tree node. This the basic DS for the fp growth algorithm
  *             used in the FP tree Arrays of this structure are used to store nodes

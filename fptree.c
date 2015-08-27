@@ -539,13 +539,13 @@ void recast_data_prune_unsupported() {
 				/** check support */
 				if (conv[attr][1] >= SUPPORT_THRESHOLD) {
 					itemset[k][0] = conv[attr][0];
-					itemset[k++][1] = conv[attr][1]
+					itemset[k++][1] = conv[attr][1];
 				}
 				data[i][j] = -1;/* reset array. */
 			}
 			
 			for (j = 0; j < k; j++)
-				data[i][j] = item[j][0];
+				data[i][j] = itemset[j][0];
 		}
 	}
 }
