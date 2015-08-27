@@ -29,7 +29,7 @@ int main(int argc, char** argv) {
 	out_fptree(fptree.root);
 
 	/** Mine FP-tree */
-	start_mining(fptree, fptree.header_table, int itemset_sofar[], int size);
+	start_mining(fptree);
 	out_fptree_storage(fptree.root);
 	out_num_freq_itemsets(fptree);
 	/* outputTtree() Frequent sets arec stored in this structure */

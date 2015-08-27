@@ -140,16 +140,15 @@ void add_ref_to_fpghtable(int col_num, fpgsubtreePtr new_node, fpgheaderPtr head
 	}
 }
 
-void start_mining(fptreePtr fptree, fpgheaderPtr table, int itemset_sofar[], int size) {
-	
+void start_mining(fptreePtr fptree) {
+	int itemset[2];
 	/* Loop through header table item by item */
 	while (table != NULL) {
 		/* check for null link */
-		if (table.next != NULL) {
-			start_mining2(fptree, table.next, table.item_name, itemset_sofar, size);
+		if (table.next != NULL || ) {
+			start_mining2(fptree, fptree.header_table.next, fptree.header_table.item_name, itemset,2);
 		}
 	}
-
 }
 
 void start_mining2(fptreePtr fptree, fpgsubtreePtr node, int item, int itemset_sofar[], int size) {
@@ -531,7 +530,7 @@ int gen_freq_one_itemsets() {
 	return counter;
 }
 
-void recast_data_prune_unsupported(fptreePtr fptree) {
+void recast_data_prune_unsupported() {
 	int itemset[BASKET_MAX_CHARS][2];
 	int attr, i, j, k = 0;
 	
@@ -555,4 +554,6 @@ void recast_data_prune_unsupported(fptreePtr fptree) {
 	}
 }
 
+void out_num_freq_itemsets(fptreePtr fptree) {
 
+}
