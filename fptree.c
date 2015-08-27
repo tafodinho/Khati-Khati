@@ -74,16 +74,16 @@ void add_to_fptree(fptreenodePtr ref, int place, int itemset[], int size, int su
 
 bool add_to_fptree1(fptreenodePtr ref, int place, int itemset[], int size, int sup, fpgheaderPtr header) {
 
-	while (ref.child != NULL) {
-		if( itemset[place] == ref->child->node.item_name) {
-			ref->child->node.item_count += sup;
+	while (ref->child != NULL) {
+		if( itemset[place] == ref->child->node->item_name) {
+			ref->child->node->item_count += sup;
 			num_updates++;
-			add_to_fptree(ref.child, place + 1, itemset, size, sup, header);
+			add_to_fptree(ref->child, place + 1, itemset, size, sup, header);
 			
 			return true;
 		} 
 		
-		if (itemset[place] < ref->child->node.item_name) {
+		if (itemset[place] < ref->child->node->item_name) {
 			return false;
 		}
 		ref = ref->child;
@@ -94,13 +94,13 @@ bool add_to_fptree1(fptreenodePtr ref, int place, int itemset[], int size, int s
 
 void add_to_fptree2(fptreenodePtr ref, int place, int itemset[], int size, int sup, fpgheaderPtr header) {
 	
-	fpgsubtreePtr subtree = create_fpsubtree_node(itemset[place],sup, ref.node); /* Create new prefix subtree node */
+	fpgsubtreePtr subtree = create_fpsubtree_node(itemset[place],sup, ref->node); /* Create new prefix subtree node */
 	fptreenodePtr fpnode =  create_fptree_node(sup); /* create new fptree node incorporating subtree node */
-	fpnode.node = subtree;
+	fpnode->node = subtree;
 	
 	/** Note: Still to implement this function */
 	add_ref_to_fpghtable(itemset[place], subtree, header); /* Adds link to header table */
-	ref.child = fpnode; /* Add into FP tree */
+	ref->child = fpnode; /* Add into FP tree */
 	add_rem_itemsets(fpnode, subtree, place + 1, itemset, size, sup, header); /* Proceed down branch with rest of itemsets */
 }
 
@@ -108,11 +108,11 @@ void add_rem_itemsets(fptreenodePtr ref, fpgsubtreePtr back, int place, int item
 					fpgheaderPtr header) {
 	/* Process if more items in itemset */
 	if (place < size) {
-		fpgsubtreePtr subtree = create_fpsubtree_node(itemset[place],sup, ref.node); /* Create new prefix subtree node */
+		fpgsubtreePtr subtree = create_fpsubtree_node(itemset[place],sup, ref->node); /* Create new prefix subtree node */
 		fptreenodePtr fpnode =  create_fptree_node(sup); /* create new fptree node incorporating subtree node */
-		fpnode.node = subtree;
+		fpnode->node = subtree;
 		add_ref_to_fpghtable(itemset[place], subtree, header); /* Adds link to header table */
-		ref.child = fpnode; /* Add into FP tree */
+		ref->child = fpnode; /* Add into FP tree */
 		add_rem_itemsets(fpnode, subtree, place + 1, itemset, size, sup, header); /** Proceed down branch with rest of itemsets */
 
 } 
@@ -128,10 +128,10 @@ void add_ref_to_fpghtable(int col_num, fpgsubtreePtr new_node, fpgheaderPtr head
 	fpgsubtreePtr tmp;
 	
 	while (header != NULL) {
-		if (col_num == header.item_name) {
-			tmp = header.next;
-			header.next = new_node;
-			new_node.next = tmp;
+		if (col_num == header->item_name) {
+			tmp = header->next;
+			header->next = new_node;
+			new_node->next = tmp;
 			break;
 		}
 		header = header->next;
@@ -143,8 +143,8 @@ void start_mining(fptreePtr fptree) {
 	/* Loop through header table item by item */
 	while (table != NULL) {
 		/* check for null link */
-		if (table.next != NULL || ) {
-			start_mining2(fptree, fptree.header_table.next, fptree.header_table.item_name, itemset,2);
+		if (table->next != NULL || ) {
+			start_mining2(fptree, fptree->header_table->next, fptree->header_table->item_name, itemset,2);
 		}
 	}
 }
@@ -163,10 +163,10 @@ void start_mining2(fptreePtr fptree, fpgsubtreePtr node, int item, int itemset_s
 	add_to_tree(code_sofar, size + 1, support);/** NOTE: To be implemented. */
 	
 	/** Collect ancestor itemsets and store in linked list */
-	generate_ancestor(fptree.start_tmp_sets, node);
+	generate_ancestor(fptree->start_tmp_sets, node);
 		
 	/** Process ancestor itemsets. */
-	if (fptree.start_tmp_sets != NULL) {
+	if (fptree->start_tmp_sets != NULL) {
 		count = count_fpgsingles(); /* Count singles in linked list */
 		lheader = create_local_htable(count); /* Create and pop local header table */
 		if (lheader != NULL) {
@@ -181,7 +181,7 @@ void start_mining2(fptreePtr fptree, fpgsubtreePtr node, int item, int itemset_s
 int gensup_headtable(fpgsubtreePtr node) {
 	int count = 0;
 	while (node != NULL) {
-		count += node.item_count;
+		count += node->item_count;
 		num_updates++;
 		node = node->next;
 	}
@@ -193,8 +193,8 @@ void generate_ancestor(fpgsupsetsPtr start_tmp_sets, fpgsubtreePtr ref) {
 	int *ancestor_code;
 	
 	while (ref != NULL) {
-		sup = ref.item_count;
-		ancestor_code = get_ancestor(ref.parent);
+		sup = ref->item_count;
+		ancestor_code = get_ancestor(ref->parent);
 		
 		/* Add to linked list with current support */
 		if (ancestor_code != NULL)
@@ -211,7 +211,7 @@ int * get_ancestor(fpgsubtreePtr ref) {
 	if (ref == NULL)
 		return NULL;
 	while (ref != NULL) {
-		itemset[i++] = ref.item_name;
+		itemset[i++] = ref->item_name;
 		ref = ref->parent;
 	}
 	size = i;
@@ -219,12 +219,12 @@ int * get_ancestor(fpgsubtreePtr ref) {
 }
 
 void prune_ancestors(fptreePtr fptree, fpgcolcntPtr count[]) {
-	fpgsubtreePtr ref = fptree.start_tmp_sets;
+	fpgsubtreePtr ref = fptree->start_tmp_sets;
 	
 	while (ref != NULL) {
 		for ( i = 0; i < sizeof(count)/sizeof(fpgcolcntPtr); i++) {
-			if (count[ref.item_set[i]].support < SUPPORT_THRESHOLD)
-				rem_elt(ref.item_set, i);/** Removes in frequent itemset */
+			if (count[ref->item_set[i]]->support < SUPPORT_THRESHOLD)
+				rem_elt(ref->item_set, i);/** Removes in frequent itemset */
 		}
 		
 		ref = ref->next;
@@ -245,7 +245,7 @@ int rem_elt(int old_itemset[], int n) {
 fpgcolcntPtr count_fpgsingles(fptreePtr fptree) {
 	int index, place = 0;
 	
-	fpgsupsetsPtr supsets = fptree.start_tmp_sets;
+	fpgsupsetsPtr supsets = fptree->start_tmp_sets;
 	fpgcolcntPtr count[] =
 	count[0] = create_fpgcolcnt(0,0) 
 	/* Init array */
@@ -253,8 +253,8 @@ fpgcolcntPtr count_fpgsingles(fptreePtr fptree) {
 		count[index] = create_fpcolcnt(0,0);
 	while (supsets != NULL) {
 		for( index = 0; index < colcnt; index++) {
-			place = supsets.item_set[index];
-			count[place].support += supsets.support;
+			place = supsets->item_set[index];
+			count[place]->support += supsets->support;
 			num_updates++;
 		}
 		supsets = supsets->next;
@@ -276,7 +276,7 @@ fpgheaderPtr local_htable_unordered(fpgcolcntPtr count[]) {
 	int counter = 1, i, place;
 	/* Loops through array, counting frequent one item sets */
 	for (i = 1; i < colcnt; i++) {
-		if (count[i].support >= SUPPORT_THRESHOLD)
+		if (count[i]->support >= SUPPORT_THRESHOLD)
 			counter++;
 	}
 	/* Builds new Header Table array containing frequent items */
@@ -287,8 +287,8 @@ fpgheaderPtr local_htable_unordered(fpgcolcntPtr count[]) {
 	fpgheaderPtr lhtable[colcnt];
 	place = 1;
 	for (i = 1;i < colcnt; i++) {
-	    if (count[i].support >= SUPPORT_THRESHOLD) {
-	        lhtable[place] = create_fpgheader(count[i].col_num);    
+	    if (count[i]->support >= SUPPORT_THRESHOLD) {
+	        lhtable[place] = create_fpgheader(count[i]->col_num);    
 	        place++;
 	    }
 	 }    
@@ -305,9 +305,9 @@ void local_htable_ordered(fpgheaderPtr table[], int hsize, fpgcolcntPtr count[],
 		i = 1;
 		order = true;
 		while ( i < hsize -1) {
-			place1 = table[i].item_name;
-			place2 = table[i + 1].item_name;
-			if (count[place1].support > count[place2].support) { /* swap */
+			place1 = table[i]->item_name;
+			place2 = table[i + 1]->item_name;
+			if (count[place1]->support > count[place2]->support) { /* swap */
 				order = false;
 				tmp = table[i];
 				table[i] = table[i + 1];
@@ -319,12 +319,12 @@ void local_htable_ordered(fpgheaderPtr table[], int hsize, fpgcolcntPtr count[],
 }
 
 fptreenodePtr gen_local_fptree(fptreePtr fptree, fpgheaderPtr table) {
-	fpgsupsetsPtr ref = fptree.start_tmp_sets;
+	fpgsupsetsPtr ref = fptree->start_tmp_sets;
 	fptreenodePtr lroot = create_fptree_node(0);
 	
 	while (ref != NULL) {
-		if (ref.item_set != NULL)
-			add_to_fptree(lroot, 0, ref.item_set, ref.support, table);
+		if (ref->item_set != NULL)
+			add_to_fptree(lroot, 0, ref->item_set, ref->support, table);
 			
 		ref = ref->next;
 	}
@@ -336,18 +336,18 @@ fptreenodePtr realloc_fptree(fptreenodePtr old, fptreenodePtr new_node) {
 	fptreenodePtr tmp;
 	
 	if (old == NULL) {
-		old = create_fptree_node(new_node.support);
-		old.num_nodes += new_node.num_nodes;
-		old.node = new_node.node;
-		old.fpgheader = new_node.fpgheader;
+		old = create_fptree_node(new_node->support);
+		old->num_nodes += new_node->num_nodes;
+		old->node = new_node->node;
+		old->fpgheader = new_node->fpgheader;
 		old = old->child;
 		return old;
 	}
 	
 	while(old != NULL) {
-		if ( new_node.node.item_name < old.node.item_name) {
+		if ( new_node->node->item_name < old->node->item_name) {
 			tmp = old;
-			new_node.child = tmp;
+			new_node->child = tmp;
 			old = new_node;
 			return old;
 		}
@@ -362,10 +362,10 @@ fptreenodePtr realloc_fptree(fptreenodePtr old, fptreenodePtr new_node) {
 void out_fpsubtree(fpgheaderPtr htable) {
 	
 	printf("\nPrefix Subtree from Header Table");
-	printf("\n HEADER = %d ,", htable.item_name);
+	printf("\n HEADER = %d ,", htable->item_name);
 	while (htable->next != NULL) {
-		printf("\nSub tree: %d, %d, ", htable.next.item_count, htable.next.item_name);
-		htable->next = htable.next.next;
+		printf("\nSub tree: %d, %d, ", htable->next->item_count, htable->next->item_name);
+		htable->next = htable->next->next;
 	}
 }
 
@@ -373,7 +373,7 @@ int out_fpsubtree2(fpgsubtreePtr ref) {
 	int counter = 1;
 	while (ref != NULL) {
 		printf("\n Counter: %d, item_name: %d , item_count: %d",counter,
-			ref.item_name, ref.item_count);
+			ref->item_name, ref->item_count);
 		counter++;
 		ref = ref->next;
 	}
@@ -382,12 +382,12 @@ int out_fpsubtree2(fpgsubtreePtr ref) {
 }
 
 void out_fptree(fptreePtr ref) {
-	fptreenodePtr tmp = ref.root;
+	fptreenodePtr tmp = ref->root;
 	if (ref == NULL)
 		return;
 		
 	while(tmp != NULL) {
-		outfpsubtree2(tmp.node);
+		outfpsubtree2(tmp->node);
 		tmp = tmp->child;
 	}
 
@@ -406,7 +406,7 @@ int calc_storage(fptreenodePtr ref, int storage) {
 
 void out_fptree_storage(fptreenodePtr root) {
 	int storage = 8;
-	storage = calc_storage(root.child, storage);
+	storage = calc_storage(root->child, storage);
 	
 	printf("\n FP Tree storage = %d bytes", storage);
 	printf("\n FP tree update = %d", num_updates);
