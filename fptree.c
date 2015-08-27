@@ -502,6 +502,7 @@ void order_count_array() {
 int gen_freq_one_itemsets() {
 	int i, j, counter;
 	char freq_file[20];
+	char str[15];
 	FILE *fp;
 	strcpy(freq_file,"../freq_j_");
     sprintf(str, "%d", 1);
@@ -509,7 +510,7 @@ int gen_freq_one_itemsets() {
     strcat(freq_file, "_itemsets");
     
 	fp = fopen(freq_file,"w");
-    if (f_itemsets == NULL) {
+    if (fp == NULL) {
 		fprintf(stderr,"\n Error opening file: %s", freq_file);
 		exit(EXIT_SUCCESS);
     }
