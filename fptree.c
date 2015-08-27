@@ -162,14 +162,14 @@ void start_mining2(fptreePtr fptree, fpgsubtreePtr node, int item, int itemset_s
 	code_sofar[0] = item;/** Resizes given array so that its length is increased by one element, new element added to front */
 	for (i = 0;i < size; i++)
 		code_sofar[i+1] = itemset_sofar[i];
-	add_to_tree(code_sofar, size + 1, support);/** NOTE: To be implemented. */
+	/** NOTE add_to_tree(code_sofar, size + 1, support);: To be implemented. */
 	
 	/** Collect ancestor itemsets and store in linked list */
 	generate_ancestor(fptree->start_tmp_sets, node);
 		
 	/** Process ancestor itemsets. */
 	if (fptree->start_tmp_sets != NULL) {
-		count = count_fpgsingles(); /* Count singles in linked list */
+		count = count_fpgsingles(fptree); /* Count singles in linked list */
 		lheader = create_local_htable(count); /* Create and pop local header table */
 		if (lheader != NULL) {
 			prune_ancestors(fptree, count); /* Prune ancestor itemsets */
