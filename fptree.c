@@ -7,7 +7,7 @@
 
 
 fptreenodePtr create_fptree_node(int sup) {
-	struct fptree_node new_node = (struct fptree_node)malloc(sizeof(struct fptree_node));
+	fptreenodePtr new_node = (struct fptree_node *)malloc(sizeof(struct fptree_node));
 	new_node->support = sup;
 	new_node->num_nodes++;
 	
@@ -15,7 +15,7 @@ fptreenodePtr create_fptree_node(int sup) {
 }
 
 fpgsubtreePtr create_fpsubtree_node(int name, int support, fpgsubtreePtr prev) {
-	struct fpgsubtree_node new_node = (struct fpgsubtree_node)malloc(sizeof(struct fpgsubtree_node));
+	fpgsubtreePtr new_node = (struct fpgsubtree_node *)malloc(sizeof(struct fpgsubtree_node));
 	new_node->item_name = name;
 	new_node->item_count = support;
 	new_node->parent = prev;
@@ -24,7 +24,7 @@ fpgsubtreePtr create_fpsubtree_node(int name, int support, fpgsubtreePtr prev) {
 }
 
 fpgheaderPtr create_fpgheader(int col_num) {
-	struct fpgheader new_node = (struct fpgheader)malloc(sizeof(struct fpgheader));
+	fpgheaderPtr new_node = (fpgheaderPtr)malloc(sizeof(struct fpgheader));
 	new_node->item_name = col_num;
 
 	return new_node;
@@ -32,7 +32,7 @@ fpgheaderPtr create_fpgheader(int col_num) {
 
 fpgsupsetsPtr create_fpgsupsets( int itemsets[], int size, int sup, fpgsupsetsPtr next) {
 	int i = 0;
-	struct fpsupsets new_node = (struct fpsupsets)malloc(sizeof(struct fpgsupsets));
+	fpgsupsetsPtr new_node = (fpgsupsetsPtr)malloc(sizeof(struct fpgsupsets));
 	for( i = 0; i < size; i++)
 		new_node->item_set[i] = itemsets[i];
 
@@ -43,7 +43,7 @@ fpgsupsetsPtr create_fpgsupsets( int itemsets[], int size, int sup, fpgsupsetsPt
 }
 
 fpgcolcntPtr create_fpgcolcnt(int col, int sup) {
-	struct fpgcolcnt new_node = (struct fpgcolcnt)malloc(sizeof(struct fpgcolcnt));
+	fpgcolcntPtr new_node = (fpgcolcntPtr)malloc(sizeof(struct fpgcolcnt));
 	new_node->col_num = col;
 	new_node->support = sup;
 	
@@ -55,7 +55,7 @@ fpgcolcntPtr create_fpgcolcnt(int col, int sup) {
  */
 void create_fptree(fptreePtr fptree){
 	int i = 0;
-	fptree = (struct fptree)malloc(sizeof(struct fptree));
+	fptree = (fptreePtr)malloc(sizeof(struct fptree));
 	fptree->root = create_fptree_node(1);
 	fptree->header_table = create_fpgheader(0);
 	
