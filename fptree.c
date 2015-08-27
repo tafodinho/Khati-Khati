@@ -189,15 +189,14 @@ int gensup_headtable(fpgsubtreePtr node) {
 
 void generate_ancestor(fpgsupsetsPtr start_tmp_sets, fpgsubtreePtr ref) {
 	int sup;
-	int *ancestor_code;
 	
 	while (ref != NULL) {
 		sup = ref->item_count;
-		ancestor_code = get_ancestor(ref->parent);
+		get_ancestor(ref->parent);
 		
 		/* Add to linked list with current support */
 		if (ancestor_code != NULL)
-			start_tmp_sets = create_fpgsupsets(ancestor_code, sizeof(ancestor_code)/sizeof(int), sup, start_tmp_sets);
+			start_tmp_sets = create_fpgsupsets(itemset, size, sup, start_tmp_sets);
 			
 		ref = ref->next;
 	}
@@ -205,7 +204,7 @@ void generate_ancestor(fpgsupsetsPtr start_tmp_sets, fpgsubtreePtr ref) {
 }
 
 int * get_ancestor(fpgsubtreePtr ref) {
-	int itemset[ OTH_ITEMSET_ARRAY_MAX];
+
 	int i = 0;
 	if (ref == NULL)
 		return NULL;
@@ -234,7 +233,7 @@ int rem_elt(int old_itemset[], int n) {
 	if ( sizeof(old_itemset)/sizeof(int) <= n)
 		return old_itemset;	
 	else { 
-		for ( i = n; i < (int)sizeof(old_itemset)/sizeof(int); i++)
+		for ( i = n; i < size; i++)
 			old_itemset[i] = old_itemset[i + 1];
 	}
 	

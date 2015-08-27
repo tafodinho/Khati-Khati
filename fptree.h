@@ -45,7 +45,7 @@ int conv[MAX_LINES][2];
  *  original numbering where the input data has been ordered to enhance
  *  computational efficiency. 
  */
-int reconv[OTH_ITEMSET_ARRAY_MAX];
+int itemset[OTH_ITEMSET_ARRAY_MAX];
 
 fpgcolcntPtr count[OTH_ITEMSET_ARRAY_MAX];
 
