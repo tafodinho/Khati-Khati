@@ -510,7 +510,7 @@ void order_input_data();
  * 3) Assign new itemset back into to data array. 
 */
 
-void recast_data_prune_unsupported(fptreePtr fptree);
+void recast_data_prune_unsupported(void);
 
 /**
  * SET NUMBER ONE ITEM SETS
