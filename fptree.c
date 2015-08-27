@@ -554,6 +554,3 @@ void recast_data_prune_unsupported() {
 	}
 }
 
-void out_num_freq_itemsets(fptreePtr fptree) {
-
-}

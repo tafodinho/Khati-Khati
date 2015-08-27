@@ -29,10 +29,8 @@ int main(int argc, char** argv) {
 	out_fptree(fptree.root);
 
 	/** Mine FP-tree */
-	start_mining(fptree);
-	out_fptree_storage(fptree.root);
-	out_num_freq_itemsets(fptree);
-	/* outputTtree() Frequent sets arec stored in this structure */
+	start_mining(fptree);/** frequent sets are generated and stored to file here. */
+	out_fptree_storage(fptree.roo);
 
 	return 0;
 }

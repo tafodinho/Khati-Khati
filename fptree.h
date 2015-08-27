@@ -249,7 +249,7 @@ void add_rem_itemsets(fptreenodePtr ref, fpgsubtreePtr back, int place, int item
     ** Methodology:
 
     1) Step through header table from end to start (least common single 
-    attribute to most common single attribute). For each item.
+       attribute to most common single attribute). For each item.
     a) Count support by following node links and add to linked list of 
        supported sets.
     b) Determine the "ancestor trails" connected to the nodes linked to the
@@ -259,7 +259,8 @@ void add_rem_itemsets(fptreenodePtr ref, fpgsubtreePtr back, int place, int item
        the single items in the ancestor itemsets 
     d) Prune the ancestor itemsets so as to remove unsupported items.
     e) Repeat (1) with local header table and list of pruned ancestor itemsets 
-       as input 
+       as input
+    f) Frequent item sets are generated here and written to files respectively
 */
 /** START MINING FUNCTIONS */
 
@@ -512,19 +513,10 @@ void order_input_data();
 
 void recast_data_prune_unsupported(fptreePtr fptree);
 
-/** ------------------------------ 
- * OUTPUT NUMBER FREQUENT SETS 
- * ------------------------------
- * out_num_freq_itemsets(): prints frequent itemsets from nodes in the fptree
- * @param fptree
- */
-void out_num_freq_itemsets(fptreePtr fptree);
-
 /**
  * SET NUMBER ONE ITEM SETS
  * set_num_oneitemsets(); Sets the number of one item sets field (<size> to the number of supported one item sets.
  */
 int gen_freq_one_itemsets();
-
  
 #endif
