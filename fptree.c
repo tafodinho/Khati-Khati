@@ -7,7 +7,7 @@
 
 
 fptreenodePtr create_fptree_node(int sup) {
-	fptreenodePtr new_node = (struct fptree_node)malloc(sizeof(struct fptree_node));
+	struct fpsupsets new_node = (struct fptree_node)malloc(sizeof(struct fptree_node));
 	new_node->support = sup;
 	new_node->num_nodes++;
 	
@@ -15,7 +15,7 @@ fptreenodePtr create_fptree_node(int sup) {
 }
 
 fpgsubtreePtr create_fpsubtree_node(int name, int support, fpgsubtreePtr prev) {
-	fpgsubtreePtr new_node = (struct fpgsubtree_node)malloc(sizeof(struct fpgsubtree_node));
+	struct fpsupsets new_node = (struct fpgsubtree_node)malloc(sizeof(struct fpgsubtree_node));
 	new_node->item_name = name;
 	new_node->item_count = support;
 	new_node->parent = prev;
@@ -24,7 +24,7 @@ fpgsubtreePtr create_fpsubtree_node(int name, int support, fpgsubtreePtr prev) {
 }
 
 fpgheaderPtr create_fpgheader(int col_num) {
-	fpgheaderPtr new_node = (struct fpgheader)malloc(sizeof(struct fpgheader));
+	struct fpsupsets new_node = (struct fpgheader)malloc(sizeof(struct fpgheader));
 	new_node->item_name = col_num;
 
 	return new_node;
@@ -32,7 +32,7 @@ fpgheaderPtr create_fpgheader(int col_num) {
 
 fpgsupsetsPtr create_fpgsupsets( int itemsets[], int size, int sup, fpgsupsetsPtr next) {
 	int i = 0;
-	fpgsupsetsPtr new_node = (struct fpsupsets)malloc(sizeof(struct fpgsupsets));
+	struct fpsupsets new_node = (struct fpsupsets)malloc(sizeof(struct fpgsupsets));
 	for( i = 0; i < size; i++)
 		new_node->item_set[i] = itemsets[i];
 	new_node->support = sup;
@@ -42,7 +42,7 @@ fpgsupsetsPtr create_fpgsupsets( int itemsets[], int size, int sup, fpgsupsetsPt
 }
 
 fpgcolcntPtr create_fpgcolcnt(int col, int sup) {
-	fpgcolcntPtr new_node = (struct fpgcolcnt)malloc(sizeof(struct fpgcolcnt));
+	struct fpgcolcnt new_node = (struct fpgcolcnt)malloc(sizeof(struct fpgcolcnt));
 	new_node->col_num = col;
 	new_node->support = sup;
 	
