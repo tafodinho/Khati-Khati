@@ -6,8 +6,8 @@
 #include "fptree.h"
 
 
-fptreePtr create_fptree_node(int sup) {
-	fptreePtr new_node = (struct fptree)malloc(sizeof(struct fptree));
+fptreenodePtr create_fptree_node(int sup) {
+	fptreePtr new_node = (struct fptree_node)malloc(sizeof(struct fptree_node));
 	new_node->support = sup;
 	new_node->num_nodes++;
 	
