@@ -93,31 +93,6 @@ bool add_to_fptree1(fptreenodePtr ref, int place, int itemset[], int size, int s
 	return false;
 }
 
-void add_to_fptree2(fptreenodePtr ref, int place, int itemset[], int size, int sup, fpgheaderPtr header) {
-	
-	fpgsubtreePtr subtree = create_fpsubtree_node(itemset[place],sup, ref->node); /* Create new prefix subtree node */
-	fptreenodePtr fpnode =  create_fptree_node(sup); /* create new fptree node incorporating subtree node */
-	fpnode->node = subtree;
-	
-	/** Note: Still to implement this function */
-	add_ref_to_fpghtable(itemset[place], subtree, header); /* Adds link to header table */
-	ref->child = fpnode; /* Add into FP tree */
-	add_rem_itemsets(fpnode, subtree, place + 1, itemset, size, sup, header); /* Proceed down branch with rest of itemsets */
-}
-
-void add_rem_itemsets(fptreenodePtr ref, fpgsubtreePtr back, int place, int itemset[], int size, int sup, 
-					fpgheaderPtr header) {
-	/* Process if more items in itemset */
-	if (place < size) {
-		fpgsubtreePtr subtree = create_fpsubtree_node(itemset[place],sup, ref->node); /* Create new prefix subtree node */
-		fptreenodePtr fpnode =  create_fptree_node(sup); /* create new fptree node incorporating subtree node */
-		fpnode->node = subtree;
-		add_ref_to_fpghtable(itemset[place], subtree, header); /* Adds link to header table */
-		ref->child = fpnode; /* Add into FP tree */
-		add_rem_itemsets(fpnode, subtree, place + 1, itemset, size, sup, header); /** Proceed down branch with rest of itemsets */
-
-} 
-
 /** 
  *  add_ref_to_fpghtable(): Adds reference to new FP-tree node to header table moving old reference 
  *					   		so that it becomes a link from the new FP-tree node.
@@ -137,6 +112,32 @@ void add_ref_to_fpghtable(int col_num, fpgsubtreePtr new_node, fpgheaderPtr head
 		}
 		header = header->next;
 	}
+}
+
+void add_rem_itemsets(fptreenodePtr ref, fpgsubtreePtr back, int place, int itemset[], int size, int sup, 
+					fpgheaderPtr header) {
+	/* Process if more items in itemset */
+	if (place < size) {
+		fpgsubtreePtr subtree = create_fpsubtree_node(itemset[place],sup, ref->node); /* Create new prefix subtree node */
+		fptreenodePtr fpnode =  create_fptree_node(sup); /* create new fptree node incorporating subtree node */
+		fpnode->node = subtree;
+		add_ref_to_fpghtable(itemset[place], subtree, header); /* Adds link to header table */
+		ref->child = fpnode; /* Add into FP tree */
+		add_rem_itemsets(fpnode, subtree, place + 1, itemset, size, sup, header); /** Proceed down branch with rest of itemsets */
+	}
+
+}
+
+void add_to_fptree2(fptreenodePtr ref, int place, int itemset[], int size, int sup, fpgheaderPtr header) {
+	
+	fpgsubtreePtr subtree = create_fpsubtree_node(itemset[place],sup, ref->node); /* Create new prefix subtree node */
+	fptreenodePtr fpnode =  create_fptree_node(sup); /* create new fptree node incorporating subtree node */
+	fpnode->node = subtree;
+	
+	/** Note: Still to implement this function */
+	add_ref_to_fpghtable(itemset[place], subtree, header); /* Adds link to header table */
+	ref->child = fpnode; /* Add into FP tree */
+	add_rem_itemsets(fpnode, subtree, place + 1, itemset, size, sup, header); /* Proceed down branch with rest of itemsets */
 }
 
 void start_mining(fptreePtr fptree) {
