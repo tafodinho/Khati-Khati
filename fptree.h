@@ -149,7 +149,7 @@ struct fptree {
  * @param sup, support count
  * @return new node
  */
-fptreePtr create_fptree_node(int sup);
+fptreenodePtr create_fptree_node(int sup);
 
 /**
  * create_fpsubtree_node(): Three argument constructor
