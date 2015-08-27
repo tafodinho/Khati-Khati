@@ -143,9 +143,9 @@ void add_to_fptree2(fptreenodePtr ref, int place, int itemset[], int size, int s
 void start_mining(fptreePtr fptree) {
 	int itemset[2];
 	/* Loop through header table item by item */
-	while (table != NULL) {
+	while (fptree->header_table != NULL) {
 		/* check for null link */
-		if (table->next != NULL || ) {
+		if (header->table->next != NULL) {
 			start_mining2(fptree, fptree->header_table->next, fptree->header_table->item_name, itemset,2);
 		}
 	}
