@@ -98,7 +98,7 @@ struct fpgsubtree_node {
 struct fpgheader {
 	int item_name; /* 1 itemset attribute identifier */
 	fpgsubtreePtr next; /* forward link to the next node */
-}
+};
 
 /**
  * fpgsupsets : Stores ancestor itemsets, nodes in an FP tree that preceed the nodes 
