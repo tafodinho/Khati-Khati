@@ -31,7 +31,7 @@ fpgheaderPtr create_fpgheader(int col_num) {
 	return new_node;
 }
 
-fpgsupsetsPtr create_fpgsubsets( int itemsets[], int size, int sup, fpgsubsetsPtr next) {
+fpgsupsetsPtr create_fpgsubsets( int itemsets[], int size, int sup, fpgsubtreePtr next) {
 	int i = 0;
 	fpgsupsetsPtr new_node = (struct fpsupsets)malloc(sizeof(struct fpgsupsets));
 	new_node->item_set = (int)malloc(sizeof(int) * size);

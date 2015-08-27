@@ -177,7 +177,7 @@ fpgheaderPtr create_fpgheader(int col_num);
  * @param next_node
  * @return new fp growth support sets.
  */
-fpgsupsetsPtr create_fpgsubsets( int itemsets[], int size, int sup, fpgsubsetsPtr next);
+fpgsupsetsPtr create_fpgsubsets( int itemsets[], int size, int sup, fpgsubtreePtr next);
 
 /**
  * create_fpgcolcnt():
