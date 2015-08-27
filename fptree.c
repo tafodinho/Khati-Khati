@@ -281,12 +281,12 @@ fpgheaderPtr local_htable_unordered(fpgcolcntPtr count[]) {
 		return NULL;
 		
 	/* Populates header table */	
-	fpgheaderPtr lhtable[colcnt];
+	fpgheaderPtr lhtable;
 	place = 1;
 	for (i = 1;i < colcnt; i++) {
 	    if (count[i]->support >= SUPPORT_THRESHOLD) {
-	        lhtable[place] = create_fpgheader(count[i]->col_num);    
-	        place++;
+	        lhtable = create_fpgheader(count[i]->col_num);    
+	        lhtable->next;
 	    }
 	 }    
 	
@@ -316,14 +316,15 @@ void local_htable_ordered(fpgheaderPtr table[], int hsize, fpgcolcntPtr count[],
 }
 
 fptreenodePtr gen_local_fptree(fptreePtr fptree, fpgheaderPtr table) {
-	fpgsupsetsPtr ref = fptree->start_tmp_sets;
-	fptreenodePtr lroot = create_fptree_node(0);
+	fptreePtr ltree;
+	ltree->start_tmp_sets = fptree->start_tmp_sets;
+	ltree->root = create_fptree_node(0);
 	
-	while (ref != NULL) {
-		if (ref->item_set != NULL)
-			add_to_fptree(lroot, 0, ref->item_set, ref->support, table);
+	while (ltree->start_tmp_sets != NULL) {
+		if (ltree->start_tmp_sets->item_set != NULL)
+			add_to_fptree(ltree, 0, ltree->start_tmp_sets->item_set, ltree->start_tmp_sets->support, table);
 			
-		ref = ref->next;
+		ltree->start_tmp_sets = ltree->start_tmp_sets->next;
 	}
 	
 	return lroot;
