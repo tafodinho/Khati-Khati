@@ -26,7 +26,7 @@ fpgsubtreePtr create_fpsubtree_node(int name, int support, fpgsubtreePtr prev) {
 fpgheaderPtr create_fpgheader(int col_num) {
 	fpgheaderPtr new_node = (struct fpgheader)malloc(sizeof(struct fpgheader));
 	new_node->item_name = col_num;
-	new_node = new->next;
+	new_node = new_node->next;
 
 	return new_node;
 }
