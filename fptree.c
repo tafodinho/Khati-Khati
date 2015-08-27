@@ -218,7 +218,7 @@ int * get_ancestor(fpgsubtreePtr ref) {
 }
 
 void prune_ancestors(fptreePtr fptree, fpgcolcntPtr count[]) {
-	fpgsubtreePtr ref = fptree->start_tmp_sets;
+	fpgsupsetsPtr ref = fptree->start_tmp_sets;
 	int i;
 	while (ref != NULL) {
 		for ( i = 0; i < colcnt; i++) {
@@ -234,7 +234,7 @@ int rem_elt(int old_itemset[], int n) {
 	if ( sizeof(old_itemset)/sizeof(int) <= n)
 		return old_itemset;	
 	else { 
-		for ( i = n; i < [sizeof(old_itemset)/sizeof(int); i++)
+		for ( i = n; i < sizeof(old_itemset)/sizeof(int); i++)
 			old_itemset[i] = old_itemset[i + 1]
 	}
 	
