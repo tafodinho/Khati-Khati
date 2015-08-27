@@ -195,7 +195,7 @@ void generate_ancestor(fpgsupsetsPtr start_tmp_sets, fpgsubtreePtr ref) {
 		get_ancestor(ref->parent);
 		
 		/* Add to linked list with current support */
-		if (ancestor_code != NULL)
+		if (itemset != NULL)
 			start_tmp_sets = create_fpgsupsets(itemset, size, sup, start_tmp_sets);
 			
 		ref = ref->next;
@@ -249,6 +249,7 @@ fpgcolcntPtr count_fpgsingles(fptreePtr fptree) {
 	/* Init array */
 	for( index = 1; index < OTH_ITEMSET_ARRAY_MAX; index++)
 		count[index] = create_fpcolcnt(0,0);
+		
 	while (supsets != NULL) {
 		for( index = 0; index < OTH_ITEMSET_ARRAY_MAX; index++) {
 			place = supsets->item_set[index];
