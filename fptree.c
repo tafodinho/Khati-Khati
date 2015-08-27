@@ -230,7 +230,8 @@ void prune_ancestors(fptreePtr fptree, fpgcolcntPtr count[]) {
 }
 
 int rem_elt(int old_itemset[], int n) {
-	if ( sizeof(old_itemset)/sizeof(int) <= n)
+	int i;
+	if ( size <= n)
 		return old_itemset;	
 	else { 
 		for ( i = n; i < size; i++)
