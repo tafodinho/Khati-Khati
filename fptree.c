@@ -385,7 +385,7 @@ void out_fptree(fptreePtr ref) {
 		return;
 		
 	while(tmp != NULL) {
-		outfpsubtree2(tmp->node);
+		out_fpsubtree2(tmp->node);
 		tmp = tmp->child;
 	}
 
