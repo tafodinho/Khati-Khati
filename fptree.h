@@ -274,9 +274,9 @@ void add_rem_itemsets(fptreenodePtr ref, fpgsubtreePtr back, int place, int item
  *                  new local header table and (iii) populate with ancestors.
  *                  If new local FP tree is not empty repeat mining operation.
  *                  Otherwise end. 
- * @param  table the reference to the current location in the header table (commencing with the last item).
- * @param itemset_sofar the label fot the current item sets as generated to date (null at start). */	
-void start_mining(fptreePtr fptree, fpgheaderPtr table, int itemset_sofar[], int size);
+ * @param  fptree pointer.
+ */	
+void start_mining(fptreePtr fptree);
 
 /**
  * start_mining2():  Commence process of mining FP tree with respect to a single element in the header table.

@@ -19,17 +19,17 @@ int main(int argc, char** argv) {
 	
 	/** Reorder and prune input data according to frequency of single attr */	
 	order_input_data();
-	recast_data_prune_unsupported(fptree); 
+	recast_data_prune_unsupported(); 
 	gen_freq_one_itemsets();/** Prints freq-1 itemsets */
 
 
     /** Build initial FP-tree */
 	create_fptree(fptree);
-	out_fptree_storage(fptree.root);			
+	out_fptree_storage(fptree.root);
 	out_fptree(fptree.root);
 
 	/** Mine FP-tree */
-	start_mining();
+	start_mining(fptree, fptree.header_table, int itemset_sofar[], int size);
 	out_fptree_storage(fptree.root);
 	out_num_freq_itemsets(fptree);
 	/* outputTtree() Frequent sets arec stored in this structure */
