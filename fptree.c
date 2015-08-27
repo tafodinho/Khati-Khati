@@ -7,7 +7,7 @@
 
 
 fptreePtr create_fptree_node(int sup) {
-	fptreePtr new_node = (struct fptreePtr)malloc ((sizeof(struct fptreePtr));
+	fptreePtr new_node = (struct fptree)malloc ((sizeof(struct fptree));
 	new_node->support = sup;
 	new_node->num_nodes++;
 	
@@ -15,7 +15,7 @@ fptreePtr create_fptree_node(int sup) {
 }
 
 fpgsubtreePtr create_fpsubtree_node(int name, int support, fpgsubtreePtr prev) {
-	fpgsubtreePtr new_node = (struct fpgsubtreePtr)malloc(sizeof(struct fpgsubtreePtr));
+	fpgsubtreePtr new_node = (struct fpgsubtree_node)malloc(sizeof(struct fpgsubtree_node));
 	new_node->item_name = name;
 	new_node->item_count = support;
 	new_name->parent = prev;
