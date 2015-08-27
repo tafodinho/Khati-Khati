@@ -26,7 +26,7 @@ int main(int argc, char** argv) {
     /** Build initial FP-tree */
 	create_fptree(fptree);
 	out_fptree_storage(fptree->root);
-	out_fptree(fptree->root);
+	out_fptree(fptree);
 
 	/** Mine FP-tree */
 	start_mining(fptree);/** frequent sets are generated and stored to file here. */
