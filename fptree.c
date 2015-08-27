@@ -35,6 +35,7 @@ fpgsupsetsPtr create_fpgsupsets( int itemsets[], int size, int sup, fpgsupsetsPt
 	struct fpsupsets new_node = (struct fpsupsets)malloc(sizeof(struct fpgsupsets));
 	for( i = 0; i < size; i++)
 		new_node->item_set[i] = itemsets[i];
+
 	new_node->support = sup;
 	new_node->next = next;
 	
