@@ -152,7 +152,7 @@ void start_mining(fptreePtr fptree) {
 }
 
 void start_mining2(fptreePtr fptree, fpgsubtreePtr node, int item, int itemset_sofar[], int size) {
-	fpgcolcntPtr count;
+	fpgcolcntPtr count[size];
 	fpgheaderPtr lheader;
 	fptreenodePtr lroot;
 	int support, i;
@@ -173,7 +173,7 @@ void start_mining2(fptreePtr fptree, fpgsubtreePtr node, int item, int itemset_s
 		lheader = create_local_htable(count); /* Create and pop local header table */
 		if (lheader != NULL) {
 			prune_ancestors(fptree, count); /* Prune ancestor itemsets */
-			lroot = gen_local_fptree(lheader)/* Create new local root for local FP tree */
+			lroot = gen_local_fptree(fptree, lheader)/* Create new local root for local FP tree */
 			start_mining(lroot, lheader, code_sofar, size + 1); /* Mine new FP tree */
 		}
 		
