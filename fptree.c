@@ -18,7 +18,7 @@ fpgsubtreePtr create_fpsubtree_node(int name, int support, fpgsubtreePtr prev) {
 	fpgsubtreePtr new_node = (struct fpgsubtree_node)malloc(sizeof(struct fpgsubtree_node));
 	new_node->item_name = name;
 	new_node->item_count = support;
-	new_name->parent = prev;
+	new_node->parent = prev;
 	
 	return new_node;
 }
