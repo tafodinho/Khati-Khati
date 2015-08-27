@@ -234,8 +234,8 @@ int rem_elt(int old_itemset[], int n) {
 	if ( sizeof(old_itemset)/sizeof(int) <= n)
 		return old_itemset;	
 	else { 
-		for ( i = n; i < sizeof(old_itemset)/sizeof(int); i++)
-			old_itemset[i] = old_itemset[i + 1]
+		for ( i = n; i < (int)sizeof(old_itemset)/sizeof(int); i++)
+			old_itemset[i] = old_itemset[i + 1];
 	}
 	
 	return 0;	
@@ -245,19 +245,19 @@ fpgcolcntPtr count_fpgsingles(fptreePtr fptree) {
 	int index, place = 0;
 	
 	fpgsupsetsPtr supsets = fptree->start_tmp_sets;
-	count[0] = create_fpgcolcnt(0,0) 
+	count[0] = create_fpgcolcnt(0,0);
 	/* Init array */
-	for( index = 1; index < colcnt ; index++)
+	for( index = 1; index < OTH_ITEMSET_ARRAY_MAX; index++)
 		count[index] = create_fpcolcnt(0,0);
 	while (supsets != NULL) {
-		for( index = 0; index < colcnt; index++) {
+		for( index = 0; index < OTH_ITEMSET_ARRAY_MAX; index++) {
 			place = supsets->item_set[index];
 			count[place]->support += supsets->support;
 			num_updates++;
 		}
 		supsets = supsets->next;
 	}
-	colcnt = i;
+	colcnt = index;
 	return count;
 }
 
@@ -265,7 +265,7 @@ fpgcolcntPtr count_fpgsingles(fptreePtr fptree) {
 fpgheaderPtr create_local_htable(fpgcolcntPtr count[]) {
 	int index;
 	fpgheaderPtr lhtable;
-	lhtable = local_htable_unordered(count, colcnt);
+	lhtable = local_htable_unordered(count);
 	
 	return lhtable;
 }
