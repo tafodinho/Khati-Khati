@@ -21,17 +21,21 @@ int main(int argc, char** argv) {
 	
 	/** Reorder and prune input data according to frequency of single attr */	
 	order_input_data();
-	recast_data_prune_unsupported(); 
+	recast_data_prune_unsupported();
+	printf("\nPrinting frequent-1 itemsets");
 	gen_freq_one_itemsets();/** Prints freq-1 itemsets */
 
 
     /** Build initial FP-tree */
+    printf("\nBuilding FP tree");
 	create_fptree(fptree);
 	out_fptree_storage(fptree->root);
 	out_fptree(fptree);
 
 	/** Mine FP-tree */
+	printf("\nMining FP tree");
 	start_mining(fptree);/** frequent sets are generated and stored to file here. */
+	printf("\nCalculating memory consumption of tree.");
 	out_fptree_storage(fptree->root);
 
 	return 0;
