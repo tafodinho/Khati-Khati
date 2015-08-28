@@ -216,6 +216,18 @@ int * get_ancestor(fpgsubtreePtr ref) {
 	return itemset;
 }
 
+int rem_elt(int old_itemset[], int n) {
+	int i;
+	if ( size <= n)
+		return 0;	
+	else { 
+		for ( i = n; i < size; i++)
+			old_itemset[i] = old_itemset[i + 1];
+	}
+	
+	return 0;	
+}
+
 void prune_ancestors(fptreePtr fptree, fpgcolcntPtr count[]) {
 	fpgsupsetsPtr ref = fptree->start_tmp_sets;
 	int i;
@@ -227,18 +239,6 @@ void prune_ancestors(fptreePtr fptree, fpgcolcntPtr count[]) {
 		
 		ref = ref->next;
 	}	
-}
-
-int rem_elt(int old_itemset[], int n) {
-	int i;
-	if ( size <= n)
-		return 0;	
-	else { 
-		for ( i = n; i < size; i++)
-			old_itemset[i] = old_itemset[i + 1];
-	}
-	
-	return 0;	
 }
 
 fpgcolcntPtr count_fpgsingles(fptreePtr fptree) {
