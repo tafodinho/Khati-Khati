@@ -525,12 +525,10 @@ int gen_freq_one_itemsets() {
     }
     
 	for (i = 0; i < MAX_LINES;i++) {
-		if ( conv[i][1] < SUPPORT_THRESHOLD)
-			return counter;
-		else 
+		if ( conv[i][1] >=  SUPPORT_THRESHOLD) {
 			fprintf(fp, "\n %d; %d", conv[i][0], conv[i][1]);
-			
-		counter++;
+			counter++;
+		}
 	}
 	
 	return counter;
