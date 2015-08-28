@@ -525,7 +525,7 @@ int gen_freq_one_itemsets() {
 			
 		counter++;
 	}
-	num_oflines = counter;
+	
 	return counter;
 }
 
@@ -533,7 +533,7 @@ void recast_data_prune_unsupported() {
 	int itemset[BASKET_MAX_CHARS][2];
 	int attr, i, j, k = 0;
 	
-	for (i = 0; i < num_oflines; i++) {
+	for (i = 0; i < MAX_LINES; i++) {
 		k = 0;
 		if (data[i] != NULL) {
 			for (j = 0; j < BASKET_MAX_CHARS; j++) {
