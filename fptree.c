@@ -517,7 +517,7 @@ int gen_freq_one_itemsets() {
 		exit(EXIT_SUCCESS);
     }
     
-	for (i = 0; i < num_oflines;i++) {
+	for (i = 0; i < MAX_LINES;i++) {
 		if ( conv[i][1] < SUPPORT_THRESHOLD)
 			return counter;
 		else 
