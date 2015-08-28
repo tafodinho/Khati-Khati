@@ -11,6 +11,8 @@
  */
 int main(int argc, char** argv) {
 
+	num_freq_sets = size = colcnt = num_oflines = num_updates = 0;
+
 	/** Create instance of class FPTree */
 	fptreePtr fptree;
 	
