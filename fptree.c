@@ -241,14 +241,14 @@ void prune_ancestors(fptreePtr fptree, fpgcolcntPtr count[]) {
 	}	
 }
 
-fpgcolcntPtr count_fpgsingles(fptreePtr fptree) {
+int count_fpgsingles(fptreePtr fptree) {
 	int index, place = 0;
 	
 	fpgsupsetsPtr supsets = fptree->start_tmp_sets;
 	count[0] = create_fpgcolcnt(0,0);
 	/* Init array */
 	for( index = 1; index < OTH_ITEMSET_ARRAY_MAX; index++)
-		count[index] = create_fpcolcnt(0,0);
+		count[index] = create_fpgcolcnt(0,0);
 		
 	while (supsets != NULL) {
 		for( index = 0; index < OTH_ITEMSET_ARRAY_MAX; index++) {
@@ -259,7 +259,7 @@ fpgcolcntPtr count_fpgsingles(fptreePtr fptree) {
 		supsets = supsets->next;
 	}
 	colcnt = index;
-	return count;
+	return 0;
 }
 
 

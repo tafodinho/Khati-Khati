@@ -345,7 +345,7 @@ void prune_ancestors(fptreePtr fptree, fpgcolcntPtr count[]);
  *         ancestor nodes in an FP-tree that preceed the nodes identified by following 
  *         a trail of links from a particular item in the header table. 
  */
-fpgcolcntPtr count_fpgsingles(fptreePtr fptree);
+int count_fpgsingles(fptreePtr fptree);
 
 /**
  * CREATE LOCAL HEADER TABLE
