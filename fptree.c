@@ -171,7 +171,7 @@ void start_mining2(fptreePtr fptree, fpgsubtreePtr node, int item, int itemset_s
 		if (lheader != NULL) {
 			prune_ancestors(fptree, count); /* Prune ancestor itemsets */
 			ltree->root = gen_local_fptree(fptree, lheader); /* Create new local root for local FP tree */
-			start_mining2(ltree, lheader, code_sofar, size + 1); /* Mine new FP tree */
+			start_mining2(ltree, lheader->node,lheader->item_name, code_sofar, size + 1); /* Mine new FP tree */
 		}
 		
 	}
