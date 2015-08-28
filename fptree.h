@@ -38,7 +38,7 @@ int data[MAX_LINES][BASKET_MAX_CHARS];
  *  2-D array used to remember columns for input data in terms of
  *  frequency of single attributes (reordering will enhance performance.)
  */
-int conv[MAX_LINES][2];	
+int conv[BASKET_MAX_CHARS][2];	
   
 /**
  *  1-D array used to reconvert input data column numbers to their
