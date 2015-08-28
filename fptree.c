@@ -324,7 +324,7 @@ fptreenodePtr gen_local_fptree(fptreePtr fptree, fpgheaderPtr table) {
 	
 	while (ltree->start_tmp_sets != NULL) {
 		if (ltree->start_tmp_sets->item_set != NULL)
-			add_to_fptree2(ltree, 0, ltree->start_tmp_sets->item_set, ltree->start_tmp_sets->support, table);
+			add_to_fptree2(ltree->root, 0, ltree->start_tmp_sets->item_set, size, ltree->start_tmp_sets->support, table);
 			
 		ltree->start_tmp_sets = ltree->start_tmp_sets->next;
 	}
