@@ -1,6 +1,6 @@
 
 
-install: make #builds the fptree algorithm the current repo and run the tests.
+install: make && ./fptree #builds the fptree algorithm the current repo and run the tests.
 
 notifications:
   irc: "chat.freenode.net#ublab"
