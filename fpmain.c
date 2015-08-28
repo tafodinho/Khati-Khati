@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
 
     /** Build initial FP-tree */
     printf("\nBuilding FP tree");
-	create_fptree(fptree);
+	create_fptree(fptree);/* skip invalid elements(-1) */
 	out_fptree_storage(fptree->root);
 	out_fptree(fptree);
 
