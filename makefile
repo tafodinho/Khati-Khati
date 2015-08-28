@@ -2,4 +2,4 @@
 
 
 all:
-	gcc -g -o fptree fpmain.c fptree.c
+	gcc -g -mcmodel=medium -o fptree fpmain.c fptree.c
