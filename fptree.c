@@ -130,7 +130,7 @@ void add_to_fptree2(fptreenodePtr ref, int place, int itemset[], int size, int s
 	fptreenodePtr fpnode;
 	
 	/* check if itemset value is invalid(-1) then skip. */
-	if ( itemset[place] != -1) {
+	if ( itemset[place] >= 0) {
 		subtree = create_fpsubtree_node(itemset[place],sup, ref->node); /* Create new prefix subtree node */
 		fpnode =  create_fptree_node(sup); /* create new fptree node incorporating subtree node */
 		fpnode->node = subtree;
