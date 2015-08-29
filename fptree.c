@@ -565,26 +565,28 @@ void recast_data_prune_unsupported() {
 	}
 }
 
-struct fpgsubtree_node {
-	int item_name;       /* attribute identifier */
-	int item_count;      /* item support count */
-	fpgsubtreePtr parent;/* backward link to the parent node on fptree */
-	fpgsubtreePtr next;  /* forward link to next node starting with an elt in the header table */
-};
-
 void clear_subtree(fpgsubtreePtr stree) {
 	fpgsubtreePtr ts;
 	while( stree != NULL) {
 		ts = stree;
 		stree = stree->next;
-		free(ts->item_name);
-		free(ts->item_count);
+		ts->item_name = 0;
+		ts->item_count = 0;
 		free(ts->parent);
 		free(ts);
 	}
 }
-void clear_header(fpgheaderPtr t_header) {
 
+void clear_header(fpgheaderPtr t_header) {
+	fpgheaderPtr thead;
+	
+	while (t_header != NULL) {
+		thead = t_header;
+		t_header = t_header->next;
+		thead->item_name = 0;
+		free(thead->node);
+		free(thead);
+	}
 }
 
 void clear_supsets(fpgsupsetsPtr supsets) {
@@ -594,7 +596,7 @@ void clear_supsets(fpgsupsetsPtr supsets) {
 		t_sups = supsets;
 		supsets = supsets->next;
 		free(t_sups->item_set);
-		free(t_sups->support);
+		t_sups->support = 0;
 		free(t_sups);
 	}
 }
@@ -604,7 +606,6 @@ void release_memory(fptreePtr fptree){
     fpgsubtreePtr ts_tree;
     fpgheaderPtr t_header = fptree->header_table;
     fpgsupsetsPtr t_sups = fptree->start_tmp_sets;
-    Itemsets tmp1,tmp2;
 	
 	free(data);
 	free(conv);
@@ -617,7 +618,7 @@ void release_memory(fptreePtr fptree){
 	
 	/** clear all root nodes */
 	while( fptree->root != NULL) {
-		t_head = fp->root;
+		t_head = fptree->root;
 		fptree->root = fptree->root->child;
 		clear_subtree(t_head->node);
 		clear_header(t_head->fpgheader);
