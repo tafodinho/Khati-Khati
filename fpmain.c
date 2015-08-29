@@ -29,14 +29,14 @@ int main(int argc, char** argv) {
     /** Build initial FP-tree */
     printf("\nBuilding FP tree");
 	create_fptree(fptree);/* skip invalid elements(-1) */
-	out_fptree_storage(fptree->root);
+	//out_fptree_storage(fptree->root);
 	out_fptree(fptree);
 
 	/** Mine FP-tree */
 	printf("\nMining FP tree");
 	start_mining(fptree);/** frequent sets are generated and stored to file here. */
-	printf("\nCalculating memory consumption of tree.");
-	out_fptree_storage(fptree->root);
+	printf("\Releasing memory consumption of tree.");
+	//out_fptree_storage(fptree->root);
 	release_memory(fptree); /** Frees all used memory */
 
 	return 0;
