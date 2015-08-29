@@ -5,7 +5,5 @@ install: make && ./fptree #builds the fptree algorithm the current repo and run 
 notifications:
   irc: "chat.freenode.net#ublab"
   
-template:
-  - "Build details : %{build_url}"
 use_notice: true
 skip_join: true
