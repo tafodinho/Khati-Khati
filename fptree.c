@@ -607,10 +607,6 @@ void release_memory(fptreePtr fptree){
     fpgheaderPtr t_header = fptree->header_table;
     fpgsupsetsPtr t_sups = fptree->start_tmp_sets;
 	
-	free(data);
-	free(conv);
-	free(itemset);
-	free(count);
 	clear_header(t_header);
 	clear_supsets(t_sups);
 	fptree->tmp_index = 0;
