@@ -509,7 +509,7 @@ void order_input_data() {
 
 /* GET NUM OF SUPPORTED ONE ITEM SETS */
 int gen_freq_one_itemsets() {
-	int i, j, counter;
+	int i, j, counter = 0;
 	char freq_file[20];
 	char str[15];
 	FILE *fp;
