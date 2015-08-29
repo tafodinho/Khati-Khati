@@ -565,11 +565,23 @@ void recast_data_prune_unsupported() {
 	}
 }
 
+void clear_supsets(fpgsupsetsPtr supsets) {
+	fpgsupsetsPtr t_sups = supsets;
+	
+	while( supsets != NULL) {
+		t_sups = supsets;
+		supsets = supsets->next;
+		free(t_sups->item_set);
+		t_sups->support = 0;
+		free(t_sups);
+	}
+}
+
 void release_memory(fptreePtr fptree){
     fptreenodePtr t_head;
     fpgsubtreePtr ts_tree;
     fpgheaderPtr t_header = fptree->header_table;
-    fpgsupsetsPtr t_sups;
+    fpgsupsetsPtr t_sups = fptree->start_tmp_sets;
     Itemsets tmp1,tmp2;
 	
 	free(data);
@@ -577,7 +589,7 @@ void release_memory(fptreePtr fptree){
 	free(itemset);
 	free(count);
 	clear_header(t_header);
-	clear_supsets(fptree->start_tmp_sets);
+	clear_supsets(t_sups);
 	fptree->tmp_index = 0;
 	fptree->num_nodes = 0;
 	
@@ -589,5 +601,6 @@ void release_memory(fptreePtr fptree){
 		clear_header(t_head->fpgheader);
 		t_head->support = 0;
 		t_head->num_nodes = 0;
+		free(t_head);
 	}
 }
