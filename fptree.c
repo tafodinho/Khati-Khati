@@ -565,6 +565,28 @@ void recast_data_prune_unsupported() {
 	}
 }
 
+struct fpgsubtree_node {
+	int item_name;       /* attribute identifier */
+	int item_count;      /* item support count */
+	fpgsubtreePtr parent;/* backward link to the parent node on fptree */
+	fpgsubtreePtr next;  /* forward link to next node starting with an elt in the header table */
+};
+
+void clear_subtree(fpgsubtreePtr stree) {
+	fpgsubtreePtr ts;
+	while( stree != NULL) {
+		ts = stree;
+		stree = stree->next;
+		free(ts->item_name);
+		free(ts->item_count);
+		free(ts->parent);
+		free(ts);
+	}
+}
+void clear_header(fpgheaderPtr t_header) {
+
+}
+
 void clear_supsets(fpgsupsetsPtr supsets) {
 	fpgsupsetsPtr t_sups = supsets;
 	
@@ -572,7 +594,7 @@ void clear_supsets(fpgsupsetsPtr supsets) {
 		t_sups = supsets;
 		supsets = supsets->next;
 		free(t_sups->item_set);
-		t_sups->support = 0;
+		free(t_sups->support);
 		free(t_sups);
 	}
 }
