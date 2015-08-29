@@ -7,8 +7,5 @@ notifications:
   
 template:
   - "Build details : %{build_url}"
-
-  on_success: always
-  on_failure: always
-  use_notice: true
-  skip_join: true
+use_notice: true
+skip_join: true
