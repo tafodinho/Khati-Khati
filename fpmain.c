@@ -35,7 +35,7 @@ int main(int argc, char** argv) {
 	/** Mine FP-tree */
 	printf("\nMining FP tree");
 	start_mining(fptree);/** frequent sets are generated and stored to file here. */
-	printf("\Releasing memory consumption of tree.");
+	printf("\nReleasing memory consumption of tree.");
 	//out_fptree_storage(fptree->root);
 	release_memory(fptree); /** Frees all used memory */
 
