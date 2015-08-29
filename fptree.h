@@ -519,5 +519,12 @@ void recast_data_prune_unsupported(void);
  * set_num_oneitemsets(); Sets the number of one item sets field (<size> to the number of supported one item sets.
  */
 int gen_freq_one_itemsets();
+
+/**
+ * RELEASE MEMORY
+ * release_memory(): Frees all the memory used by the fptree(called at the end of the program)
+ * @param fptreePtr, pointer to fptree
+ */
+void release_memory(fptreePtr fptree);
  
 #endif
