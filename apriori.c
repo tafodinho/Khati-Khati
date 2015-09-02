@@ -283,12 +283,15 @@ void save_frequent_n_itemsets(int itemsetcnt,FILE *f_itemsets,ItemsetPtr f_cur,i
         f_its_tmp = f_cur[i] . itemset_ptr;
         while (f_its_tmp != NULL) {
             //store itemset
-            for (j=0;j<itemsetcnt-1;j++) {
-                fprintf(f_itemsets, "%d ",f_its_tmp->itemsets[j]);
+            
+            if (f_its_tmp->cnt >= SUPPORT_THRESHOLD) {
+            	for (j=0;j<itemsetcnt-1;j++) {
+                	fprintf(f_itemsets, "%d ",f_its_tmp->itemsets[j]);
+            	}
+            	fprintf(f_itemsets, "%d;",f_its_tmp->itemsets[j]);  //last item ends with ;
+            	//store itemset count
+            	fprintf(f_itemsets, "%d\n",f_its_tmp->cnt);
             }
-            fprintf(f_itemsets, "%d;",f_its_tmp->itemsets[j]);  //last item ends with ;
-            //store itemset count
-            fprintf(f_itemsets, "%d\n",f_its_tmp->cnt);
             f_its_tmp = f_its_tmp-> next;
         }
     }fflush(f_itemsets);
