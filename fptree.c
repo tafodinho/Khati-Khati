@@ -168,12 +168,31 @@ void start_mining2(fptreePtr fptree, fpgsubtreePtr node, int item, int itemset_s
 	fptreePtr ltree;
 	int support, i;
 	int code_sofar[size + 1];
+	char freq_file[20];
+	char str[15];
+	FILE *fp;
+	
 	/** Count support for current item in header table and store in a tree */
 	support = gensup_headtable(node);
 	code_sofar[0] = item;/** Resizes given array so that its length is increased by one element, new element added to front */
 	for (i = 0;i < size; i++)
 		code_sofar[i+1] = itemset_sofar[i];
-	/** NOTE add_to_tree(code_sofar, size + 1, support);: To be implemented. */
+		
+	/** Write frequent itemsets, add support count */
+	strcpy(freq_file,"../freq_j_");
+    sprintf(str, "%d", size + 1);
+    strcat(freq_file, str);
+    strcat(freq_file, "_itemsets");
+	fp = fopen(freq_file,"w");
+    if (fp == NULL) {
+		fprintf(stderr,"\n Error opening file: %s", freq_file);
+		exit(EXIT_SUCCESS);
+    }
+    if (support >=  SUPPORT_THRESHOLD) {
+    	for ( i = 0; i < size; i++)
+			fprintf(fp, " %d", code_sofar[i]);
+		fprintf(fp, " %d; %d\n", code_sofar[i], support);
+	}
 	
 	/** Collect ancestor itemsets and store in linked list */
 	generate_ancestor(fptree->start_tmp_sets, node);
