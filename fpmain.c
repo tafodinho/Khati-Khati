@@ -32,9 +32,8 @@ int main(int argc, char** argv) {
     /** Build initial FP-tree */
     printf("\nBuilding FP tree");
 	create_fptree(fptree);/* skip invalid elements(-1) */
-	//out_fptree_storage(fptree->root);
 	printf("\nPrinting FP tree.");
-	out_fptree(fptree);
+	//out_fptree(fptree); /* No need to print the tree */
 
 	/** Mine FP-tree */
 	printf("\nMining FP tree");
