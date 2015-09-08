@@ -33,13 +33,13 @@ int main(int argc, char** argv) {
     printf("\nBuilding FP tree");
 	create_fptree(fptree);/* skip invalid elements(-1) */
 	printf("\nPrinting FP tree.");
-	//out_fptree(fptree); /* No need to print the tree */
+	out_fptree(fptree); /* need to print the tree */
 
 	/** Mine FP-tree */
 	printf("\nMining FP tree");
 	start_mining(fptree);/** frequent sets are generated and stored to file here. */
 	printf("\nReleasing memory consumption of tree.");
-	//out_fptree_storage(fptree->root);
+	out_fptree_storage(fptree->root);
 	release_memory(fptree); /** Frees all used memory */
 
 	return 0;
