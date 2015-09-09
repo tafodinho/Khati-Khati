@@ -335,7 +335,6 @@ void apriori_generate_cand_2_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr 
      for (i = 0;i < OTH_ITEMSET_ARRAY_MAX; i++) {
         tmp = f_cur[i] . itemset_ptr;
         while (tmp != NULL) {
-        
         	if (tmp->cnt >= SUPPORT_THRESHOLD)
         		fprintf(f_itemsets, " %d %d; %d\n",tmp->itemsets[0], tmp->itemsets[1], tmp->cnt);
         		
