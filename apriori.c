@@ -151,8 +151,6 @@ void get_frequent_one_itemsets(int * c_freq1,int * f_freq1,int *distinct_itemset
 }
 
 
-
-
 /**
  * Joins Li-1 to Li-1 to get current candidate item sets. 
  * 
@@ -309,16 +307,14 @@ void apriori_generate_cand_2_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr 
     int itemset[2]; 
    
     Itemsets tmp; //stores newly generated frequent itemset.
-
+	
     //Pruning step frequent item sets and 
     for (k = 0; k < basket_cnt - 1;k++) {
 		if (f_freq1[items[k]] < SUPPORT_THRESHOLD)
                 continue;
                 
    	 	for (j = k + 1; j < basket_cnt; j++) {
-   	 		if (f_freq1[items[j]] < SUPPORT_THRESHOLD)
-                    continue;
-            else {
+   	 		if (f_freq1[items[j]] >= SUPPORT_THRESHOLD) {
              	itemset[0] = items[j];
              	itemset[1] = items[k];
 
@@ -331,12 +327,12 @@ void apriori_generate_cand_2_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr 
     }//end for loop
 	
     //Saving the frequent itemsets.
-    fprintf(f_itemsets, "%d %d\n", *distinct_itemsets_cnt,*tot_itemsets_cnt);
+    //fprintf(f_itemsets, "%d %d\n", *distinct_itemsets_cnt,*tot_itemsets_cnt);
      for (i = 0;i < OTH_ITEMSET_ARRAY_MAX; i++) {
         tmp = f_cur[i] . itemset_ptr;
         while (tmp != NULL) {
         	if (tmp->cnt >= SUPPORT_THRESHOLD)
-        		fprintf(f_itemsets, " %d %d; %d\n",tmp->itemsets[0], tmp->itemsets[1], tmp->cnt);
+        		fprintf(f_itemsets," %d %d; %d\n",tmp->itemsets[0], tmp->itemsets[1], tmp->cnt);
         		
             tmp = tmp-> next;
         }
