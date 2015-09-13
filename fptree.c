@@ -188,9 +188,11 @@ void start_mining2(fptreePtr fptree, fpgsubtreePtr node, int item, int itemset_s
 		fprintf(stderr,"\n Error opening file: %s", freq_file);
 		exit(EXIT_SUCCESS);
     }
-    if (support >=  SUPPORT_THRESHOLD) {
+    
+    if (support >= SUPPORT_THRESHOLD) {
     	for ( i = 0; i < size; i++)
 			fprintf(fp, " %d", code_sofar[i]);
+			
 		fprintf(fp, " %d; %d\n", code_sofar[i], support);
 	}
 	
