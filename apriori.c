@@ -307,6 +307,7 @@ void apriori_generate_cand_2_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr 
     int itemset[2]; 
    
     Itemsets tmp; //stores newly generated frequent itemset.
+    release_memory(f_cur);//clears f_cur with stores frequent itemsets.
 	
     //Pruning step frequent item sets and 
     for (k = 0; k < basket_cnt - 1;k++) {
