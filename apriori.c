@@ -307,10 +307,9 @@ void apriori_generate_cand_2_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr 
     int itemset[2]; 
    
     Itemsets tmp; //stores newly generated frequent itemset.
-    release_memory(f_cur);//clears f_cur with stores frequent itemsets.
 	
     //Pruning step frequent item sets and 
-    for (k = 0; k < basket_cnt - 1;k++) {
+    /** for (k = 0; k < basket_cnt - 1;k++) {
 		if (f_freq1[items[k]] >= SUPPORT_THRESHOLD) {           
    	 		for (j = k + 1; j < basket_cnt; j++) {
    	 			if (f_freq1[items[j]] >= SUPPORT_THRESHOLD) {
@@ -324,7 +323,25 @@ void apriori_generate_cand_2_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr 
       		}
       	}	
      
-    }//end for loop
+    }//end for loop */
+    
+    //apply apriori to every item in items[]
+     for (j=0;j<basket_cnt-1;j++) {
+            if (f_freq1[items[j]] < SUPPORT_THRESHOLD)
+                continue;
+            for (k=j+1;k<basket_cnt;k++)
+               if (f_freq1[items[k]] < SUPPORT_THRESHOLD)
+                    continue;
+                else {
+                    itemset[0] = items[j];
+                    itemset[1] = items[k];
+                    //now compute hash value
+                    hval = hashval(itemset,2);
+                    //process this itemset
+//printf("%s %d %d\n","&&&&",itemset[0],itemset[1]);getchar();
+                    insert_candidate_itemset(itemset_cnt,hval,itemset, c_cur);
+                }
+    }
 	
     //Saving the frequent itemsets.
     //fprintf(f_itemsets, "%d %d\n", *distinct_itemsets_cnt,*tot_itemsets_cnt);
