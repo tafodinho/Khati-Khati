@@ -1,8 +1,11 @@
 
 
-install: make && ./apriori && ./fptree #builds the fptree algorithm the current repo and run the tests.
+install: make && ./apriori #builds the fptree algorithm the current repo and run the tests.
 
 notifications:
   irc: "chat.freenode.net#ublab"
 
+    on_success: [always|never|change] # default: change
+    on_failure: [always|never|change] # default: always
+    
 skip_join: true
