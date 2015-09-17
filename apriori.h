@@ -83,6 +83,7 @@ void join_frequent_n_itemsets(ItemsetPtr c_cur, ItemsetPtr f_prev, int i_cnt, in
 
 /* Saves the frequent itemsets to a file., k = 1,2, ..n */
 void save_frequent_one_itemsets(FILE *f_itemsets,int * c_freq1,int,int);
+void save_freq_2_itemsets(FILE * f_itemsets, ItemsetPtr , int *, int *);
 void save_frequent_n_itemsets(int, FILE *f_itemsets,ItemsetPtr f_cur,int,int);
 
 

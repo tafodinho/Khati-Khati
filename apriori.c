@@ -111,7 +111,7 @@ void scandb(int n, int * c_freq1, int * f_freq1, ItemsetPtr c_cur, ItemsetPtr f_
         free(f_freq1);
         
     } else if ( n == 2) {
-    
+    	 save_freq_2_itemsets(f_itemsets, f_cur, &distinct_itemsets_cnt, &tot_itemsets_cnt); //save frequent 2 item sets.
          release_memory(c_cur);
          //generates the next candidate sets from the current frequent itemsets.
          join_frequent_n_itemsets(c_cur, f_cur,n, &distinct_itemsets_cnt, &tot_itemsets_cnt);
@@ -326,7 +326,15 @@ void apriori_generate_cand_2_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr 
     }//end for loop
     
 	
-    //Saving the frequent itemsets.
+    
+    
+}
+
+void save_freq_2_itemsets(FILE * f_itemsets, ItemsetPtr f_cur, int *distinct_itemsets_cnt, int *tot_itemsets_cnt) {
+	Itemsets tmp; //stores newly generated frequent itemset.
+	int i;
+
+	//Saving the frequent itemsets.
     fprintf(f_itemsets, "%d %d\n", *distinct_itemsets_cnt,*tot_itemsets_cnt);
      for (i = 0;i < OTH_ITEMSET_ARRAY_MAX; i++) {
         tmp = f_cur[i] . itemset_ptr;
@@ -338,9 +346,8 @@ void apriori_generate_cand_2_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr 
         }
     }
     fflush(f_itemsets);
-    
-}
 
+}
 
 /**
  * Joins the previous frequent itemsets and 
