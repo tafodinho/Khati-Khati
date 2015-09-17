@@ -8,4 +8,5 @@ notifications:
     on_success: [always|never|change] # default: change
     on_failure: [always|never|change] # default: always
     
+use_notice: true    
 skip_join: true
