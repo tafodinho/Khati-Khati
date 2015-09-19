@@ -117,6 +117,15 @@ void scandb(int n, int * c_freq1, int * f_freq1, ItemsetPtr c_cur, ItemsetPtr f_
          join_frequent_n_itemsets(c_cur, f_cur,n, &distinct_itemsets_cnt, &tot_itemsets_cnt);
 	
 	} else if ( n < 5) {
+	
+		//compute global n-itemset counts
+    	distinct_itemsets_cnt = 0;
+    	tot_itemsets_cnt = 0;
+    	for (i=0;i<OTH_ITEMSET_ARRAY_MAX;i++) {
+        	distinct_itemsets_cnt += f_cur[i].distinct_itemsets;
+        	tot_itemsets_cnt += f_cur[i].itemsets_cnt;
+    	}
+
 		//get_frequent_n_itemsets(n,c_cur,f_cur,&distinct_itemsets_cnt, &tot_itemsets_cnt);
         save_frequent_n_itemsets(n,f_itemsets,f_cur, distinct_itemsets_cnt,tot_itemsets_cnt);
 	    release_memory(c_prev);
@@ -195,6 +204,7 @@ void join_frequent_n_itemsets(ItemsetPtr c_cur, ItemsetPtr f_prev, int i_cnt, in
                
     	}
     }
+
 }
 
 
@@ -274,7 +284,14 @@ void save_frequent_one_itemsets(FILE *f_itemsets,int * f_freq1,int distinct_item
 void save_frequent_n_itemsets(int itemsetcnt,FILE *f_itemsets,ItemsetPtr f_cur,int distinct_itemsets_cnt,int tot_itemsets_cnt){
     int i,j;
     Itemsets tmp3,f_its_tmp;
-    //store basic statistics for this hash
+    //compute global n-itemset counts
+    distinct_itemsets_cnt = 0;
+    tot_itemsets_cnt = 0;
+    for (i=0;i<OTH_ITEMSET_ARRAY_MAX;i++) {
+        distinct_itemsets_cnt += f_cur[i].distinct_itemsets;
+        tot_itemsets_cnt += f_cur[i].itemsets_cnt;
+    }
+    
     fprintf(f_itemsets, "%d %d\n", distinct_itemsets_cnt,tot_itemsets_cnt);
 
     for (i=0;i<OTH_ITEMSET_ARRAY_MAX;i++) {
@@ -305,7 +322,7 @@ void apriori_generate_cand_2_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr 
 
     int i,j,k,h,hval;
     int itemset[2]; 
-    *distinct_itemsets_cnt = *tot_itemsets_cnt = 0;
+
     Itemsets tmp; //stores newly generated frequent itemset.
 	
     //Pruning step frequent item sets and 
@@ -315,7 +332,7 @@ void apriori_generate_cand_2_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr 
    	 			if (f_freq1[items[j]] >= SUPPORT_THRESHOLD) {
              		itemset[0] = items[k];
              		itemset[1] = items[j];
-					*tot_itemsets_cnt++;
+
             		//now compute hash value and store the frequent itemsets
             		hval = hashval(itemset,2);
             		insert_candidate_itemset(2, hval, itemset, f_cur);
@@ -324,15 +341,20 @@ void apriori_generate_cand_2_itemsets(int * f_freq1, int itemset_cnt,ItemsetPtr 
       	}	
      
     }//end for loop
-    
-    //compute global n-itemset counts
-    for (i=0;i<OTH_ITEMSET_ARRAY_MAX;i++)
-        *distinct_itemsets_cnt += f_cur[i].distinct_itemsets;
+
 }
 
 void save_freq_2_itemsets(FILE * f_itemsets, ItemsetPtr f_cur, int *distinct_itemsets_cnt, int *tot_itemsets_cnt) {
 	Itemsets tmp; //stores newly generated frequent itemset.
 	int i;
+	
+	 //compute global n-itemset counts
+    *distinct_itemsets_cnt = 0;
+    *tot_itemsets_cnt = 0;
+    for (i=0;i<OTH_ITEMSET_ARRAY_MAX;i++) {
+        *distinct_itemsets_cnt += f_cur[i].distinct_itemsets;
+        *tot_itemsets_cnt += f_cur[i].itemsets_cnt;
+    }
 	
 	//Saving the frequent itemsets.
     fprintf(f_itemsets, "%d %d\n", *distinct_itemsets_cnt,*tot_itemsets_cnt);
