@@ -6,7 +6,6 @@
 #include "apriori.h"
 
 
-
 /*
  * scandb(): Scans the Transaction database and storing the frequent item sets to an array.
  */

@@ -4,8 +4,6 @@
  * Author: Bawe Emmanuel
  *
  */
-
-
 #ifndef APRIORI_H
 #define APRIORI_H
 
@@ -103,6 +101,5 @@ void release_memory(ItemsetPtr freq);
 
 /*  hashes itemset elements on array. */
 int hashval(int itemset[],int len);
-
 
 #endif
