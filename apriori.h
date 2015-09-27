@@ -76,7 +76,7 @@ int r_infrequent_subset_found(int slen, int items[], int sub[], int ilen,
 
 /* checks for frequent subsets*/
 int is_frequent_subset(ItemsetPtr c_prev, int sub[], int slen);
-/
+
 /* Generates the candidate item sets for k = 1, 2, ..n */
 void generate_candidate_one_itemsets(int *, int[], int);
 void generate_candidates_prev(int itemsetcnt, ItemsetPtr c_prev,
