@@ -4,7 +4,7 @@
  * Author: Bawe Emmanuel
  *
  */
- 
+
 #ifndef FPTREE_H
 #define FPTREE_H
 
@@ -14,7 +14,7 @@
 #include <stdbool.h>
 #include <ctype.h>
 
-#define TRANS_DB "retail.dat.tmp" /* Transactional database */
+#define TRANS_DB "retail.dat.tmp"	/* Transactional database */
 
 #define BASKET_MAX_CHARS 100000
 #define BASKET_MAX_ITEMS 1000
@@ -26,7 +26,7 @@
 #define SUPPORT_THRESHOLD 5
 #define MIN_CONFIDENCE 0
 #define MAX_CONFIDENCE 100
-	
+
 
 /** 
  *   2-D aray to hold input data from data file. Note that within the data
@@ -38,8 +38,8 @@ int data[MAX_LINES][BASKET_MAX_CHARS];
  *  2-D array used to remember columns for input data in terms of
  *  frequency of single attributes (reordering will enhance performance.)
  */
-int conv[BASKET_MAX_CHARS][2];	
-  
+int conv[BASKET_MAX_CHARS][2];
+
 /**
  *  1-D array used to reconvert input data column numbers to their
  *  original numbering where the input data has been ordered to enhance
@@ -53,16 +53,16 @@ int size; /** size of itemset array */
 int colcnt; /** size of colcnt structure array */
 
 int num_oflines; /** Size of data set array */
-    
-long num_updates;/** The number of updates required to generate the FP tree. */
-  
 
-typedef struct fptree_node      *fptreenodePtr;
-typedef struct fpgsubtree_node  *fpgsubtreePtr;
-typedef struct fpgheader        *fpgheaderPtr;
-typedef struct fpgsupsets       *fpgsupsetsPtr;
-typedef struct fpgcolcnt        *fpgcolcntPtr;
-typedef struct fptree           *fptreePtr;
+long num_updates;/** The number of updates required to generate the FP tree. */
+
+
+typedef struct fptree_node *fptreenodePtr;
+typedef struct fpgsubtree_node *fpgsubtreePtr;
+typedef struct fpgheader *fpgheaderPtr;
+typedef struct fpgsupsets *fpgsupsetsPtr;
+typedef struct fpgcolcnt *fpgcolcntPtr;
+typedef struct fptree *fptreePtr;
 
 fpgcolcntPtr count[OTH_ITEMSET_ARRAY_MAX];
 /**
@@ -71,12 +71,13 @@ fpgcolcntPtr count[OTH_ITEMSET_ARRAY_MAX];
  *             at the same level in any sub-branch of the fptree 
  * Note:       Increment num_nodes each time a node is created.(get num_nodes)
  */
-struct fptree_node {
-	int support;             /* support count associated with the itemset represented by node */
-	int num_nodes;           /* number of nodes on the total support tree */
-	fptreenodePtr child;         /* Reference to child(if any) for this node */
-	fpgsubtreePtr node; /* store counts and a reference to a child branch. */
-	fpgheaderPtr fpgheader;  /*  used to link nodes on the fptree, enables cross linking */
+struct fptree_node
+{
+	int support;		/* support count associated with the itemset represented by node */
+	int num_nodes;		/* number of nodes on the total support tree */
+	fptreenodePtr child;	/* Reference to child(if any) for this node */
+	fpgsubtreePtr node;	/* store counts and a reference to a child branch. */
+	fpgheaderPtr fpgheader;	/*  used to link nodes on the fptree, enables cross linking */
 };
 
 /**
@@ -84,11 +85,12 @@ struct fptree_node {
  *                    together with support values.
  *                    it is the FP growth Item prefix subtree node.
  */
-struct fpgsubtree_node {
-	int item_name;       /* attribute identifier */
-	int item_count;      /* item support count */
-	fpgsubtreePtr parent;/* backward link to the parent node on fptree */
-	fpgsubtreePtr next;  /* forward link to next node starting with an elt in the header table */
+struct fpgsubtree_node
+{
+	int item_name;		/* attribute identifier */
+	int item_count;		/* item support count */
+	fpgsubtreePtr parent;	/* backward link to the parent node on fptree */
+	fpgsubtreePtr next;	/* forward link to next node starting with an elt in the header table */
 };
 
 /**
@@ -96,50 +98,54 @@ struct fpgsubtree_node {
  *            All FPtree nodes with the same identifier are linked together
  *            starting from a node in a header table.(Cross linking occurs here)
  */
-struct fpgheader {
-	int item_name; /* 1 itemset attribute identifier */
+struct fpgheader
+{
+	int item_name;		/* 1 itemset attribute identifier */
 	fpgsubtreePtr node;
-	fpgheaderPtr next; /* forward link to the next node */
+	fpgheaderPtr next;	/* forward link to the next node */
 };
 
 /**
  * fpgsupsets : Stores ancestor itemsets, nodes in an FP tree that preceed the nodes 
  *              identified by following trails from a particular item on the header table.
  */
-struct fpgsupsets {
-	int item_set[OTH_ITEMSET_ARRAY_MAX];      /* item set label */
-	int support;        /* support value for a given itemset */
-	fpgsupsetsPtr next; /* references to next node on linked list. */
+struct fpgsupsets
+{
+	int item_set[OTH_ITEMSET_ARRAY_MAX];	/* item set label */
+	int support;		/* support value for a given itemset */
+	fpgsupsetsPtr next;	/* references to next node on linked list. */
 };
 
 /**
  * fpgcolcnt: stores the counts
  */
-struct fpgcolcnt {
-	int col_num; /* column/attribute ID number */
-	int support; /* associated support count */
+struct fpgcolcnt
+{
+	int col_num;		/* column/attribute ID number */
+	int support;		/* associated support count */
 };
 
 /**
  * fptree: Structure is built to store fp tree nodes.
  */
-struct fptree {
-	
+struct fptree
+{
+
     /** Start reference for FP-tree. */
-    fptreenodePtr root;
+	fptreenodePtr root;
     /** Start reference for header table. */
-    fpgheaderPtr header_table; 
+	fpgheaderPtr header_table;
     /** Start reference for supported sets linked list (temporary storage only).*/
-    fpgsupsetsPtr start_tmp_sets;
-    
-    
+	fpgsupsetsPtr start_tmp_sets;
+
+
     /** Temporary storage for an index into an array of FP-tree nodes.
      *  Used when reassigning child reference arrays. */
-    int tmp_index;
-    
+	int tmp_index;
+
     /** Number of nodes created. */
-    int num_nodes;
-    
+	int num_nodes;
+
 };
 
 /** ------ FUNCTIONS ------ */
@@ -161,7 +167,8 @@ fptreenodePtr create_fptree_node(int sup);
  * @param prev, the backward link to the parent node. 
  * @return new node
  */
-fpgsubtreePtr create_fpsubtree_node(int name, int support, fpgsubtreePtr prev);
+fpgsubtreePtr create_fpsubtree_node(int name, int support,
+				    fpgsubtreePtr prev);
 
 /**
  * create_fpgheader(): creates an FP growth Header table node.
@@ -179,7 +186,8 @@ fpgheaderPtr create_fpgheader(int col_num);
  * @param next_node
  * @return new fp growth support sets.
  */
-fpgsupsetsPtr create_fpgsupsets( int itemsets[], int size, int sup, fpgsupsetsPtr next);
+fpgsupsetsPtr create_fpgsupsets(int itemsets[], int size, int sup,
+				fpgsupsetsPtr next);
 
 /**
  * create_fpgcolcnt():
@@ -189,10 +197,10 @@ fpgsupsetsPtr create_fpgsupsets( int itemsets[], int size, int sup, fpgsupsetsPt
  */
 fpgcolcntPtr create_fpgcolcnt(int col, int sup);
 
-/** CREATE FP-TREE */   
+/** CREATE FP-TREE */
 /** Top level method to commence the construction of the FP-Tree. */
 void create_fptree(fptreePtr fptree);
-   
+
 /** 
  * add_to_fptree(): Searches through current list of child refs looking for given item set.
  *                  If reference for current itemset found increments support count and 
@@ -203,8 +211,9 @@ void create_fptree(fptreePtr fptree);
  * @param sup the associated support value for the given itemset.
  * @param header the link to the appropriate place in the header table.
  */
-void add_to_fptree(fptreenodePtr ref, int place, int itemset[], int size, int sup, fpgheaderPtr header);
-   
+void add_to_fptree(fptreenodePtr ref, int place, int itemset[], int size,
+		   int sup, fpgheaderPtr header);
+
 /**
  * add_to_fptree1():  Searches through existing branch and if itemset found updates the 
  *                    support count and returns true, otherwise return false. 
@@ -214,9 +223,10 @@ void add_to_fptree(fptreenodePtr ref, int place, int itemset[], int size, int su
  * @param sup the associated support value for the given itemset.
  * @param header the link to the appropriate place in the header table. 
  * @return true if given itemset exists in FP-tree, and false otherwise. 
- */ 
-bool add_to_fptree1(fptreenodePtr ref, int place, int itemset[], int size, int sup, fpgheaderPtr header);
-    
+ */
+bool add_to_fptree1(fptreenodePtr ref, int place, int itemset[], int size,
+		    int sup, fpgheaderPtr header);
+
 /** 
  * add_to_fptree2(): Adds new node to FP-tree. (Adds first attribute in itemSet and then rest of sequence). 
  *
@@ -226,8 +236,9 @@ bool add_to_fptree1(fptreenodePtr ref, int place, int itemset[], int size, int s
  * @param sup the associated support value for the given itemset.
  * @param header the link to the appropriate place in the header table.
  */
-void add_to_fptree2(fptreenodePtr ref, int place, int itemset[], int size, int sup, fpgheaderPtr header);
-    
+void add_to_fptree2(fptreenodePtr ref, int place, int itemset[], int size,
+		    int sup, fpgheaderPtr header);
+
 /**
  * add_rem_itemsets(): Continues adding attributes in current itemset to FP-tree.
  *
@@ -238,8 +249,8 @@ void add_to_fptree2(fptreenodePtr ref, int place, int itemset[], int size, int s
  * @param sup the associated support value for the given itemset.
  * @param header the link to the appropriate place in the header table.
  */
-void add_rem_itemsets(fptreenodePtr ref, fpgsubtreePtr back, int place, int itemset[], int size, int sup, 
-					fpgheaderPtr header);
+void add_rem_itemsets(fptreenodePtr ref, fpgsubtreePtr back, int place,
+		      int itemset[], int size, int sup, fpgheaderPtr header);
 
 /**  -----------------------------------------------------------------
     *                                                           
@@ -277,7 +288,7 @@ void add_rem_itemsets(fptreenodePtr ref, fpgsubtreePtr back, int place, int item
  *                  If new local FP tree is not empty repeat mining operation.
  *                  Otherwise end. 
  * @param  fptree pointer.
- */	
+ */
 void start_mining(fptreePtr fptree);
 
 /**
@@ -288,7 +299,8 @@ void start_mining(fptreePtr fptree);
  * @param itemset_sofar the item set represented by the current FP-tree.
  * @param size
  */
-void start_mining2(fptreePtr fptree, fpgsubtreePtr node, int item, int itemset_sofar[], int size);
+void start_mining2(fptreePtr fptree, fpgsubtreePtr node, int item,
+		   int itemset_sofar[], int size);
 
 
 /** ---------------------------------------------------------------------                                                                       
@@ -318,7 +330,7 @@ void generate_ancestor(fpgsupsetsPtr start_tmp_sets, fpgsubtreePtr ref);
  * get_ancestor():  Generate the ancestor itemset from a given node. 
  * @param ref the reference to the current node in the prefix tree containing itemsets together with support values.
  */
-int * get_ancestor(fpgsubtreePtr ref);
+int *get_ancestor(fpgsubtreePtr ref);
 
 /**
  * PRUNE ANCESTOR CODES
@@ -369,7 +381,8 @@ fpgheaderPtr local_htable_unordered(fpgcolcntPtr count[]);
  * @param localHeaderTable the FPgrowth header table to be ordered.
  * @param count the support for the 1 item sets.
  */
-void local_htable_ordered(fpgheaderPtr table[], int hsize, fpgcolcntPtr count[], int size);
+void local_htable_ordered(fpgheaderPtr table[], int hsize,
+			  fpgcolcntPtr count[], int size);
 
 /** -------------------------------------------------------------------
  *                                                                     
@@ -408,7 +421,7 @@ void out_fpsubtree(fpgheaderPtr header_table);
  * out_fpsubtree2(): Outputs the given prefix sub tree. 
  * @param ref the reference to the given branch. 
  * @return a counter representing the current "node number" (used in output). 
- */	
+ */
 int out_fpsubtree2(fpgsubtreePtr ref);
 
 /**
@@ -433,9 +446,9 @@ int calc_storage(fptreenodePtr ref, int storage);
  * OUTPUT FP TREE STORAGE 
  * out_fptree_storage(): Determines and prints FP-tree storage, number of updates and number of nodes.
  */
- void out_fptree_storage(fptreenodePtr root);
- 
- 
+void out_fptree_storage(fptreenodePtr root);
+
+
 /** -------------------------------------------------------------------
  *                                                                     
  *                         INPUT FILE PROCESSING                        
@@ -443,13 +456,13 @@ int calc_storage(fptreenodePtr ref, int storage);
  * -------------------------------------------------------------------- 
  * INPUT FILE PROCESSING FUNCTIONS
  */
- 
+
 /**
  * INPUT DATA SET
  * input_dataset(): Processes input data file(TRANS_DB)
  * Stores input data into a data[][] array.
  */
-void input_dataset(); 
+void input_dataset();
 
 /**
  * REORDER DATA SET ACCORDING TO ATTRIBUTE FREQUENCY       
@@ -526,5 +539,5 @@ int gen_freq_one_itemsets();
  * @param fptreePtr, pointer to fptree
  */
 void release_memory(fptreePtr fptree);
- 
+
 #endif
