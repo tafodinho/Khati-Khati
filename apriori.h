@@ -79,8 +79,6 @@ int is_frequent_subset(ItemsetPtr c_prev, int sub[], int slen);
 
 /* Generates the candidate item sets for k = 1, 2, ..n */
 void generate_candidate_one_itemsets(int *, int[], int);
-void generate_candidates_prev(int itemsetcnt, ItemsetPtr c_prev,
-			      ItemsetPtr f_cur);
 void apriori_generate_cand_2_itemsets(int *f_freq1, int itemset_cnt,
 				      ItemsetPtr c_freq_cur, int items[],
 				      C_ItemsetPtr c_itemset_ll, int item_cnt,
@@ -117,8 +115,6 @@ void save_frequent_n_itemsets(int, FILE * f_itemsets, ItemsetPtr f_cur, int,
 void get_frequent_one_itemsets(int *c_freq1, int *f_freq1,
 			       int *distinct_itemsets_cnt,
 			       int *tot_itemsets_cnt);
-void get_frequent_n_itemsets(int, ItemsetPtr c_cur, ItemsetPtr f_cur, int *,
-			     int *);
 
 
 /* Creates new item set node from Array */

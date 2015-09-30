@@ -140,14 +140,6 @@ scandb(int n, int *c_freq1, int *f_freq1, ItemsetPtr c_cur, ItemsetPtr f_cur,
 
 	} else if (n < 5) {
 
-		//compute global n-itemset counts
-		distinct_itemsets_cnt = 0;
-		tot_itemsets_cnt = 0;
-		for (i = 0; i < OTH_ITEMSET_ARRAY_MAX; i++) {
-			distinct_itemsets_cnt += f_cur[i].distinct_itemsets;
-			tot_itemsets_cnt += f_cur[i].itemsets_cnt;
-		}
-
 		//get_frequent_n_itemsets(n,c_cur,f_cur,&distinct_itemsets_cnt, &tot_itemsets_cnt);
 		save_frequent_n_itemsets(n, f_itemsets, f_cur,
 					 distinct_itemsets_cnt,
@@ -231,7 +223,6 @@ join_frequent_n_itemsets(ItemsetPtr c_cur, ItemsetPtr f_prev, int i_cnt,
 				its2->cnt = tmp2->cnt;
 
 				c_cur[i].itemsets_cnt += its->cnt + its2->cnt;
-
 				//creating next candidate item sets
 				c_tmp = c_cur[i].itemset_ptr = its;
 				c_tmp->next = its2;
@@ -240,6 +231,14 @@ join_frequent_n_itemsets(ItemsetPtr c_cur, ItemsetPtr f_prev, int i_cnt,
 			}
 
 		}
+	}
+	
+	//compute global n-itemset counts
+	*distinct_itemsets_cnt = 0;
+	*tot_itemsets_cnt = 0;
+	for (i = 0; i < OTH_ITEMSET_ARRAY_MAX; i++) {
+		*distinct_itemsets_cnt = c_cur[i].distinct_itemsets;
+		*tot_itemsets_cnt += c_cur[i].itemsets_cnt;
 	}
 
 }
@@ -266,59 +265,6 @@ release_memory(ItemsetPtr freq)
 }
 
 
-/**
- * Generates the frequent n itemsets by pruning out elements below the support count
- * Pruning Step.
- */
-void
-get_frequent_n_itemsets(int itemsetcnt, ItemsetPtr c_cur, ItemsetPtr f_cur,
-			int *distinct_itemsets_cnt, int *tot_itemsets_cnt)
-{
-	int i;
-	Itemsets its, c_its_tmp, f_its_tmp, f_its_tmp2;
-	for (i = 0; i < OTH_ITEMSET_ARRAY_MAX; i++) {
-		f_cur[i].distinct_itemsets = f_cur[i].itemsets_cnt = 0;
-		f_its_tmp = f_cur[i].itemset_ptr;
-		c_its_tmp = c_cur[i].itemset_ptr;
-
-		while (c_its_tmp != NULL) {
-			//is the item frequent
-			if (c_its_tmp->cnt >= SUPPORT_THRESHOLD) {
-				f_cur[i].distinct_itemsets++;
-				f_cur[i].itemsets_cnt += c_its_tmp->cnt;
-				printf("%s %d %d: %d %d\n", "&&&&&&&&", i,
-				       c_its_tmp->cnt, c_its_tmp->itemsets[0],
-				       c_its_tmp->itemsets[1]);
-				getchar();
-				its = create_new_itemset_node(itemsetcnt,
-							      c_its_tmp->
-							      itemsets);
-				its->cnt = c_its_tmp->cnt;
-				//*its = *c_its_tmp;
-				if (f_its_tmp == NULL)
-					f_its_tmp = f_cur[i].itemset_ptr =
-						its;
-				else {
-					f_its_tmp->next = its;
-					f_its_tmp = f_its_tmp->next;	//printf("+++\n");//getchar();
-				}
-			}
-			c_its_tmp = c_its_tmp->next;
-		}
-	}
-
-
-
-	//compute global n-itemset counts
-	*distinct_itemsets_cnt = 0;
-	*tot_itemsets_cnt = 0;
-	for (i = 0; i < OTH_ITEMSET_ARRAY_MAX; i++) {
-		*distinct_itemsets_cnt += f_cur[i].distinct_itemsets;
-		*tot_itemsets_cnt += f_cur[i].itemsets_cnt;
-	}
-}
-
-
 void
 save_frequent_one_itemsets(FILE * f_itemsets, int *f_freq1,
 			   int distinct_itemsets_cnt, int tot_itemsets_cnt)
@@ -334,19 +280,13 @@ save_frequent_one_itemsets(FILE * f_itemsets, int *f_freq1,
 	fflush(f_itemsets);
 }
 
+
 void
 save_frequent_n_itemsets(int itemsetcnt, FILE * f_itemsets, ItemsetPtr f_cur,
 			 int distinct_itemsets_cnt, int tot_itemsets_cnt)
 {
 	int i, j;
 	Itemsets tmp3, f_its_tmp;
-	//compute global n-itemset counts
-	distinct_itemsets_cnt = 0;
-	tot_itemsets_cnt = 0;
-	for (i = 0; i < OTH_ITEMSET_ARRAY_MAX; i++) {
-		distinct_itemsets_cnt += f_cur[i].distinct_itemsets;
-		tot_itemsets_cnt += f_cur[i].itemsets_cnt;
-	}
 
 	fprintf(f_itemsets, "%d %d\n", distinct_itemsets_cnt,
 		tot_itemsets_cnt);
@@ -391,6 +331,7 @@ apriori_generate_cand_2_itemsets(int *f_freq1, int itemset_cnt,
 	int itemset[2];
 
 	Itemsets tmp;		//stores newly generated frequent itemset.
+	f_cur[i].distinct_itemsets = f_cur[i].itemsets_cnt = 0;
 
 	//Pruning step frequent item sets and 
 	for (k = 0; k < basket_cnt - 1; k++) {
@@ -424,7 +365,7 @@ save_freq_2_itemsets(FILE * f_itemsets, ItemsetPtr f_cur,
 	*distinct_itemsets_cnt = 0;
 	*tot_itemsets_cnt = 0;
 	for (i = 0; i < OTH_ITEMSET_ARRAY_MAX; i++) {
-		*distinct_itemsets_cnt += f_cur[i].distinct_itemsets;
+		*distinct_itemsets_cnt = f_cur[i].distinct_itemsets;
 		*tot_itemsets_cnt += f_cur[i].itemsets_cnt;
 	}
 
