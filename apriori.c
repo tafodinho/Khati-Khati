@@ -287,7 +287,20 @@ save_frequent_n_itemsets(int itemsetcnt, FILE * f_itemsets, ItemsetPtr f_cur,
 {
 	int i, j;
 	Itemsets tmp3, f_its_tmp;
-
+	//compute global n-itemset counts
+	distinct_itemsets_cnt = 0;
+	tot_itemsets_cnt = 0;
+	for (i = 0; i < OTH_ITEMSET_ARRAY_MAX; i++) {
+		f_its_tmp = f_cur[i].itemset_ptr;
+		while (f_its_tmp != NULL) {
+			if (f_its_tmp->cnt >= SUPPORT_THRESHOLD) {
+				distinct_itemsets_cnt += 1;	//last item ends with ;
+				tot_itemsets_cnt += f_its_tmp->cnt;
+			}
+			f_its_tmp = f_its_tmp->next;
+		}
+	}
+	
 	fprintf(f_itemsets, "%d %d\n", distinct_itemsets_cnt,
 		tot_itemsets_cnt);
 
