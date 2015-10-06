@@ -82,15 +82,7 @@ scandb(int n, int *c_freq1, int *f_freq1, ItemsetPtr c_cur, ItemsetPtr f_cur,
 		if (n == 1) {	//process for 1-itemsets
 			generate_candidate_one_itemsets(c_freq1, items,
 							item_no);
-		} else if (n == 2) {	/* process for 2-itemsets */
-			apriori_generate_cand_2_itemsets(f_freq1, n, c_cur,
-							 items, c_itemset_ll,
-							 item_no, c_prev,
-							 f_cur, f_itemsets,
-							 &distinct_itemsets_cnt,
-							 &tot_itemsets_cnt);
-
-		} else if (n > 2) {	/* process for itemsets > 2 */
+		} else {	/* process for itemsets >= 2 */
 			apriori_generate_cand_n_itemsets(f_cur, n, c_cur,
 							 items, c_itemset_ll,
 							 item_no, c_prev,
@@ -118,7 +110,7 @@ scandb(int n, int *c_freq1, int *f_freq1, ItemsetPtr c_cur, ItemsetPtr f_cur,
 						insert_candidate_itemset(2,
 									 hval,
 									 itemset,
-									 c_cur);
+									 f_cur);
 					}
 				}
 			}
@@ -127,16 +119,12 @@ scandb(int n, int *c_freq1, int *f_freq1, ItemsetPtr c_cur, ItemsetPtr f_cur,
 					   distinct_itemsets_cnt,
 					   tot_itemsets_cnt);
 		free(c_freq1);	//release memory held by candidate-1 itemsets
-		//now release memory held by frequent-1 itemsets
-		free(f_freq1);
-
-	} else if (n == 2) {
-		save_freq_2_itemsets(f_itemsets, f_cur, &distinct_itemsets_cnt, &tot_itemsets_cnt);	//save frequent 2 item sets.
 		release_memory(c_cur);
-		//generates the next candidate sets from the current frequent itemsets.
+		//now release memory held by frequent-1 itemsets
 		join_frequent_n_itemsets(c_cur, f_cur, n,
 					 &distinct_itemsets_cnt,
 					 &tot_itemsets_cnt);
+		free(f_freq1);
 
 	} else if (n < 5) {
 
@@ -324,88 +312,6 @@ save_frequent_n_itemsets(int itemsetcnt, FILE * f_itemsets, ItemsetPtr f_cur,
 	fflush(f_itemsets);
 }
 
-
-/**
- * Prunes the current candidate item sets
- * to generate the frequent item sets.
- * 
- */
-void
-apriori_generate_cand_2_itemsets(int *f_freq1, int itemset_cnt,
-				 ItemsetPtr c_cur, int items[],
-				 C_ItemsetPtr c_itemset_ll, int basket_cnt,
-				 ItemsetPtr c_prev, ItemsetPtr f_cur,
-				 FILE * f_itemsets,
-				 int *distinct_itemsets_cnt,
-				 int *tot_itemsets_cnt)
-{
-
-	int i, j, k, h, hval;
-	int itemset[2];
-
-	Itemsets tmp;		//stores newly generated frequent itemset.
-	f_cur[i].distinct_itemsets = f_cur[i].itemsets_cnt = 0;
-
-	//Pruning step frequent item sets and 
-	for (k = 0; k < basket_cnt - 1; k++) {
-		if (f_freq1[items[k]] >= SUPPORT_THRESHOLD) {
-			for (j = k + 1; j < basket_cnt; j++) {
-				if (f_freq1[items[j]] >= SUPPORT_THRESHOLD) {
-					itemset[0] = items[k];
-					itemset[1] = items[j];
-
-					//now compute hash value and store the frequent itemsets
-					hval = hashval(itemset, 2);
-					insert_candidate_itemset(2, hval,
-								 itemset,
-								 f_cur);
-				}
-			}
-		}
-
-	}			//end for loop
-
-}
-
-void
-save_freq_2_itemsets(FILE * f_itemsets, ItemsetPtr f_cur,
-		     int *distinct_itemsets_cnt, int *tot_itemsets_cnt)
-{
-	Itemsets tmp;		//stores newly generated frequent itemset.
-	int i;
-
-	//compute global n-itemset counts
-	*distinct_itemsets_cnt = 0;
-	*tot_itemsets_cnt = 0;
-	for (i = 0; i < OTH_ITEMSET_ARRAY_MAX; i++) {
-		tmp = f_cur[i].itemset_ptr;
-		while (tmp != NULL) {
-			if (tmp->cnt >= SUPPORT_THRESHOLD) {
-				*distinct_itemsets_cnt += 1;
-				*tot_itemsets_cnt += tmp->cnt;
-			}
-
-			tmp = tmp->next;
-		}
-	}
-
-	//Saving the frequent itemsets.
-	fprintf(f_itemsets, "%d %d\n", *distinct_itemsets_cnt,
-		*tot_itemsets_cnt);
-	for (i = 0; i < OTH_ITEMSET_ARRAY_MAX; i++) {
-		tmp = f_cur[i].itemset_ptr;
-		while (tmp != NULL) {
-			if (tmp->cnt >= SUPPORT_THRESHOLD)
-				fprintf(f_itemsets, " %d %d; %d\n",
-					tmp->itemsets[0], tmp->itemsets[1],
-					tmp->cnt);
-
-			tmp = tmp->next;
-		}
-	}
-	fflush(f_itemsets);
-
-}
 
 /**
  * Joins the previous frequent itemsets and 

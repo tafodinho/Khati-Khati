@@ -26,6 +26,7 @@ main(int argc, char **argv)
 			candidate_frequencies1 = calloc(ONE_ITEMSET_ARRAY_MAX, sizeof(int));	//1-itemset frequencies
 			frequent_frequencies1 = calloc(ONE_ITEMSET_ARRAY_MAX, sizeof(int));	//1-itemset frequencies
 			candidate_frequencies_cur = calloc(OTH_ITEMSET_ARRAY_MAX, sizeof(struct itemsetPtr));	// 2- candidate itemsets
+			frequent_frequencies_cur = 	calloc(OTH_ITEMSET_ARRAY_MAX, sizeof(struct itemsetPtr));
 			for (j = 0; j < OTH_ITEMSET_ARRAY_MAX; j++) {
 				candidate_frequencies_cur[j].itemset_ptr =
 					NULL;
