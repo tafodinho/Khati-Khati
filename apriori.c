@@ -378,8 +378,15 @@ save_freq_2_itemsets(FILE * f_itemsets, ItemsetPtr f_cur,
 	*distinct_itemsets_cnt = 0;
 	*tot_itemsets_cnt = 0;
 	for (i = 0; i < OTH_ITEMSET_ARRAY_MAX; i++) {
-		*distinct_itemsets_cnt = f_cur[i].distinct_itemsets;
-		*tot_itemsets_cnt += f_cur[i].itemsets_cnt;
+		tmp = f_cur[i].itemset_ptr;
+		while (tmp != NULL) {
+			if (tmp->cnt >= SUPPORT_THRESHOLD) {
+				*distinct_itemsets_cnt += 1;
+				*tot_itemsets_cnt += tmp->cnt;
+			}
+
+			tmp = tmp->next;
+		}
 	}
 
 	//Saving the frequent itemsets.
