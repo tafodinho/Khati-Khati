@@ -55,7 +55,6 @@ struct itemsetPtr
  * -- Generate Item-sets based on previous K-Item sets.
  */
 int *candidate_frequencies1;
-
 int *frequent_frequencies1;
 
 ItemsetPtr candidate_frequencies_prev;
@@ -79,13 +78,6 @@ int is_frequent_subset(ItemsetPtr c_prev, int sub[], int slen);
 
 /* Generates the candidate item sets for k = 1, 2, ..n */
 void generate_candidate_one_itemsets(int *, int[], int);
-void apriori_generate_cand_2_itemsets(int *f_freq1, int itemset_cnt,
-				      ItemsetPtr c_freq_cur, int items[],
-				      C_ItemsetPtr c_itemset_ll, int item_cnt,
-				      ItemsetPtr c_prev, ItemsetPtr f_cur,
-				      FILE * f_itemsets,
-				      int *distinct_itemsets_cnt,
-				      int *tot_itemsets_cnt);
 void apriori_generate_cand_n_itemsets(ItemsetPtr f_freq1, int itemset_cnt,
 				      ItemsetPtr c_freq_cur, int items[],
 				      C_ItemsetPtr c_itemset_ll, int item_cnt,
@@ -106,7 +98,6 @@ void join_frequent_n_itemsets(ItemsetPtr c_cur, ItemsetPtr f_prev, int i_cnt,
 
 /* Saves the frequent itemsets to a file., k = 1,2, ..n */
 void save_frequent_one_itemsets(FILE * f_itemsets, int *c_freq1, int, int);
-void save_freq_2_itemsets(FILE * f_itemsets, ItemsetPtr, int *, int *);
 void save_frequent_n_itemsets(int, FILE * f_itemsets, ItemsetPtr f_cur, int,
 			      int);
 
