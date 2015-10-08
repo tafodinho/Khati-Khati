@@ -252,7 +252,9 @@ release_memory(ItemsetPtr freq)
 	}
 }
 
-
+/**
+ *Save frequent one itemsets
+ */
 void
 save_frequent_one_itemsets(FILE * f_itemsets, int *f_freq1,
 			   int distinct_itemsets_cnt, int tot_itemsets_cnt)
@@ -268,7 +270,9 @@ save_frequent_one_itemsets(FILE * f_itemsets, int *f_freq1,
 	fflush(f_itemsets);
 }
 
-
+/**
+ * Save frequent n itemsets
+ */
 void
 save_frequent_n_itemsets(int itemsetcnt, FILE * f_itemsets, ItemsetPtr f_cur,
 			 int distinct_itemsets_cnt, int tot_itemsets_cnt)
@@ -341,6 +345,10 @@ apriori_generate_cand_n_itemsets(ItemsetPtr f_freq1, int itemset_cnt,
 
 }
 
+
+/**
+ * Recursively generate frequent n itemsets
+ */
 void
 r_apriori_generate_cand_n_itemsets(int slen, ItemsetPtr c_cur, int items[],
 				   int sub[], C_ItemsetPtr c_itemset_ll,
