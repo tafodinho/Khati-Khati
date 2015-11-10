@@ -63,19 +63,19 @@ csort_add_buffer(CSortPtr sort, const char *buf, size_t len)
     }
 }
 
-/* Bubble sort the linked lsit */
+/* Bubble sort the linked list */
 int b_sort(CSortPtr head)
 {
     int swapped;
     CSortPtr p;
-     CSortPtr l = NULL;
+    CSortPtr l = NULL;
  
     do
     {
         swapped = 0;
         p = head;
  
-        while (p->prev != l) {
+        while (p != l) {
         	if (strncmp(p->buffer, p->next->buffer, p->size) > 0) { 
                 swap(p, p->next);
                 swapped = 1;
