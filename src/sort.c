@@ -17,7 +17,6 @@ struct _CSort {
     int size;
     char *buffer;
     CSortPtr next;
-    CSortPtr prev;
 };
 
 /****************************/
@@ -49,12 +48,19 @@ void
 csort_add_buffer(CSortPtr sort, const char *buf, size_t len)
 {
     /* TODO */
-    sort->next->prev = sort;
-    sort = sort->next;
-    sort->size = len;
+    CSortPtr head = csort_new();
     
-    sort->buffer = (char *)malloc(sizeof(char) * len);
-    strncpy(sort->buffer, buf, len);
+    head->size = len;
+    head->buffer = (char *)malloc(sizeof(char) * len);
+    strncpy(head->buffer, buf, len);
+    
+    if (sort->next != NULL) {
+    	head->next = sort->next;
+    	sort->next = head;
+    } else {
+    	sort->next = head;
+    	head->next = NULL;
+    }
 }
 
 /* Bubble sort the linked lsit */
@@ -70,12 +76,12 @@ int b_sort(CSortPtr head)
         p = head;
  
         while (p->prev != l) {
-        	if (strncmp(p->buffer, p->prev->buffer, p->size) > 0) { 
-                swap(p, p->prev);
+        	if (strncmp(p->buffer, p->next->buffer, p->size) > 0) { 
+                swap(p, p->next);
                 swapped = 1;
             }
             
-            p = p->prev;
+            p = p->next;
        }
        
        l = p;
@@ -97,7 +103,7 @@ csort_output(CSortPtr sort, FILE *fp)
         tmp = tmp->next;
     }
     
-    if ( n < 0 )
+    if (n < 0)
     	return n;
     
     return 0; 
@@ -107,10 +113,12 @@ void
 csort_free(CSortPtr sort)
 {
     /* TODO */
-    while ( sort != NULL) {
- 		free(sort->buffer);
- 		free(sort->next);
-    	sort = sort->prev;
-    }
+    CSortPtr t, tmp = sort;
     
+    while ( tmp->next != NULL) {
+    	t = tmp;
+ 		free(tmp->buffer);
+ 		tmp = tmp->next;
+    	free(t);
+    }
 }
