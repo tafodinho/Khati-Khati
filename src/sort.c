@@ -31,17 +31,16 @@ void swap(CSortPtr a, CSortPtr b)
     strncpy(buf, a->buffer, a->size);
     strncpy(a->buffer, b->buffer, b->size);
     strncpy(b->buffer, buf, a->size);
+    free(buf);
 }
 
 CSortPtr
 csort_new(void)
 {
     /* TODO */
-    CSort new_obj;
-    new_obj.size = 1;
-    new_obj.buffer = (char *)malloc(sizeof(char));
-    CSortPtr tmp = &new_obj;
-    return tmp;
+    CSortPtr new_obj = (CSortPtr)malloc(sizeof(CSort));
+    
+    return new_obj;
 }
 
 void
@@ -49,62 +48,50 @@ csort_add_buffer(CSortPtr sort, const char *buf, size_t len)
 {
     /* TODO */
     CSortPtr head = csort_new();
-    
     head->size = len;
-    head->buffer = (char *)malloc(sizeof(char) * len);
+    head->buffer = (char *)malloc(sizeof(char) * 10);
+    head->next = NULL;
     strncpy(head->buffer, buf, len);
     
     if (sort->next != NULL) {
     	head->next = sort->next;
     	sort->next = head;
+    	
     } else {
     	sort->next = head;
     	head->next = NULL;
     }
 }
 
-/* Bubble sort the linked list */
-int b_sort(CSortPtr head)
-{
-    int swapped;
-    CSortPtr p;
-    CSortPtr l = NULL;
- 
-    do
-    {
-        swapped = 0;
-        p = head;
- 
-        while (p != l) {
-        	if (strncmp(p->buffer, p->next->buffer, p->size) > 0) { 
-                swap(p, p->next);
-                swapped = 1;
-            }
-            
-            p = p->next;
-       }
-       
-       l = p;
-    } while (swapped);
-    
-    return 0;
-}
-
 int
 csort_output(CSortPtr sort, FILE *fp)
 {
     /* TODO */
-    int n = b_sort(sort);
     
-    CSortPtr tmp = sort;
-    fprintf(fp, "\n");
-    while (tmp != NULL) {
-        fprintf(fp, "%s", tmp->buffer);
-        tmp = tmp->next;
+    CSortPtr top = sort;
+    CSortPtr curr = sort;
+    CSortPtr tmp;
+    CSortPtr prev;
+    
+    if ( curr == NULL)
+    	return -1;
+	
+    while(curr != NULL) {
+        tmp = curr->next;
+        while (tmp != NULL) {
+        	if(strncmp(curr->buffer, tmp->buffer, curr->size) > 0) {
+        		swap(curr, tmp);
+        	}
+        	tmp = tmp->next;
+        }
+        curr = curr->next;
     }
     
-    if (n < 0)
-    	return n;
+    fprintf(fp, "\n");
+    while (top != NULL) {
+        fprintf(fp, "\n%s", top->buffer);
+        top = top->next;
+    }
     
     return 0; 
 }
