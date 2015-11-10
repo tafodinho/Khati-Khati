@@ -28,9 +28,16 @@ void swap(CSortPtr a, CSortPtr b)
 {
     char *buf;
     buf = (char *)malloc(sizeof(char) * a->size);
+    int len = a->size;
     strncpy(buf, a->buffer, a->size);
+    a->size = b->size;
+    free(a->buffer);
+    a->buffer = (char *)malloc(sizeof(char) * a->size);
     strncpy(a->buffer, b->buffer, b->size);
-    strncpy(b->buffer, buf, a->size);
+    b->size = len;
+    free(b->buffer);
+    b->buffer = (char *)malloc(sizeof(char) * b->size);
+    strncpy(b->buffer, buf, b->size);
     free(buf);
 }
 
@@ -39,6 +46,7 @@ csort_new(void)
 {
     /* TODO */
     CSortPtr new_obj = (CSortPtr)malloc(sizeof(CSort));
+    new_obj->size = 0;
     
     return new_obj;
 }
@@ -47,20 +55,63 @@ void
 csort_add_buffer(CSortPtr sort, const char *buf, size_t len)
 {
     /* TODO */
-    CSortPtr head = csort_new();
-    head->size = len;
-    head->buffer = (char *)malloc(sizeof(char) * 10);
-    head->next = NULL;
-    strncpy(head->buffer, buf, len);
+
+    CSortPtr head = sort;
+    int i = 0, new_len = 0;
+    char *buffer;
     
-    if (sort->next != NULL) {
-    	head->next = sort->next;
-    	sort->next = head;
+    /* checks for '\n' in buf */
+    while ( i < len) {
+    	if ( buf[i] == '\n')
+    		break;
+    	i++;
+    }
+    
+     //printf("\nBuffer, i: %d", i);
+    /* append string */
+    if( i < len) {
+    	if ( head->size < 1) {
+    		new_len = len;
+    		head->buffer = (char *)malloc(sizeof(char)* new_len);
+    		strncpy(head->buffer, buf, len);
+    	
+    	} else {
+    		new_len = head->size + len;
+    		head->buffer = (char *)realloc(head->buffer, sizeof(char)* new_len);
+    		strncat(head->buffer, buf, len);
+    	}
+    	
+    	head->size = new_len;
+    	sort = head;
+    	head = csort_new();
+    	head->next = sort;
+    	
+    	/* copy remaining buffer to new line */
+    	new_len = len - i;
+    	head->size = new_len;
+    	head->buffer = (char *)malloc(sizeof(char)* new_len);
+    	buffer = buf;
+    	strncpy(head->buffer, buffer + i, head->size);
+    	sort = head;
+    	new_len = 0;
     	
     } else {
-    	sort->next = head;
-    	head->next = NULL;
-    }
+    
+    	if ( head->size < 1) {
+    		new_len = len;
+    		head->buffer = (char *)malloc(sizeof(char)* new_len);
+    		strncpy(head->buffer, buf, len);
+    	
+    	} else {
+    		new_len = head->size + len;
+    		head->buffer = (char *)realloc(head->buffer, sizeof(char)* new_len);
+    		strncat(head->buffer, buf, len);
+    	}
+    	
+    	head->size = new_len;
+    	sort = head;
+    	new_len = 0;
+    }      
 }
 
 int
@@ -71,7 +122,6 @@ csort_output(CSortPtr sort, FILE *fp)
     CSortPtr top = sort;
     CSortPtr curr = sort;
     CSortPtr tmp;
-    CSortPtr prev;
     
     if ( curr == NULL)
     	return -1;
