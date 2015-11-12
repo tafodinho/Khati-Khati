@@ -23,22 +23,62 @@ struct _CSort {
 /* Write your solution here */
 /****************************/
 
+/* find previous node function() */
+CSortPtr get_prevnd(
+				 CSortPtr head, 
+				 CSortPtr a
+				){
+	if(head == a){
+		// node[a] is first node 
+		return NULL;
+	}
+	CSortPtr temp = head; // temp is current node
+	CSortPtr pre_a = NULL; 
+	
+	while(temp && temp!=a){ //seach while not reach to end or 
+		pre_a = temp;          // find previous node   
+		temp = temp->next;
+	}
+	if(temp!= a){// node[a] absent on list
+		fprintf(stderr, "\n error: node not found!\n");
+		exit(EXIT_FAILURE); 
+	}
+	return pre_a;	
+}
+
 /* function to swap data of two nodes a and b*/
-void swap(CSortPtr a, CSortPtr b)
+void swap(CSortPtr head, CSortPtr a, CSortPtr b)
 {
-    char *buf;
-    buf = (char *)malloc(sizeof(char) * a->size);
-    int len = a->size;
-    strncpy(buf, a->buffer, a->size);
-    a->size = b->size;
-    free(a->buffer);
-    a->buffer = (char *)malloc(sizeof(char) * a->size);
-    strncpy(a->buffer, b->buffer, b->size);
-    b->size = len;
-    free(b->buffer);
-    b->buffer = (char *)malloc(sizeof(char) * b->size);
-    strncpy(b->buffer, buf, b->size);
-    free(buf);
+          
+  /* first check if a agrgument is null */            
+	if( (head) == NULL ||               /* Empty list */ 
+	    a == NULL || b == NULL){     /* one node is null */
+       // Nothing to swap, just return 
+		printf("\n Nothing to swap, just return \n");
+		return;
+  }
+
+  /* printf("\nswap nodes: %d %d \n", (*a)->data, (*b)->data);
+   * find previos nodes */
+  CSortPtr pre_a = get_prevnd(head, a);
+  CSortPtr pre_b = get_prevnd(head, b);
+  
+/* printf("\nPrev nodes: %d %d \n", pre_a->data, pre_b->data); */
+		
+  /* Now swap previous node's next */
+  if(pre_a) pre_a->next = b; /* a's previous become b's previous, and */
+  if(pre_b) pre_b->next = a; /* b's previous become a's previous */
+ 
+  /* Now swap next fiels of candidate nodes */
+  CSortPtr temp = NULL;  
+	temp = a->next;
+  a->next = b->next;
+  b->next = temp;
+  
+  /* change head: if any node was a head */
+  if(head == a) head = b;
+  if(head == b) head = a;
+  
 }
 
 CSortPtr
@@ -47,6 +87,7 @@ csort_new(void)
     /* TODO */
     CSortPtr new_obj = (CSortPtr)malloc(sizeof(CSort));
     new_obj->size = 0;
+    new_obj->buffer = NULL;
     
     return new_obj;
 }
@@ -130,7 +171,7 @@ csort_output(CSortPtr sort, FILE *fp)
         tmp = curr->next;
         while (tmp != NULL) {
         	if(strncmp(curr->buffer, tmp->buffer, curr->size) > 0) {
-        		swap(curr, tmp);
+        		swap(sort,curr, tmp);
         	}
         	tmp = tmp->next;
         }
